@@ -1,0 +1,31 @@
+{
+    "author": "FreeSHR",
+    "title": "Encounters",
+    "nextUrl": null,
+    "prevUrl": null,
+    "entries": [
+        {
+            "healthId": "5952907233237925889",
+            "categories": [
+                "encounter"
+            ],
+            "id": "510c161a-e443-48ff-a75a-3b3f2c43c649",
+            "publishedDate": "2015-01-07T11:07:40.209+0530",
+            "title": "Encounter:510c161a-e443-48ff-a75a-3b3f2c43c649",
+            "link": "/patients/5952907233237925889/encounters/510c161a-e443-48ff-a75a-3b3f2c43c649",
+            "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <title>Encounter</title>\n  <id>urn:559156ef-ef8d-4634-a9ae-c936f234f489</id>\n  <updated>2015-01-07T11:06:57+05:30</updated>\n  <entry>\n    <title>Composition</title>\n    <id>urn:2c8a9735-a267-40f5-8131-3cab642d134b</id>\n    <updated>2015-01-07T11:07:40.179+05:30</updated>\n    <author>\n      <name>bahmni</name>\n    </author>\n    <content type=\"text/xml\">\n      <Composition xmlns=\"http://hl7.org/fhir\">\n        <identifier>\n          <value value=\"urn:2c8a9735-a267-40f5-8131-3cab642d134b\"/>\n        </identifier>\n        <date value=\"2015-01-07T11:06:57+05:30\"/>\n        <status value=\"final\"/>\n        <subject>\n          <reference value=\"http://172.18.46.56:8081/patients/5952907233237925889\"/>\n          <display value=\"5952907233237925889\"/>\n        </subject>\n        <encounter>\n          <reference value=\"urn:599114bb-2944-4565-b3e6-1f05ca64bcd7\"/>\n          <display value=\"Encounter\"/>\n        </encounter>\n        <section>\n          <content>\n            <reference value=\"urn:599114bb-2944-4565-b3e6-1f05ca64bcd7\"/>\n            <display value=\"Encounter\"/>\n          </content>\n        </section>\n      </Composition>\n    </content>\n  </entry>\n  <entry>\n    <title>Encounter</title>\n    <id>urn:599114bb-2944-4565-b3e6-1f05ca64bcd7</id>\n    <updated>2015-01-07T11:07:40.179+05:30</updated>\n    <author>\n      <name>bahmni</name>\n    </author>\n    <content type=\"text/xml\">\n      <Encounter xmlns=\"http://hl7.org/fhir\">\n        <identifier>\n          <value value=\"urn:599114bb-2944-4565-b3e6-1f05ca64bcd7\"/>\n        </identifier>\n        <status value=\"finished\"/>\n        <class value=\"outpatient\"/>\n        <type>\n          <text value=\"REG\"/>\n        </type>\n        <subject>\n          <reference value=\"http://172.18.46.56:8081/patients/5952907233237925889\"/>\n          <display value=\"5952907233237925889\"/>\n        </subject>\n        <participant>\n          <individual>\n            <reference value=\"e8a8bdb9-9fdd-4e66-81ca-5abbb6308ccd\"/>\n          </individual>\n        </participant>\n        <indication>\n          <reference value=\"urn:599114bb-2944-4565-b3e6-1f05ca64bcd7\"/>\n          <display value=\"Encounter\"/>\n        </indication>\n        <serviceProvider>\n          <reference value=\"http://hrmtest.dghs.gov.bd/api/1.0//facilities/10000069.json\"/>\n        </serviceProvider>\n      </Encounter>\n    </content>\n  </entry>\n</feed>"
+        },
+        {
+            "healthId": "5952907233237925889",
+            "categories": [
+                "encounter"
+            ],
+            "id": "88980b27-bef0-49d5-bc84-fd023598960f",
+            "publishedDate": "2015-01-08T14:00:40.217+0530",
+            "title": "Encounter:88980b27-bef0-49d5-bc84-fd023598960f",
+            "link": "/patients/5952907233237925889/encounters/88980b27-bef0-49d5-bc84-fd023598960f",
+            "content": "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n\n<feed xmlns=\"http://www.w3.org/2005/Atom\">\n  <title>Encounter</title>\n  <id>urn:72136625-1f65-44c0-88ad-e321e9968313</id>\n  <updated>2015-01-08T14:00:12+05:30</updated>\n  <entry>\n    <title>Composition</title>\n    <id>urn:c25fc93b-af7b-4024-b3d4-8af2fac6650b</id>\n    <updated>2015-01-08T14:00:40.210+05:30</updated>\n    <author>\n      <name>bahmni</name>\n    </author>\n    <content type=\"text/xml\">\n      <Composition xmlns=\"http://hl7.org/fhir\">\n        <identifier>\n          <value value=\"urn:c25fc93b-af7b-4024-b3d4-8af2fac6650b\"/>\n        </identifier>\n        <date value=\"2015-01-08T14:00:12+05:30\"/>\n        <status value=\"final\"/>\n        <subject>\n          <reference value=\"http://172.18.46.56:8081/patients/5952907233237925889\"/>\n          <display value=\"5952907233237925889\"/>\n        </subject>\n        <encounter>\n          <reference value=\"urn:de829ecc-51e0-41bd-bc63-b9329b6bb5e1\"/>\n          <display value=\"Encounter\"/>\n        </encounter>\n        <section>\n          <content>\n            <reference value=\"urn:de829ecc-51e0-41bd-bc63-b9329b6bb5e1\"/>\n            <display value=\"Encounter\"/>\n          </content>\n        </section>\n      </Composition>\n    </content>\n  </entry>\n  <entry>\n    <title>Encounter</title>\n    <id>urn:de829ecc-51e0-41bd-bc63-b9329b6bb5e1</id>\n    <updated>2015-01-08T14:00:40.210+05:30</updated>\n    <author>\n      <name>bahmni</name>\n    </author>\n    <content type=\"text/xml\">\n      <Encounter xmlns=\"http://hl7.org/fhir\">\n        <identifier>\n          <value value=\"urn:de829ecc-51e0-41bd-bc63-b9329b6bb5e1\"/>\n        </identifier>\n        <status value=\"finished\"/>\n        <class value=\"outpatient\"/>\n        <type>\n          <text value=\"REG\"/>\n        </type>\n        <subject>\n          <reference value=\"http://172.18.46.56:8081/patients/5952907233237925889\"/>\n          <display value=\"5952907233237925889\"/>\n        </subject>\n        <participant>\n          <individual>\n            <reference value=\"e8a8bdb9-9fdd-4e66-81ca-5abbb6308ccd\"/>\n          </individual>\n        </participant>\n        <indication>\n          <reference value=\"urn:de829ecc-51e0-41bd-bc63-b9329b6bb5e1\"/>\n          <display value=\"Encounter\"/>\n        </indication>\n        <serviceProvider>\n          <reference value=\"http://hrmtest.dghs.gov.bd/api/1.0//facilities/10000069.json\"/>\n        </serviceProvider>\n      </Encounter>\n    </content>\n  </entry>\n</feed>"
+        }
+    ],
+    "feedUrl": "http://172.18.46.57:8081/patients/5952907233237925889/encounters"
+}

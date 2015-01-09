@@ -1,0 +1,37 @@
+#!/bin/sh
+#
+# patient-journal        This shell script takes care of starting and stopping
+#              the patient-journal system
+#
+# chkconfig: - 64 36
+# description: Stub patient-journal for shared health record system
+# processname: patient-journal
+# config: /etc/default/patient-journal
+# pidfile: /var/run/patient-journal/patient-journal.pid
+### BEGIN INIT INFO
+# Provides: patient-journal
+# Required-Start: $local_fs $remote_fs $network $named $syslog $time
+# Required-Stop: $local_fs $remote_fs $network $named $syslog $time
+# Short-Description: start and stop patient-journal system,
+# Description: patient-journal system
+### END INIT INFO
+
+. /etc/default/patient-journal
+
+if [[ ! -e /var/run/patient-journal ]]; then
+    ln -s /opt/patient-journal/var /var/run/patient-journal
+fi
+
+if [[ ! -e /var/log/patient-journal ]]; then
+    mkdir /var/log/patient-journal
+fi
+
+case "$1" in
+  start)
+    nohup java -Dserver.port=$PATIENT_JOURNAL_PORT -jar /opt/patient-journal/lib/PatientJournal.war >/var/log/patient-journal/patient-journal.log &
+    echo $! > /var/run/patient-journal/patient-journal.pid
+    ;;
+  stop)
+    (cat /var/run/patient-journal/patient-journal.pid |  xargs -n 1 kill) || (true)
+    ;;
+esac
