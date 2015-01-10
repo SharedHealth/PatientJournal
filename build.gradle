@@ -66,13 +66,19 @@ def getDebugProcessBuilder() {
 
 
 task runPJ << {
+    Properties properties = new Properties();
+    properties.load(new FileInputStream(file('env/local.properties')))
     ProcessBuilder builder = getRunProcessBuilder()
+    builder.environment().putAll(properties)
     Process process = builder.start();
     process.waitFor();
 }
 
 task debugPJ << {
+    Properties properties = new Properties();
+    properties.load(new FileInputStream(file('env/local.properties')))
     ProcessBuilder builder = getDebugProcessBuilder()
+    builder.environment().putAll(properties)
     Process process = builder.start();
     process.waitFor();
 }
