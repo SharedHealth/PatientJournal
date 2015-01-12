@@ -11,6 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
@@ -21,7 +24,7 @@ import java.util.List;
 import java.util.Map;
 
 @Controller
-public class PatientJournalController {
+public class PatientJournalController extends WebMvcConfigurerAdapter {
     public static final String IDENTITY_TOKEN_NAME = "SHR_IDENTITY_TOKEN";
     public static final String X_AUTH_TOKEN = "X-Auth-Token";
 
@@ -40,25 +43,10 @@ public class PatientJournalController {
         this.patientEncounterService = patientEncounterService;
     }
 
-    @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
-    public
-    @ResponseBody
-    String journal(@PathVariable("healthId")
-                   String healthId, HttpServletRequest request, HttpServletResponse response) throws IOException, FeedException {
-        if (!isIdentifiable(request)) {
-            String identityServerUrl = applicationProperties.getIdentityServerUrl(request.getRequestURL());
-            response.sendRedirect(identityServerUrl);
-            return "";
-        }
-        EncounterBundles encounters = patientEncounterService.getEncountersForPatient(healthId,
-                createSecurityHeaders(request));
-
-        return encounters.toString();
-    }
 
     private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put(X_AUTH_TOKEN, findIdentityToken(request));
+        headers.put(X_AUTH_TOKEN,  findIdentityToken(request)); //"c7159526-ac9d-42ba-b950-8a8e91561ab8");//
         return headers;
     }
 
@@ -76,4 +64,23 @@ public class PatientJournalController {
     private Boolean isIdentifiable(HttpServletRequest request) {
         return  findIdentityToken(request) != null;
     }
+
+    @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
+    public ModelAndView loginForm(@PathVariable("healthId") String healthId,
+                                  HttpServletRequest request, HttpServletResponse response) throws Exception {
+        if (!isIdentifiable(request)) {
+            String identityServerUrl = applicationProperties.getIdentityServerUrl(request.getRequestURL());
+            response.sendRedirect(identityServerUrl);
+            return null;
+        }
+        EncounterBundles encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
+                createSecurityHeaders(request));
+        return new ModelAndView("index", "encounterBundles", encountersForPatient.getEncounterBundles());
+    }
+
+    @Override
+    public void addViewControllers(ViewControllerRegistry registry) {
+        registry.addViewController("/journal/{healthId}").setViewName("index");
+    }
+
 }

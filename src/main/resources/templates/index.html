@@ -1,0 +1,19 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+<body>
+   <div th:each="encounterBundle: ${encounterBundles}">
+       <p>ENCOUNTER</p>
+       <div th:object="${encounterBundle.getEncounter()}">
+           <div th:text="STATUS"></div><div th:text="*{getStatusSimple()}"></div>
+       </div>
+       <p>DETAILS</p>
+       <div th:each="resource: ${encounterBundle.getResources()}">
+           <p th:text="${resource.getResourceType().getPath()}"> </p>
+           <p th:text="${resource}"></p>
+       </div>
+   </div>
+</body>
+</html>

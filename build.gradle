@@ -50,6 +50,7 @@ dependencies {
     compile group: 'me.fhir', name:'fhir-0.12', version: '0.3'
     compile group: 'rome', name:'rome', version:'1.0'
     compile group: 'org.apache.httpcomponents', name:'httpclient', version: '4.3.6'
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
     testCompile("junit:junit")
     testCompile("com.github.tomakehurst:wiremock:1.52")
     testCompile "org.mockito:mockito-core:1.8.4"
