@@ -1,4 +1,4 @@
-package infrastructure;
+package org.freeshr.journal.infrastructure;
 
 import com.sun.syndication.feed.atom.Entry;
 import com.sun.syndication.feed.atom.Feed;

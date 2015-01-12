@@ -1,6 +1,5 @@
 package org.freeshr.journal.controller;
 
-import org.apache.commons.lang3.StringUtils;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Controller
 public class PatientJournalController {
+    public static final String IDENTITY_TOKEN_NAME = "SHR_IDENTITY_TOKEN";
     @Autowired
     ApplicationProperties applicationProperties;
 
@@ -25,22 +26,25 @@ public class PatientJournalController {
         this.applicationProperties = applicationProperties;
     }
 
-    @RequestMapping(value="/journal/{healthId}", method = RequestMethod.GET)
-    public @ResponseBody
+    @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
+    public
+    @ResponseBody
     String journal(@PathVariable("healthId")
-                   String healthId, HttpServletRequest request, HttpServletResponse response) {
-        String identityToken = getIdentityToken(request);
-        if(StringUtils.isEmpty(identityToken))
-            applicationProperties.getIdentityServerUrl(request.getRequestURL());
+                   String healthId, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        if (!isIdentifiable(request)) {
+            String identityServerUrl = applicationProperties.getIdentityServerUrl(request.getRequestURL());
+            response.sendRedirect(identityServerUrl);
+        }
         return "hello world " + healthId;
     }
 
-    private String getIdentityToken(HttpServletRequest request) {
+    private Boolean isIdentifiable(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
+        if(cookies == null) return false;
         for (Cookie cookie : cookies) {
-            if ("token".equals(cookie.getName()))
-                return cookie.getValue();
+            if (cookie!= null && IDENTITY_TOKEN_NAME.equals(cookie.getName()))
+                return true;
         }
-        return null;
+        return false;
     }
 }

@@ -1,4 +1,4 @@
-package infrastructure;
+package org.freeshr.journal.infrastructure;
 
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;

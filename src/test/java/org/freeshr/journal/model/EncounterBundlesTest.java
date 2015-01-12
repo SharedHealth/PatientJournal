@@ -1,14 +1,12 @@
-package model;
+package org.freeshr.journal.model;
 
 import com.sun.syndication.feed.atom.Entry;
-import infrastructure.AtomFeed;
-import org.hl7.fhir.instance.model.Resource;
+import org.freeshr.journal.infrastructure.AtomFeed;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import static model.EncounterBundles.*;
+import static org.freeshr.journal.model.EncounterBundles.*;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.junit.Assert.assertEquals;
 

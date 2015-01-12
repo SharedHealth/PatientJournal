@@ -1,4 +1,4 @@
-package model;
+package org.freeshr.journal.model;
 
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;

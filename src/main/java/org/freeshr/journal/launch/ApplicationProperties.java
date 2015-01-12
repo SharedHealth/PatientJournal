@@ -4,13 +4,14 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Map;
+
+import static java.lang.System.getenv;
 
 @Component
 public class ApplicationProperties {
-    @Value("${IDENTITY_SERVER_URL}")
-    private String identityServerUrl;
 
     public String getIdentityServerUrl(StringBuffer requestURL) {
-        return identityServerUrl + "?redirectTo=" + requestURL;
+        return getenv().get("IDENTITY_SERVER_URL") + "?redirectTo=" + requestURL;
     }
 }

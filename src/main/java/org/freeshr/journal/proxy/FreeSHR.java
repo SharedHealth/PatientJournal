@@ -1,7 +1,7 @@
 package org.freeshr.journal.proxy;
 
-import infrastructure.AtomFeed;
-import model.EncounterBundles;
+import org.freeshr.journal.infrastructure.AtomFeed;
+import org.freeshr.journal.model.EncounterBundles;
 import org.hl7.fhir.instance.model.Encounter;
 import org.springframework.beans.factory.annotation.Autowired;
 

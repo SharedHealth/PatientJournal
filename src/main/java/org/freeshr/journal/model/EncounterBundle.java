@@ -1,4 +1,4 @@
-package model;
+package org.freeshr.journal.model;
 
 import org.hl7.fhir.instance.model.Resource;
 
