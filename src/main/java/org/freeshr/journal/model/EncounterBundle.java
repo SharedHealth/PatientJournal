@@ -15,4 +15,5 @@ public class EncounterBundle {
     public List<Resource> getResources() {
         return new ArrayList<>(resources);
     }
+
 }

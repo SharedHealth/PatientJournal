@@ -6,7 +6,7 @@ import org.junit.Test;
 
 import java.util.List;
 
-import static org.freeshr.journal.model.EncounterBundles.*;
+import static org.freeshr.journal.model.EncounterBundles.fromFeedEntries;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.junit.Assert.assertEquals;
 
@@ -18,6 +18,5 @@ public class EncounterBundlesTest {
         EncounterBundles encounterBundles = fromFeedEntries(entries);
         assertEquals(1, encounterBundles.getEncounterBundles().size());
         assertEquals(2, encounterBundles.getEncounterBundles().get(0).getResources().size());
-
     }
 }

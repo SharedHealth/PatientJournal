@@ -3,13 +3,16 @@ package org.freeshr.journal.model;
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;
 import org.hl7.fhir.instance.formats.ParserBase;
+import org.hl7.fhir.instance.formats.XmlComposer;
 import org.hl7.fhir.instance.formats.XmlParser;
 import org.hl7.fhir.instance.model.AtomEntry;
 import org.hl7.fhir.instance.model.AtomFeed;
 import org.hl7.fhir.instance.model.Resource;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class EncounterBundles {
@@ -54,5 +57,24 @@ public class EncounterBundles {
             throw new RuntimeException("Unable to parse XML", e);
         }
         return resource;
+    }
+
+    @Override
+    public String toString() {
+        StringBuilder response = new StringBuilder();
+        for (EncounterBundle encounterBundle : encounterBundles) {
+            for (Resource resource : encounterBundle.getResources()) {
+                ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                try {
+                    new XmlComposer().compose(byteArrayOutputStream, resource, true);
+                    response.append(new String(byteArrayOutputStream.toByteArray()));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    response.append(Arrays.toString(e.getStackTrace()));
+                }
+            }
+        }
+
+        return response.toString();
     }
 }

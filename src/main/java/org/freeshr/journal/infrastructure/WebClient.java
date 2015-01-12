@@ -29,8 +29,8 @@ public class WebClient {
 
     public String get(String path) throws IOException {
         String url = getUrl(path);
-            HttpGet request = new HttpGet(URI.create(url));
-            return execute(request);
+        HttpGet request = new HttpGet(URI.create(url));
+        return execute(request);
     }
 
 
@@ -40,21 +40,21 @@ public class WebClient {
 
             ResponseHandler<String> responseHandler = new
                     ResponseHandler<String>() {
-                public String handleResponse(final HttpResponse response)
-                        throws IOException {
-                    int status = response.getStatusLine().getStatusCode();
-                    if (status >= 200 && status < 300) {
-                        HttpEntity entity = response.getEntity();
-                        return entity != null ? parseContentInputAsString(entity) : null;
-                    } else if (status == HttpStatus.SC_NOT_FOUND) {
-                        return null;
-                    } else if (status == HttpStatus.SC_UNAUTHORIZED) {
-                        throw new IdentityUnauthorizedException("Identity not authorized");
-                    } else {
-                        throw new HttpResponseException(status, "Unexpected response status: " + status);
-                    }
-                }
-            };
+                        public String handleResponse(final HttpResponse response)
+                                throws IOException {
+                            int status = response.getStatusLine().getStatusCode();
+                            if (status >= 200 && status < 300) {
+                                HttpEntity entity = response.getEntity();
+                                return entity != null ? parseContentInputAsString(entity) : null;
+                            } else if (status == HttpStatus.SC_NOT_FOUND) {
+                                return null;
+                            } else if (status == HttpStatus.SC_UNAUTHORIZED) {
+                                throw new IdentityUnauthorizedException("Identity not authorized");
+                            } else {
+                                throw new HttpResponseException(status, "Unexpected response status: " + status);
+                            }
+                        }
+                    };
             return httpClient.execute(request, responseHandler);
         }
     }

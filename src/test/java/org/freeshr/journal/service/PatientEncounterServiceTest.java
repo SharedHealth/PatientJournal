@@ -1,9 +1,14 @@
 package org.freeshr.journal.service;
 
+import org.freeshr.journal.model.EncounterBundle;
+import org.freeshr.journal.model.EncounterBundles;
 import org.freeshr.journal.proxy.FreeSHR;
+import org.hl7.fhir.instance.model.Encounter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
+
+import java.util.List;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
@@ -21,7 +26,15 @@ public class PatientEncounterServiceTest {
     @Test
     public void shouldGetEncounterFromSHR() throws Exception {
         String patientId = "5952907233237925889";
-//        when(freeSHR.getEncountersForPatient(patientId)).then
+        EncounterBundles value = new EncounterBundles();
+        EncounterBundle encounterBundle = new EncounterBundle();
+        encounterBundle.addResource(new Encounter());
+        value.addEncounterBundle(encounterBundle);
+        when(freeSHR.getEncountersForPatient(patientId, null)).thenReturn(value);
+
+        EncounterBundles encountersForPatient = new PatientEncounterService(freeSHR).getEncountersForPatient
+                (patientId, null);
+        assertEquals(1, encountersForPatient.getEncounterBundles().size());
 
     }
 }
