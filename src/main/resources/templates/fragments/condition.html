@@ -1,0 +1,23 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="condition (resource)">
+    <div th:object="${resource}">
+        <table border="1">
+            <thead>
+            <td>CODE</td>
+            <td>DISPLAY</td>
+            </thead>
+            <tr>
+                <td th:text="*{getCode().getTextSimple()}"></td>
+                <td th:each="coding: *{getCode().getCoding()}">
+                    <div th:text="${coding.getDisplaySimple()}"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+</body>
+</html>

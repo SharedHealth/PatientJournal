@@ -42,7 +42,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
-        //headers.put(X_AUTH_TOKEN, "c7159526-ac9d-42ba-b950-8a8e91561ab8");
+//        headers.put(X_AUTH_TOKEN, "c7159526-ac9d-42ba-b950-8a8e91561ab8");
         headers.put(X_AUTH_TOKEN, findIdentityToken(request));
         return headers;
     }

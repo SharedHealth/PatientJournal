@@ -2,8 +2,7 @@ package org.freeshr.journal.model;
 
 import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
-import org.hl7.fhir.instance.model.Encounter;
-import org.hl7.fhir.instance.model.ResourceType;
+import org.hl7.fhir.instance.model.*;
 import org.junit.Test;
 
 import java.util.List;

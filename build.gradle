@@ -104,7 +104,6 @@ test.finalizedBy(project.tasks.cobertura)
 mainClassName = "org.freeshr.journal.launch.Application"
 
 war {
-    from sourceSets.main.resources
     manifest {
         attributes('Main-Class': mainClassName)
     }

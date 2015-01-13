@@ -1,0 +1,21 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<div th:fragment="composition (resource)">
+      <div th:object="${resource}">
+            <table border="1">
+                  <thead>
+                  <td>STATUS</td>
+                  <td>DATE</td>
+                  </thead>
+                  <tr>
+                        <td th:text="*{getStatusSimple()}"></td>
+                        <td th:text="*{getDateSimple()}"></td>
+                  </tr>
+            </table>
+      </div>
+</div>
+</body>
+</html>

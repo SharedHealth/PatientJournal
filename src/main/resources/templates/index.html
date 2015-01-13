@@ -5,7 +5,8 @@
 </head>
 <body>
    <div th:each="bundle: ${encounterBundles}">
-        <div th:include="encounterBundle ::encounterBundle (${bundle})"></div>
+        <div th:include="fragments/encounterBundle ::encounterBundle (${bundle})"></div>
+       <hr/>
    </div>
 </body>
 </html>

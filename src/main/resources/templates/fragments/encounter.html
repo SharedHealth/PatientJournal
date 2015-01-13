@@ -1,0 +1,32 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+
+
+<div th:fragment="encounter(resource)">
+    <p>
+        Subject:<a th:href="${resource.getSubject().getReferenceSimple()}" th:text="${resource.getSubject().getDisplaySimple()}"></a>
+    </p>
+    <div th:object="${resource}">
+        <table border="1">
+            <thead>
+            <td>STATUS</td>
+            <td>PROVIDER</td>
+            <td>CLASS</td>
+            <td>TYPE</td>
+            </thead>
+            <tr>
+                <td th:text="*{getStatusSimple()}"></td>
+                <td><a th:href="*{getServiceProvider().getReferenceSimple()}" th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider'"></a></td>
+                <td th:text="*{getClass_Simple()}"></td>
+                <td th:each="type: *{getType()}">
+                    <div th:text="${type.getTextSimple()}"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+</body>
+</html>
