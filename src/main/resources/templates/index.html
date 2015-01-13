@@ -1,19 +1,11 @@
-<!DOCTYPE HTML>
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
-   <div th:each="encounterBundle: ${encounterBundles}">
-       <p>ENCOUNTER</p>
-       <div th:object="${encounterBundle.getEncounter()}">
-           <div th:text="STATUS"></div><div th:text="*{getStatusSimple()}"></div>
-       </div>
-       <p>DETAILS</p>
-       <div th:each="resource: ${encounterBundle.getResources()}">
-           <p th:text="${resource.getResourceType().getPath()}"> </p>
-           <p th:text="${resource}"></p>
-       </div>
+   <div th:each="bundle: ${encounterBundles}">
+        <div th:include="encounterBundle ::encounterBundle (${bundle})"></div>
    </div>
 </body>
 </html>

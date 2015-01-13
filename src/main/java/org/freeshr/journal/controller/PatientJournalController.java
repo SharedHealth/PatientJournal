@@ -1,8 +1,6 @@
 package org.freeshr.journal.controller;
 
-import com.sun.syndication.io.FeedException;
 import org.freeshr.journal.launch.ApplicationProperties;
-import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundles;
 import org.freeshr.journal.service.PatientEncounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,17 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -46,14 +42,15 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
-        headers.put(X_AUTH_TOKEN,  findIdentityToken(request)); //"c7159526-ac9d-42ba-b950-8a8e91561ab8");//
+        //headers.put(X_AUTH_TOKEN, "c7159526-ac9d-42ba-b950-8a8e91561ab8");
+        headers.put(X_AUTH_TOKEN, findIdentityToken(request));
         return headers;
     }
 
     private String findIdentityToken(HttpServletRequest request) {
         Cookie[] cookies = request.getCookies();
         cookies = cookies != null ? cookies : new Cookie[0];
-        if(cookies.length < 1) return null;
+        if (cookies.length < 1) return null;
         for (Cookie cookie : cookies) {
             if (cookie != null && IDENTITY_TOKEN_NAME.equals(cookie.getName()))
                 return cookie.getValue();
@@ -61,6 +58,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return null;
     }
 
+//    private Boolean isIdentifiable(HttpServletRequest request) {
+//        return true;
+//    }
     private Boolean isIdentifiable(HttpServletRequest request) {
         return  findIdentityToken(request) != null;
     }
