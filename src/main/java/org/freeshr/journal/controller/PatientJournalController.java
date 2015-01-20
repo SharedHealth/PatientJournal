@@ -1,6 +1,7 @@
 package org.freeshr.journal.controller;
 
 import org.freeshr.journal.launch.ApplicationProperties;
+import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundles;
 import org.freeshr.journal.service.PatientEncounterService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,14 +10,15 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -62,7 +64,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 //        return true;
 //    }
     private Boolean isIdentifiable(HttpServletRequest request) {
-        return  findIdentityToken(request) != null;
+        return findIdentityToken(request) != null;
     }
 
     @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
@@ -75,7 +77,16 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         }
         EncounterBundles encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
                 createSecurityHeaders(request));
-        return new ModelAndView("index", "encounterBundles", encountersForPatient.getEncounterBundles());
+        List<EncounterBundle> encounterBundles = encountersForPatient.getEncounterBundles();
+        return new ModelAndView("index", "encounterBundles", reverseEncounterBundles(encounterBundles));
+    }
+
+    private List<EncounterBundle> reverseEncounterBundles(List<EncounterBundle> list) {
+        List<EncounterBundle> revereList = new ArrayList<>();
+        for (int index = list.size() - 1; index >= 0; index--) {
+            revereList.add(list.get(index));
+        }
+        return revereList;
     }
 
     @Override

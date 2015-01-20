@@ -22,7 +22,7 @@ public class EncounterBundles {
         return encounterBundles;
     }
 
-    public void addEncounterBundle(EncounterBundle encounterBundle){
+    public void addEncounterBundle(EncounterBundle encounterBundle) {
         encounterBundles.add(encounterBundle);
     }
 
