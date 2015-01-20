@@ -93,5 +93,4 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/journal/{healthId}").setViewName("index");
     }
-
 }

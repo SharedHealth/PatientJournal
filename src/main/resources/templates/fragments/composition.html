@@ -5,16 +5,16 @@
 <body>
 <div th:fragment="composition (resource)">
       <div th:object="${resource}">
-            <table border="1">
-                  <thead>
-                  <td>STATUS</td>
-                  <td>DATE</td>
-                  </thead>
-                  <tr>
-                        <td th:text="*{getStatusSimple()}"></td>
-                        <td th:text="*{getDateSimple()}"></td>
-                  </tr>
-            </table>
+            <div th:if="*{getEncounter().getDisplaySimple()}" >
+                  <table border="1">
+                        <thead>
+                              <td>Date</td>
+                        </thead>
+                        <tr>
+                              <td th:text="*{getDateSimple().toHumanDisplay()}"></td>
+                        </tr>
+                  </table>
+            </div>
       </div>
 </div>
 </body>

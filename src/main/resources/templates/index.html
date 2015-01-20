@@ -4,6 +4,10 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 </head>
 <body>
+    <p>
+        Patient : <a th:href="${encounterBundles.get(0).getResources().get(0).getSubject().getReferenceSimple()}"
+                     th:text="${encounterBundles.get(0).getResources().get(0).getSubject().getDisplaySimple()}"></a>
+    </p>
    <div th:each="bundle: ${encounterBundles}">
         <div th:include="fragments/encounterBundle ::encounterBundle (${bundle})"></div>
        <hr/>
