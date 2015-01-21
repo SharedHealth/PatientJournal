@@ -10,13 +10,13 @@
             <td th:text="*{getCategory().getCoding().get(0).getDisplaySimple()}?:'Display'"></td>
             <td>Certainty</td>
             <td>Severity</td>
-            <td>Onset Time</td>
+            <td>Onset</td>
             </thead>
             <tr>
                 <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
                 <td th:text="*{getStatusSimple()}"></td>
                 <td th:text="*{getSeverity()}"></td>
-                <td th:text="*{getOnset()}?*{getOnset().getValue().toHumanDisplay()}:''"></td>
+                <td fhir:onset="*{getOnset()}"></td>
             </tr>
         </table>
     </div>
