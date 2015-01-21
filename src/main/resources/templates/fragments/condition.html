@@ -7,14 +7,16 @@
     <div th:object="${resource}">
         <table border="1">
             <thead>
-            <td>CODE</td>
-            <td>DISPLAY</td>
+            <td th:text="*{getCategory().getCoding().get(0).getDisplaySimple()}?:'Display'"></td>
+            <td>Certainty</td>
+            <td>Severity</td>
+            <td>Onset Time</td>
             </thead>
             <tr>
-                <td th:text="*{getCode().getTextSimple()}"></td>
-                <td th:each="coding: *{getCode().getCoding()}">
-                    <div th:text="${coding.getDisplaySimple()}"></div>
-                </td>
+                <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
+                <td th:text="*{getStatusSimple()}"></td>
+                <td th:text="*{getSeverity()}"></td>
+                <td th:text="*{getOnset()}?*{getOnset().getValue().toHumanDisplay()}:''"></td>
             </tr>
         </table>
     </div>
