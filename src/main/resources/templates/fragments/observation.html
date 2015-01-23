@@ -3,20 +3,9 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="observation (resource)">
-    <div th:object="${resource}">
-        <table border="1">
-            <thead>
-            <td th:text="*{getName()}?*{getName().getCoding().get(0).getDisplaySimple()}:''"></td>
-            <td>Interpretation</td>
-            <td>Comments</td>
-            </thead>
-            <tr>
-                <td fhir:obsvalue="*{getValue()}"></td>
-                <td th:text="*{getInterpretation()}?*{getInterpretation().getCoding().get(0).getDisplaySimple()}"></td>
-                <td th:text="*{getCommentsSimple()}"></td>
-            </tr>
-        </table>
+<div th:fragment="encounterBundle(bundle)">
+    <div th:object="${bundle}">
+        <fhir:observation></fhir:observation>
     </div>
 </div>
 </body>

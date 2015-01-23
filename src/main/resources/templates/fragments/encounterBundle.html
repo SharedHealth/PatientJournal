@@ -8,7 +8,7 @@
             <div th:case="composition"><div th:include="fragments/composition ::composition (${resource})"></div></div>
             <div th:case="encounter"><div th:include="fragments/encounter ::encounter (${resource})"></div></div>
             <div th:case="condition"><div th:include="fragments/condition ::condition (${resource})"></div></div>
-            <div th:case="observation"><div th:include="fragments/observation ::observation (${resource})"></div></div>
+            <div th:case="observation"><div th:include="fragments/observation ::encounterBundle (${bundle})"></div></div>
             <!--<div th:case="medicationprescription"><div th:include="fragments/medicationPrescription ::medicationPrescription (${resource})"></div></div>-->
             <!--<div th:case="*"><div th:include="fragments/resource ::resource (${resource})"></div></div>-->
         </div>

@@ -21,6 +21,7 @@ public class FHIRDialect extends AbstractDialect{
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new OnSetAttrProcessor());
         processors.add(new ObsValueAttrProcessor());
+        processors.add(new ObservationElementProcessor());
         return processors;
     }
 }
