@@ -3,19 +3,23 @@ package org.freeshr.journal.controller;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundles;
+import org.freeshr.journal.service.Facility;
+import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.PatientEncounterService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
+import org.springframework.web.util.UriUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,6 +36,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     @Autowired
     PatientEncounterService patientEncounterService;
 
+    @Autowired
+    FacilityService facilityService;
+
     public PatientJournalController() {
     }
 
@@ -44,7 +51,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
-//        headers.put(X_AUTH_TOKEN, "c7159526-ac9d-42ba-b950-8a8e91561ab8");
+        //headers.put(X_AUTH_TOKEN, "67e14a22-a386-404d-89f1-d24c107fedec");
         headers.put(X_AUTH_TOKEN, findIdentityToken(request));
         return headers;
     }
@@ -60,11 +67,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return null;
     }
 
-//    private Boolean isIdentifiable(HttpServletRequest request) {
-//        return true;
-//    }
     private Boolean isIdentifiable(HttpServletRequest request) {
         return findIdentityToken(request) != null;
+        //return true;
     }
 
     @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
@@ -92,5 +97,23 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
         registry.addViewController("/journal/{healthId}").setViewName("index");
+    }
+
+    @RequestMapping(value = "/external")
+    public ModelAndView fetchReference(@RequestParam("ref") String externalRefUrl) {
+        try {
+            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"));
+            return new ModelAndView(externalContent.getTemplateName(), externalContent.getModelName(), externalContent.getData());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    private ExternalRef fetchExternalContent(String decodedRef) throws IOException {
+        if (decodedRef.startsWith(applicationProperties.getFacilityServerUrlPrefix())) {
+            return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
+        }
+        return null;
     }
 }

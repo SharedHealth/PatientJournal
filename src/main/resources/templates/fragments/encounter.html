@@ -18,7 +18,10 @@
                 <td th:each="type: *{getType()}">
                     <div th:text="${type.getTextSimple()}"></div>
                 </td>
-                <td><a th:href="*{getServiceProvider().getReferenceSimple()}" th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider Facility'"></a></td>
+                <td>
+                    <a data-class="external-ref" data-ref-element-id="serviceProvider" th:href="*{getServiceProvider().getReferenceSimple()}" th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider Facility'"></a>
+                    <div id="serviceProvider" style="display:none"></div>
+                </td>
                 <td th:each="participant: *{getParticipant()}">
                     <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
                 </td>

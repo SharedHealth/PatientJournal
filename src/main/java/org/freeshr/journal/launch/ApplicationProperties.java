@@ -16,6 +16,12 @@ public class ApplicationProperties {
     @Value("${IDENTITY_SERVER_URL}")
     private String identityServerUrl;
 
+    @Value("${FACILITY_AUTH_TOKEN}")
+    private String facilityAuthToken;
+
+    @Value("${FACILITY_SERVER_URL_PREFIX}")
+    private String facilityServerUrlPrefix;
+
     public String getIdentityServerUrl(StringBuffer requestURL) {
         return identityServerUrl + "?redirectTo=" + requestURL;
     }
@@ -24,4 +30,11 @@ public class ApplicationProperties {
         return shrBaseUrl;
     }
 
+    public String getFacilityAuthToken() {
+        return facilityAuthToken;
+    }
+
+    public String getFacilityServerUrlPrefix() {
+        return facilityServerUrlPrefix;
+    }
 }
