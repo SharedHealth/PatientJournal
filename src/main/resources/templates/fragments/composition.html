@@ -3,19 +3,21 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="composition (resource)">
-      <div th:object="${resource}">
-            <div th:if="*{getEncounter().getDisplaySimple()}" >
-                  <table border="1">
-                        <thead>
-                              <td>Date</td>
-                        </thead>
-                        <tr>
-                              <td th:text="*{getDateSimple().toHumanDisplay()}"></td>
-                        </tr>
-                  </table>
+<div th:fragment="compositions (compositions)">
+    <div th:each="composition: ${compositions}">
+        <div th:object="${composition}">
+            <div th:if="*{getEncounter().getDisplaySimple()}">
+                <table border="1">
+                    <thead>
+                    <td>Date</td>
+                    </thead>
+                    <tr>
+                        <td th:text="*{getDateSimple().toHumanDisplay()}"></td>
+                    </tr>
+                </table>
             </div>
-      </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

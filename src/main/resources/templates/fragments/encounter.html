@@ -4,30 +4,36 @@
 <body>
 
 
-<div th:fragment="encounter(resource)">
-    <div th:object="${resource}">
-        <table border="1">
-            <thead>
-            <td>Visit Type</td>
-            <td>Encounter Type</td>
-            <td>Facility</td>
-            <td>Providers</td>
-            </thead>
-            <tr>
-                <td th:text="*{getClass_Simple()}"></td>
-                <td th:each="type: *{getType()}">
-                    <div th:text="${type.getTextSimple()}"></div>
-                </td>
-                <td>
-                    <a data-class="external-ref" data-ref-element-id="serviceProvider" th:href="*{getServiceProvider().getReferenceSimple()}" th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider Facility'"></a>
-                    <div id="serviceProvider" style="display:none"></div>
-                </td>
-                <td th:each="participant: *{getParticipant()}">
-                    <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
-                </td>
-            </tr>
-        </table>
+<div th:fragment="encounters (encounters)">
+    <div th:each="encounter: ${encounters}">
+        <div th:object="${encounter}">
+            <table border="1">
+                <thead>
+                <td>Visit Type</td>
+                <td>Encounter Type</td>
+                <td>Facility</td>
+                <td>Providers</td>
+                </thead>
+                <tr>
+                    <td th:text="*{getClass_Simple()}"></td>
+                    <td th:each="type: *{getType()}">
+                        <div th:text="${type.getTextSimple()}"></div>
+                    </td>
+                    <td>
+                        <a data-class="external-ref" data-ref-element-id="serviceProvider"
+                           th:href="*{getServiceProvider().getReferenceSimple()}"
+                           th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider Facility'"></a>
+
+                        <div id="serviceProvider" style="display:none"></div>
+                    </td>
+                    <td th:each="participant: *{getParticipant()}">
+                        <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
+                    </td>
+                </tr>
+            </table>
+        </div>
     </div>
+
 </div>
 
 </body>

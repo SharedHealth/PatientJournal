@@ -3,24 +3,26 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="condition (resource)">
-    <div th:object="${resource}">
-        <table border="1">
-            <thead>
-            <td th:text="*{getCategory()}?*{getCategory().getCoding().get(0).getDisplaySimple()}:'Display'"></td>
-            <td>Status</td>
-            <td>Certainty</td>
-            <td>Severity</td>
-            <td>Onset</td>
-            </thead>
-            <tr>
-                <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
-                <td th:text="*{getStatusSimple()}"></td>
-                <td th:text="*{getCertainty()}?*{getCertainty().getCoding().get(0).getDisplaySimple()}"></td>
-                <td th:text="*{getSeverity()}?*{getSeverity().getCoding().get(0).getDisplaySimple()}"></td>
-                <td fhir:onset="*{getOnset()}"></td>
-            </tr>
-        </table>
+<div th:fragment="conditions (conditions)">
+    <div th:each="condition: ${conditions}">
+        <div th:object="${condition}">
+            <table border="1">
+                <thead>
+                <td th:text="*{getCategory()}?*{getCategory().getCoding().get(0).getDisplaySimple()}:'Display'"></td>
+                <td>Status</td>
+                <td>Certainty</td>
+                <td>Severity</td>
+                <td>Onset</td>
+                </thead>
+                <tr>
+                    <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
+                    <td th:text="*{getStatusSimple()}"></td>
+                    <td th:text="*{getCertainty()}?*{getCertainty().getCoding().get(0).getDisplaySimple()}"></td>
+                    <td th:text="*{getSeverity()}?*{getSeverity().getCoding().get(0).getDisplaySimple()}"></td>
+                    <td fhir:onset="*{getOnset()}"></td>
+                </tr>
+            </table>
+        </div>
     </div>
 </div>
 </body>

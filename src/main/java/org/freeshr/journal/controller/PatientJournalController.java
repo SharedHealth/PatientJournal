@@ -1,13 +1,11 @@
 package org.freeshr.journal.controller;
 
 import org.freeshr.journal.launch.ApplicationProperties;
-import org.freeshr.journal.model.EncounterBundle;
-import org.freeshr.journal.model.EncounterBundles;
-import org.freeshr.journal.service.Facility;
+import org.freeshr.journal.model.EncounterBundleData;
+import org.freeshr.journal.model.EncounterBundlesData;
 import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.PatientEncounterService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
@@ -19,7 +17,6 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,7 +48,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
         HashMap<String, String> headers = new HashMap<>();
-        //headers.put(X_AUTH_TOKEN, "67e14a22-a386-404d-89f1-d24c107fedec");
+//        headers.put(X_AUTH_TOKEN, "8dad0c07-caf8-48a9-ac2a-1815a9aa11a1");
         headers.put(X_AUTH_TOKEN, findIdentityToken(request));
         return headers;
     }
@@ -69,9 +66,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     private Boolean isIdentifiable(HttpServletRequest request) {
         return findIdentityToken(request) != null;
-        //return true;
+//        return true;
     }
-
+    
     @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
     public ModelAndView loginForm(@PathVariable("healthId") String healthId,
                                   HttpServletRequest request, HttpServletResponse response) throws Exception {
@@ -80,14 +77,14 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             response.sendRedirect(identityServerUrl);
             return null;
         }
-        EncounterBundles encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
+        EncounterBundlesData encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
                 createSecurityHeaders(request));
-        List<EncounterBundle> encounterBundles = encountersForPatient.getEncounterBundles();
-        return new ModelAndView("index", "encounterBundles", reverseEncounterBundles(encounterBundles));
+        List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
+        return new ModelAndView("index", "encounterBundlesData", reverseEncounterBundles(encounterBundles));
     }
 
-    private List<EncounterBundle> reverseEncounterBundles(List<EncounterBundle> list) {
-        List<EncounterBundle> revereList = new ArrayList<>();
+    private List<EncounterBundleData> reverseEncounterBundles(List<EncounterBundleData> list) {
+        List<EncounterBundleData> revereList = new ArrayList<>();
         for (int index = list.size() - 1; index >= 0; index--) {
             revereList.add(list.get(index));
         }

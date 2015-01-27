@@ -7,11 +7,11 @@
 </head>
 <body>
     <p>
-        Patient : <a th:href="${encounterBundles.get(0).getResources().get(0).getSubject().getReferenceSimple()}"
-                     th:text="${encounterBundles.get(0).getResources().get(0).getSubject().getDisplaySimple()}"></a>
+        Patient : <a th:href="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getReferenceSimple()}"
+                     th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
     </p>
-   <div th:each="bundle: ${encounterBundles}">
-        <div th:include="fragments/encounterBundle ::encounterBundle (${bundle})"></div>
+   <div th:each="bundleData: ${encounterBundlesData}">
+        <div th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"></div>
        <hr/>
    </div>
 

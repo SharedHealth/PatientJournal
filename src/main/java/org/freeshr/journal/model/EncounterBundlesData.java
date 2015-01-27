@@ -15,19 +15,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class EncounterBundles {
-    List<EncounterBundle> encounterBundles = new ArrayList<>();
+public class EncounterBundlesData {
+    List<EncounterBundleData> encounterBundleDataList = new ArrayList<>();
 
-    public List<EncounterBundle> getEncounterBundles() {
-        return encounterBundles;
+    public List<EncounterBundleData> getEncounterBundleDataList() {
+        return encounterBundleDataList;
     }
 
-    public void addEncounterBundle(EncounterBundle encounterBundle) {
-        encounterBundles.add(encounterBundle);
+    public void addEncounterBundleModel(EncounterBundleData encounterBundleData) {
+        encounterBundleDataList.add(encounterBundleData);
     }
 
-    public static EncounterBundles fromFeedEntries(List<Entry> entries) {
-        EncounterBundles encounterBundles = new EncounterBundles();
+    public static EncounterBundlesData fromFeedEntries(List<Entry> entries) {
+        EncounterBundlesData encounterBundlesData = new EncounterBundlesData();
         for (Entry entry : entries) {
             EncounterBundle encounterBundle = new EncounterBundle();
             String entryContent = getEntryContent(entry);
@@ -35,9 +35,9 @@ public class EncounterBundles {
             for (AtomEntry<? extends Resource> atomEntry : encounterFeed.getEntryList()) {
                 encounterBundle.addResource(atomEntry.getResource());
             }
-            encounterBundles.addEncounterBundle(encounterBundle);
+            encounterBundlesData.addEncounterBundleModel(new EncounterBundleData(encounterBundle));
         }
-        return encounterBundles;
+        return encounterBundlesData;
     }
 
     private static String getEntryContent(Entry entry) {
@@ -62,7 +62,8 @@ public class EncounterBundles {
     @Override
     public String toString() {
         StringBuilder response = new StringBuilder();
-        for (EncounterBundle encounterBundle : encounterBundles) {
+        for (EncounterBundleData encounterBundleData : encounterBundleDataList) {
+            EncounterBundle encounterBundle = encounterBundleData.getEncounterBundle();
             for (Resource resource : encounterBundle.getResources()) {
                 ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                 try {
