@@ -3,16 +3,16 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="conditions (conditions)">
-    <div th:each="condition: ${conditions}">
-        <div th:object="${condition}">
-            <table border="1">
+<th:block th:fragment="conditions (conditions)">
+    <th:block th:each="condition: ${conditions}">
+        <th:block th:object="${condition}">
+            <table class="condition" cellpadding="0" cellspacing="0">
                 <thead>
-                <td th:text="*{getCategory()}?*{getCategory().getCoding().get(0).getDisplaySimple()}:'Display'"></td>
-                <td>Status</td>
-                <td>Certainty</td>
-                <td>Severity</td>
-                <td>Onset</td>
+                <th th:text="*{getCategory()}?*{getCategory().getCoding().get(0).getDisplaySimple()}:'Display'"></th>
+                <th>Status</th>
+                <th>Certainty</th>
+                <th>Severity</th>
+                <th>Onset</th>
                 </thead>
                 <tr>
                     <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
@@ -22,8 +22,8 @@
                     <td fhir:onset="*{getOnset()}"></td>
                 </tr>
             </table>
-        </div>
-    </div>
-</div>
+        </th:block>
+    </th:block>
+</th:block>
 </body>
 </html>

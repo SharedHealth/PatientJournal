@@ -1,26 +1,30 @@
 <!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Patient Journal Viewer</title>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <title>Patient Journal</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
     <link rel="stylesheet" href="/css/style.css"/>
-    <script src="/scripts/jquery-2.1.3.min.js" />
-    <script src="/scripts/external-ref.js" />
+    <script src="/scripts/jquery-2.1.3.min.js"/>
+    <script src="/scripts/external-ref.js"/>
 </head>
 <body>
-    <p>
-        Patient : <a th:href="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getReferenceSimple()}"
-                     th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
-    </p>
-   <div th:each="bundleData: ${encounterBundlesData}">
-        <div th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"></div>
-       <hr/>
-   </div>
 
+    <div class="healthrecord">
+        <h1 class="patientid">Patient : <a
+                th:href="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getReferenceSimple()}"
+                th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
+        </h1>
+        <section class="block" th:each="bundleData: ${encounterBundlesData}">
+            <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
+            <hr/>
+        </section>
+    </div>
+    
     <script type="application/javascript">
-        $( document ).ready(function() {
-            $("a[data-class='external-ref']").click(fetchExternal);
-        });
+            $( document ).ready(function() {
+                $("a[data-class='external-ref']").click(fetchExternal);
+            });
+
     </script>
 
 </body>
