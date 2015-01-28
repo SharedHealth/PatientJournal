@@ -1,0 +1,28 @@
+table, th, td {
+    border: 1px solid black;
+    border-collapse: collapse;
+}
+
+table.observation tbody tr td{
+    padding: 5px;
+}
+
+table.observation tbody tr.level0 td:first-child{
+    padding-left: 0px;
+}
+
+table.observation tbody tr.level1 td:first-child{
+    padding-left: 20px;
+}
+
+table.observation tbody tr.level2 td:first-child{
+    padding-left: 40px;
+}
+
+table.observation tbody tr.level3 td:first-child{
+    padding-left: 60px;
+}
+
+table.observation tbody tr.level4 td:first-child{
+    padding-left: 80px;
+}

@@ -11,6 +11,7 @@ import org.thymeleaf.spring4.naming.SpringContextVariableNames;
 import org.thymeleaf.standard.expression.VariableExpression;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 public class ObservationElementProcessor extends AbstractMarkupSubstitutionElementProcessor {
@@ -24,44 +25,82 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
     protected List<Node> getMarkupSubstitutes(Arguments arguments, Element element) {
         String expression = ((VariableExpression) arguments.getLocalVariable(SpringContextVariableNames.SPRING_BOUND_OBJECT_EXPRESSION)).getExpression();
         List<Observation> observations = (List<Observation>) arguments.getLocalVariable(expression);
+        if (observations.isEmpty()) return Collections.emptyList();
         return executeEncounterBundle(observations);
     }
 
     private List<Node> executeEncounterBundle(List<Observation> observations) {
         List<Node> nodes = new ArrayList<>();
+
         Element table = new Element("table");
-        table.setAttribute("border", "1px solid");
+        table.setAttribute("class", "observation");
+        Element thead = new Element("thead");
+        table.addChild(thead);
+
+        Element headTr = new Element("tr");
+
+        Element nameTh = new Element("th");
+        nameTh.addChild(new Text("Name"));
+        headTr.addChild(nameTh);
+
+        Element valueTh = new Element("th");
+        valueTh.addChild(new Text("Value"));
+        headTr.addChild(valueTh);
+
+        Element interpretationTh = new Element("th");
+        interpretationTh.addChild(new Text("Interpretation"));
+        headTr.addChild(interpretationTh);
+
+        Element commentsTh = new Element("th");
+        commentsTh.addChild(new Text("Comments"));
+        headTr.addChild(commentsTh);
+
+        thead.addChild(headTr);
+
+        Element tbody = new Element("tbody");
+
         for (Observation observation : observations) {
             if (isChildObservation(observation, observations)) continue;
-            processObservation(observation, observations, 0, table);
+            processObservation(observation, observations, 0, tbody);
         }
+        table.addChild(tbody);
         nodes.add(table);
         return nodes;
     }
 
-    private void processObservation(Observation observation, List<Observation> observations, int depth, Element observationTable) {
+    private void processObservation(Observation observation, List<Observation> observations, int depth, Element observationBody) {
         Element tr = new Element("tr");
+        tr.setAttribute("class", "level" + depth);
 
         String name = observation.getName().getCoding().get(0).getDisplaySimple();
         Element nameTd = new Element("td");
-        nameTd.setAttribute("style", "padding-left:" + depth * 20 + "px");
         nameTd.addChild(new Text(name));
 
         String value = getValue(observation.getValue());
         Element valueTd = new Element("td");
         valueTd.addChild(new Text(value));
 
+        String interpretation = (observation.getInterpretation() != null) ? observation.getInterpretation().getCoding().get(0).getDisplaySimple() : "";
+        Element interpretationTd = new Element("td");
+        interpretationTd.addChild(new Text(interpretation));
+
+        String comments = (observation.getCommentsSimple() != null) ? observation.getCommentsSimple() : "";
+        Element commentsTd = new Element("td");
+        commentsTd.addChild(new Text(comments));
+
         tr.addChild(nameTd);
         tr.addChild(valueTd);
+        tr.addChild(interpretationTd);
+        tr.addChild(commentsTd);
 
-        observationTable.addChild(tr);
+        observationBody.addChild(tr);
 
         if (observation.getRelated().isEmpty()) return;
         depth++;
         for (Observation.ObservationRelatedComponent observationRelatedComponent : observation.getRelated()) {
             Observation childObservation = findChildObservation(observationRelatedComponent.getTarget().getReferenceSimple(), observations);
             if (childObservation != null) {
-                processObservation(childObservation, observations, depth, observationTable);
+                processObservation(childObservation, observations, depth, observationBody);
             }
         }
     }
