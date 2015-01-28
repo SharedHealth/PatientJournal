@@ -57,10 +57,11 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
         observationTable.addChild(tr);
 
         if (observation.getRelated().isEmpty()) return;
+        depth++;
         for (Observation.ObservationRelatedComponent observationRelatedComponent : observation.getRelated()) {
             Observation childObservation = findChildObservation(observationRelatedComponent.getTarget().getReferenceSimple(), observations);
             if (childObservation != null) {
-                processObservation(childObservation, observations, ++depth, observationTable);
+                processObservation(childObservation, observations, depth, observationTable);
             }
         }
     }
