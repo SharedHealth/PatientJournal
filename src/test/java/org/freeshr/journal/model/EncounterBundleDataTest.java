@@ -18,7 +18,7 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveAllResourcesOfTypeComposition() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Composition> compositions = encounterBundleData.getCompositions();
@@ -27,7 +27,7 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveAllResourcesOfTypeEncounter() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Encounter> encounters = encounterBundleData.getEncounters();
@@ -36,19 +36,19 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveAllResourcesOfTypeObservation() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Observation> observations = encounterBundleData.getObservations();
-        assertEquals(0, observations.size());
+        assertEquals(11, observations.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Condition> conditions = encounterBundleData.getConditions();
-        assertEquals(0, conditions.size());
+        assertEquals(5, conditions.size());
     }
 }
