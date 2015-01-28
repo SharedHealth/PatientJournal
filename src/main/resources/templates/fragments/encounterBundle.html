@@ -5,7 +5,10 @@
 <th:block th:fragment="encounterBundleData (bundleData)">
     <th:block th:include="fragments/composition :: compositions (${bundleData.getCompositions()})"></th:block>
     <th:block th:include="fragments/encounter :: encounters (${bundleData.getEncounters()})"></th:block>
-    <th:block th:include="fragments/condition :: conditions (${bundleData.getConditions()})"></th:block>
+    <th:block th:include="fragments/condition/diagnosis :: conditions (${bundleData.getDiagnosisConditions()})"></th:block>
+    <th:block th:include="fragments/condition/complaint :: conditions (${bundleData.getComplaintConditions()})"></th:block>
+    <th:block th:include="fragments/condition/finding :: conditions (${bundleData.getFindingConditions()})"></th:block>
+    <th:block th:include="fragments/condition/symptom :: conditions (${bundleData.getSymptomConditions()})"></th:block>
     <th:block th:include="fragments/observation :: observations (${bundleData.getObservations()})"></th:block>
 </th:block>
 </body>

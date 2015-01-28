@@ -33,6 +33,46 @@ public class EncounterBundleData {
         return getResourceByType(ResourceType.Condition);
     }
 
+    public List<Condition> getDiagnosisConditions() {
+        List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
+        List<Condition> diagnosis = new ArrayList<>();
+        for (Condition condition : resourceByType) {
+            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("diagnosis"))
+                diagnosis.add(condition);
+        }
+        return diagnosis;
+    }
+
+    public List<Condition> getComplaintConditions() {
+        List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
+        List<Condition> complaint = new ArrayList<>();
+        for (Condition condition : resourceByType) {
+            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("complaint"))
+                complaint.add(condition);
+        }
+        return complaint;
+    }
+
+    public List<Condition> getFindingConditions() {
+        List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
+        List<Condition> finding = new ArrayList<>();
+        for (Condition condition : resourceByType) {
+            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("finding"))
+                finding.add(condition);
+        }
+        return finding;
+    }
+
+    public List<Condition> getSymptomConditions() {
+        List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
+        List<Condition> symptom = new ArrayList<>();
+        for (Condition condition : resourceByType) {
+            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("symptom"))
+                symptom.add(condition);
+        }
+        return symptom;
+    }
+
     private <T extends Resource> List<T> getResourceByType(ResourceType resourceType) {
         List<T> resources = new ArrayList<>();
         for (Resource resource : encounterBundle.getResources()) {
