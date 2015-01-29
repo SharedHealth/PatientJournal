@@ -3,10 +3,10 @@
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:th="http://www.thymeleaf.org">
 <body>
-<div th:fragment="observations (observations)">
-    <div th:object="${observations}">
+<th:block th:fragment="observations (observations)">
+    <th:block th:object="${observations}">
         <fhir:observation></fhir:observation>
-    </div>
-</div>
+    </th:block>
+</th:block>
 </body>
 </html>

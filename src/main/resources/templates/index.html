@@ -16,7 +16,6 @@
         </h1>
         <section class="block" th:each="bundleData: ${encounterBundlesData}">
             <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
-            <hr/>
         </section>
     </div>
     

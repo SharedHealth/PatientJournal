@@ -2,7 +2,7 @@ body{
     margin:0px;
     padding:0px;
     font-family:verdana, sans-serif;
-    font-size:14px;
+    font-size:16px;
     color:#4d4d4d;
 }
 .healthrecord{
@@ -35,6 +35,7 @@ body{
 }
 .healthrecord table td{
     color:#797979;
+    font-size:13px;
     -webkit-box-sizing:border-box;
     -moz-box-sizing:border-box;
     box-sizing:border-box;
@@ -43,7 +44,7 @@ body{
     padding:2px 10px;
     text-align: left;
 }
-.visit{
+.table-visit{
     margin:10px 8px;
     min-width:700px;
 }
@@ -52,9 +53,7 @@ body{
     margin:25px 10px 10px;
     overflow:hidden;
 }
-.table-condition td{
-    font-size:13px;
-}
+
 .table-condition td:first-child{
     width:300px;
     padding-right:40px;
@@ -72,26 +71,50 @@ body{
     width:15%;
 }
 
-table.observation tbody tr td{
-    padding: 5px;
+.table-observation{
+    min-width:950px;
+    margin:25px 10px 10px;
+    border:1px solid #cecece;
 }
 
-table.observation tbody tr.level0 td:first-child{
+.table-observation .level0 td{
+    font-size:15px;
+}
+.table-observation tbody tr.level0 td:first-child{
     padding-left: 10px;
 }
 
-table.observation tbody tr.level1 td:first-child{
+.table-observation tbody tr.level1 td:first-child{
     padding-left: 20px;
 }
 
-table.observation tbody tr.level2 td:first-child{
+.table-observation tbody tr.level2 td:first-child{
+    padding-left: 30px;
+}
+
+.table-observation tbody tr.level3 td:first-child{
     padding-left: 40px;
 }
 
-table.observation tbody tr.level3 td:first-child{
-    padding-left: 60px;
+.table-observation tbody tr.level4 td:first-child{
+    padding-left: 50px;
 }
 
-table.observation tbody tr.level4 td:first-child{
-    padding-left: 80px;
+.table-observation tbody tr:first-child td{
+    padding-top:20px;
+}
+.table-observation > tbody:first-of-type tr:first-child td{
+    padding-top:8px;
+}
+.table-observation .col-observation{
+    width:25%;
+}
+.table-observation .col-value{
+    width:35%;
+}
+.table-observation .col-interpretation{
+    width:20%;
+}
+.table-observation .col-comments{
+    width:20%;
 }
