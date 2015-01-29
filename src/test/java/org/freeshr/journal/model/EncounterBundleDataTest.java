@@ -6,6 +6,7 @@ import org.hl7.fhir.instance.model.Composition;
 import org.hl7.fhir.instance.model.Condition;
 import org.hl7.fhir.instance.model.Encounter;
 import org.hl7.fhir.instance.model.Observation;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -16,39 +17,60 @@ import static org.junit.Assert.assertEquals;
 
 public class EncounterBundleDataTest {
 
-    @Test
-    public void shouldGiveAllResourcesOfTypeComposition() throws Exception {
+    private EncounterBundleData encounterBundleData;
+
+    @Before
+    public void setUp() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+    }
+
+    @Test
+    public void shouldGiveAllResourcesOfTypeComposition() throws Exception {
         List<Composition> compositions = encounterBundleData.getCompositions();
         assertEquals(1, compositions.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeEncounter() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
-        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Encounter> encounters = encounterBundleData.getEncounters();
         assertEquals(1, encounters.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeObservation() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
-        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Observation> observations = encounterBundleData.getObservations();
         assertEquals(11, observations.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithAllResources.xml"));
-        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        EncounterBundleData encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
         List<Condition> conditions = encounterBundleData.getConditions();
         assertEquals(5, conditions.size());
+    }
+
+    @Test
+    public void shouldGiveAllConditionOfTypeComplaint() throws Exception {
+        List<Condition> complaintConditions = encounterBundleData.getComplaintConditions();
+        assertEquals(3, complaintConditions.size());
+    }
+
+    @Test
+    public void shouldGiveAllConditionOfTypeDiagnosis() throws Exception {
+        List<Condition> complaintConditions = encounterBundleData.getDiagnosisConditions();
+        assertEquals(2, complaintConditions.size());
+    }
+
+    @Test
+    public void shouldGiveAllConditionOfTypeFinding() throws Exception {
+        List<Condition> complaintConditions = encounterBundleData.getFindingConditions();
+        assertEquals(0, complaintConditions.size());
+    }
+
+    @Test
+    public void shouldGiveAllConditionOfTypeSymptom() throws Exception {
+        List<Condition> complaintConditions = encounterBundleData.getSymptomConditions();
+        assertEquals(0, complaintConditions.size());
     }
 }
