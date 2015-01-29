@@ -48,6 +48,11 @@ body{
     margin:10px 8px;
     min-width:700px;
 }
+
+.table-visit .serviceProvider{
+    display:none;
+}
+
 .table-condition{
     min-width:950px;
     margin:25px 10px 10px;

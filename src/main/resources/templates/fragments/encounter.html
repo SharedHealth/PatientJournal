@@ -24,7 +24,7 @@
                            th:href="*{getServiceProvider().getReferenceSimple()}"
                            th:text="*{getServiceProvider().getDisplaySimple()}?: 'Provider Facility'"></a>
 
-                        <div id="serviceProvider" style="display:none"></div>
+                        <div class="serviceProvider"></div>
                     </td>
                     <td th:each="participant: *{getParticipant()}">
                         <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
