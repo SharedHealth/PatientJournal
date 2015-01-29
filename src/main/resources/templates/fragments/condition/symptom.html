@@ -5,23 +5,23 @@
 <body>
 <th:block th:fragment="conditions (conditions)">
     <th:block th:if="${!conditions.isEmpty()}">
-        <table class="condition" cellpadding="0" cellspacing="0">
+        <table class="table-condition" cellpadding="0" cellspacing="0">
             <tr>
-                <th>Symptom</th>
-                <th>Status</th>
-                <th>Certainty</th>
-                <th>Severity</th>
-                <th>Onset</th>
+                <th class="col-condition">Symptom</th>
+                <th class="col-status">Status</th>
+                <th class="col-certainty">Certainty</th>
+                <th class="col-severity">Severity</th>
+                <th class="col-onset">Onset</th>
             </tr>
 
             <th:block th:each="condition: ${conditions}">
                 <th:block th:object="${condition}">
                     <tr>
-                        <td th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
-                        <td th:text="*{getStatusSimple()}"></td>
-                        <td th:text="*{getCertainty()}?*{getCertainty().getCoding().get(0).getDisplaySimple()}"></td>
-                        <td th:text="*{getSeverity()}?*{getSeverity().getCoding().get(0).getDisplaySimple()}"></td>
-                        <td fhir:onset="*{getOnset()}"></td>
+                        <td class="col-condition" th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
+                        <td class="col-status" th:text="*{getStatusSimple()}"></td>
+                        <td class="col-certainty" th:text="*{getCertainty()}?*{getCertainty().getCoding().get(0).getDisplaySimple()}"></td>
+                        <td class="col-severity" th:text="*{getSeverity()}?*{getSeverity().getCoding().get(0).getDisplaySimple()}"></td>
+                        <td class="col-onset" fhir:onset="*{getOnset()}"></td>
                     </tr>
                 </th:block>
             </th:block>
