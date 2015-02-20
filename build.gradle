@@ -46,6 +46,7 @@ test {
 
 dependencies {
     compile group: "org.springframework.boot", name: "spring-boot-starter-web", version:"1.2.0.RELEASE"
+    compile group: "org.springframework.boot", name: "spring-boot-starter-actuator", version:"1.2.0.RELEASE"
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile group: 'me.fhir', name:'fhir-0.12', version: '0.3'
     compile group: 'rome', name:'rome', version:'1.0'
