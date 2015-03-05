@@ -19,7 +19,7 @@ public class ApplicationProperties {
     @Value("${FACILITY_AUTH_TOKEN}")
     private String facilityAuthToken;
 
-    @Value("${FACILITY_SERVER_URL_PREFIX}")
+    @Value("${FACILITY_SERVER_URL}")
     private String facilityServerUrlPrefix;
 
     public String getIdentityServerUrl(StringBuffer requestURL) {
