@@ -3,15 +3,14 @@ package org.freeshr.journal.launch;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import java.util.Map;
-
-import static java.lang.System.getenv;
-
 @Component("patientJournalProperties")
 public class ApplicationProperties {
 
     @Value("${SHR_SERVER_BASE_URL}")
     private String shrBaseUrl;
+
+    @Value("${SHR_VERSION}")
+    private String shrVersion;
 
     @Value("${IDENTITY_SERVER_URL}")
     private String identityServerUrl;
@@ -27,7 +26,7 @@ public class ApplicationProperties {
     }
 
     public String getSHRBaseUrl() {
-        return shrBaseUrl;
+        return String.format("%s/%s",shrBaseUrl,shrVersion);
     }
 
     public String getFacilityAuthToken() {
