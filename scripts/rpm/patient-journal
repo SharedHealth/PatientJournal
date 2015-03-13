@@ -1,10 +1,9 @@
-#!/bin/sh
+#!/bin/bash
 #
-# patient-journal        This shell script takes care of starting and stopping
-#              the patient-journal system
+# patient-journal        start/stop/status script
 #
 # chkconfig: - 64 36
-# description: Stub patient-journal for shared health record system
+# description: The patient-journal shared health record system
 # processname: patient-journal
 # config: /etc/default/patient-journal
 # pidfile: /var/run/patient-journal/patient-journal.pid
@@ -16,22 +15,80 @@
 # Description: patient-journal system
 ### END INIT INFO
 
+export PATIENT_JOURNAL_USER=sharedhealth
+export PATIENT_JOURNAL_RUN=/opt/patient-journal/bin/start.sh
+
+# load configuration
 . /etc/default/patient-journal
 
-if [[ ! -e /var/run/patient-journal ]]; then
-    ln -s /opt/patient-journal/var /var/run/patient-journal
-fi
+create_dirs() {
+    if [[ ! -e /var/run/patient-journal ]]; then
+        ln -s /opt/patient-journal/var /var/run/patient-journal
+    fi
 
-if [[ ! -e /var/log/patient-journal ]]; then
-    mkdir /var/log/patient-journal
-fi
+    if [[ ! -e /var/log/patient-journal ]]; then
+        mkdir /var/log/patient-journal
+    fi
+}
+patient_journal_pid() {
+        echo `ps -fe | grep 'shr.war' | grep -v grep | tr -s " "|cut -d" " -f2`
+}
 
-case "$1" in
-  start)
-    nohup java -Dserver.port=$PATIENT_JOURNAL_PORT -jar /opt/patient-journal/lib/PatientJournal.war >/var/log/patient-journal/patient-journal.log &
-    echo $! > /var/run/patient-journal/patient-journal.pid
-    ;;
-  stop)
-    (cat /var/run/patient-journal/patient-journal.pid |  xargs -n 1 kill) || (true)
-    ;;
+start(){
+    pid=$(patient_journal_pid)
+    if [ -n "$pid" ]
+    then
+        echo -e "\e[00;31mService patient-journal is already running (pid: $pid)\e[00m"
+    else
+        # Start patient-journal
+        create_dirs
+        echo -e "\e[00;32mStarting patient-journal\e[00m"
+        if [ `user_exists $PATIENT_JOURNAL_USER` = "1" ]
+        then
+                /bin/su $PATIENT_JOURNAL_USER -c $PATIENT_JOURNAL_RUN
+        else
+                sh $PATIENT_JOURNAL_RUN
+        fi
+  fi
+  return 0
+}
+status(){
+          pid=$(patient_journal_pid)
+          if [ -n "$pid" ]; then echo -e "\e[00;32mService patient-journal is running with pid: $pid\e[00m"
+          else echo -e "\e[00;31mService patient-journal is not running\e[00m"
+          fi
+}
+
+stop() {
+	echo -e "\e[00;31mTerminating patient-journal\e[00m"
+	kill -9 $(patient_journal_pid)
+}
+user_exists(){
+        if id -u $1 >/dev/null 2>&1; then
+        echo "1"
+        else
+                echo "0"
+        fi
+}
+
+case $1 in
+	start)
+	  start
+	;;
+	stop)
+	  stop
+	;;
+	restart)
+	  stop
+	  start
+	;;
+	status)
+		status
+	;;
+	kill)
+		stop
+	;;
+	*)
+	;;
 esac
+exit 0

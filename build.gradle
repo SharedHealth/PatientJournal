@@ -160,6 +160,7 @@ task dist(dependsOn: 'exportProperties', type: Rpm) {
     from("scripts/rpm") {
         fileMode = 0755
         exclude 'patient-journal'
+        exclude 'start.sh'
         into 'var'
     }
 }
