@@ -40,7 +40,7 @@ public class PatientJournalControllerTest {
 
     @Before
     public void setUp() throws Exception {
-        givenThat(WireMock.get(urlPathEqualTo("/v1/patients/123123123123/encounters"))
+        givenThat(WireMock.get(urlEqualTo("/patients/123123123123/encounters"))
                 .withHeader("accept", equalTo("application/atom+xml"))
                 .withHeader("X-Auth-Token", matching("foo"))
                 .willReturn(aResponse()

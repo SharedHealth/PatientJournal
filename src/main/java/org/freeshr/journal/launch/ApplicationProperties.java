@@ -1,5 +1,6 @@
 package org.freeshr.journal.launch;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
@@ -26,7 +27,7 @@ public class ApplicationProperties {
     }
 
     public String getSHRBaseUrl() {
-        return String.format("%s/%s",shrBaseUrl,shrVersion);
+        return StringUtils.isEmpty(shrVersion) ? shrBaseUrl : String.format("%s/%s",shrBaseUrl,shrVersion);
     }
 
     public String getFacilityAuthToken() {
