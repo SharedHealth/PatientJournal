@@ -6,6 +6,7 @@ import org.apache.http.HttpStatus;
 import org.apache.http.client.HttpResponseException;
 import org.apache.http.client.ResponseHandler;
 import org.apache.http.client.methods.HttpGet;
+import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
@@ -27,16 +28,43 @@ public class WebClient {
         this.headers = headers;
     }
 
+    public WebClient() {
+
+    }
+
     public String get(String path) throws IOException {
         String url = getUrl(path);
         HttpGet request = new HttpGet(URI.create(url));
+        addHeaders(request);
         return execute(request);
+    }
+
+    public String get(String url, Map<String, String> headers) throws IOException{
+        HttpGet request= new HttpGet(URI.create(url));
+        addHeaders(request, headers);
+        return execute(request);
+    }
+
+    public String post(String url, Map<String, String> headers, HttpEntity entity) {
+        try {
+            HttpPost request = new HttpPost(URI.create(url));
+            request.setEntity(entity);
+            addHeaders(request, headers);
+            return execute(request);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private void addHeaders(HttpRequestBase request, Map<String, String> headers) {
+        for (String key : headers.keySet()) {
+            request.addHeader(key, headers.get(key));
+        }
     }
 
 
     private String execute(final HttpRequestBase request) throws IOException {
         try (CloseableHttpClient httpClient = HttpClients.createDefault()) {
-            addHeaders(request);
 
             ResponseHandler<String> responseHandler = new
                     ResponseHandler<String>() {
@@ -92,4 +120,5 @@ public class WebClient {
     private String getUrl(String path) {
         return baseUrl + path;
     }
+
 }

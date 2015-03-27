@@ -6,7 +6,6 @@ import com.google.common.base.Joiner;
 import org.freeshr.journal.infrastructure.WebClient;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpInputMessage;
 import org.springframework.stereotype.Component;
 
 import java.io.IOException;
@@ -23,7 +22,7 @@ public class FacilityService {
     public Facility getFacility(String url) {
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
-        headers.put("X-Auth-Token", applicationProperties.getFacilityAuthToken());
+        headers.put("X-Auth-Token", applicationProperties.getIdpAuthToken());
         WebClient webClient = new WebClient(url, headers);
         try {
             String content = webClient.get("");

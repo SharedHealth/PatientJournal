@@ -3,11 +3,18 @@ package org.freeshr.journal.controller;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.EncounterBundleData;
 import org.freeshr.journal.model.EncounterBundlesData;
+import org.freeshr.journal.model.UserCredentials;
+import org.freeshr.journal.model.UserInfo;
 import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.PatientEncounterService;
+import org.freeshr.journal.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
@@ -22,10 +29,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
+import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
+import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
+
 @Controller
 public class PatientJournalController extends WebMvcConfigurerAdapter {
     public static final String IDENTITY_TOKEN_NAME = "SHR_IDENTITY_TOKEN";
-    public static final String X_AUTH_TOKEN = "X-Auth-Token";
 
     @Autowired
     ApplicationProperties applicationProperties;
@@ -35,6 +45,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
 
     @Autowired
     FacilityService facilityService;
+
+    @Autowired
+    private PatientService patientService;
 
     public PatientJournalController() {
     }
@@ -46,41 +59,11 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     }
 
 
-    private Map<String, String> createSecurityHeaders(HttpServletRequest request) {
-        HashMap<String, String> headers = new HashMap<>();
-//        headers.put(X_AUTH_TOKEN, "8dad0c07-caf8-48a9-ac2a-1815a9aa11a1");
-        headers.put(X_AUTH_TOKEN, findIdentityToken(request));
-        return headers;
-    }
-
-    private String findIdentityToken(HttpServletRequest request) {
-        Cookie[] cookies = request.getCookies();
-        cookies = cookies != null ? cookies : new Cookie[0];
-        if (cookies.length < 1) return null;
-        for (Cookie cookie : cookies) {
-            if (cookie != null && IDENTITY_TOKEN_NAME.equals(cookie.getName()))
-                return cookie.getValue();
-        }
-        return null;
-    }
-
-    private Boolean isIdentifiable(HttpServletRequest request) {
-        return findIdentityToken(request) != null;
-//        return true;
-    }
-    
-    @RequestMapping(value = "/journal/{healthId}", method = RequestMethod.GET)
-    public ModelAndView loginForm(@PathVariable("healthId") String healthId,
-                                  HttpServletRequest request, HttpServletResponse response) throws Exception {
-        if (!isIdentifiable(request)) {
-            String identityServerUrl = applicationProperties.getIdentityServerUrl(request.getRequestURL());
-            response.sendRedirect(identityServerUrl);
-            return null;
-        }
-        EncounterBundlesData encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
-                createSecurityHeaders(request));
-        List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
-        return new ModelAndView("index", "encounterBundlesData", reverseEncounterBundles(encounterBundles));
+    @RequestMapping(value = "/login", method = RequestMethod.GET)
+    public ModelAndView loginForm(){
+        ModelAndView loginForm = new ModelAndView("loginForm");
+        loginForm.addObject("userCredentials", new UserCredentials());
+        return loginForm;
     }
 
     private List<EncounterBundleData> reverseEncounterBundles(List<EncounterBundleData> list) {
@@ -105,6 +88,31 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             e.printStackTrace();
         }
         return null;
+    }
+
+    @RequestMapping(value = "/details", method = RequestMethod.POST)
+    public ModelAndView signin(@ModelAttribute UserCredentials userCredentials) {
+        try {
+            UserInfo userInfo = patientService.verifyPatient(userCredentials);
+            String healthId = userInfo.getPatientProfile().getId();
+
+            EncounterBundlesData encountersForPatient = patientEncounterService.getEncountersForPatient(healthId,
+                    createSecurityHeaders(userInfo));
+            List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
+            return new ModelAndView("index", "encounterBundlesData", reverseEncounterBundles(encounterBundles));
+        } catch (Exception e) {
+            return new ModelAndView("error", "errorMessage", e.getMessage());
+        }
+    }
+
+
+
+    private Map<String, String> createSecurityHeaders(UserInfo userInfo) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CLIENT_ID_KEY, userInfo.getId());
+        headers.put(AUTH_TOKEN_KEY, userInfo.getAccessToken());
+        headers.put(FROM_KEY, userInfo.getEmail());
+        return headers;
     }
 
     private ExternalRef fetchExternalContent(String decodedRef) throws IOException {
