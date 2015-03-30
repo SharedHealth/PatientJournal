@@ -1,6 +1,6 @@
 <html>
 <body>
-<form action="#" th:action="@{/details}" th:object="${userCredentials}" method="post">
+<form action="#" th:action="@{/signin}" th:object="${userCredentials}" method="post">
     <table>
         <tr>
             <td>User name:</td>
@@ -10,9 +10,6 @@
             <td>Password:</td>
             <td><input type="password" th:field="*{password}" /></td>
         </tr>
-<!--        <div th:if="${redirectTo != null}">
-            <input type="hidden" name="redirectTo" th:value="${redirectTo}"/>
-        </div>-->
         <tr>
             <td><button type="submit">Submit</button></td>
         </tr>

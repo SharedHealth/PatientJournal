@@ -1,14 +1,17 @@
 package org.freeshr.journal.controller;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.client.WireMock;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;
 import org.freeshr.journal.launch.Application;
+import org.freeshr.journal.model.UserInfo;
 import org.freeshr.journal.utils.FileUtil;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -18,7 +21,10 @@ import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
 
+import java.io.IOException;
+
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
+import static org.freeshr.journal.controller.PatientJournalController.*;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
 import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
@@ -26,6 +32,7 @@ import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 
@@ -57,7 +64,20 @@ public class PatientJournalControllerTest {
 
     @Test
     public void shouldGetALoginForm() throws Exception {
-        mockMvc.perform(get("/login")).andExpect(view().name("loginForm"));
+        mockMvc.perform(get(LOGIN_URI)).andExpect(view().name("loginForm"));
+    }
+
+    @Test
+    public void shouldRedirectToDetailsWhenSessionIsValid() throws Exception {
+        MockHttpSession validSession = new MockHttpSession();
+        validSession.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
+
+        mockMvc.perform(get(LOGIN_URI).session(validSession)).andExpect(redirectedUrl(DETAILS_URI));
+    }
+
+    @Test
+    public void shouldRedirectToLogInPageWhenSessionIsExpired() throws Exception {
+        mockMvc.perform(post(SIGNIN_URI)).andExpect(redirectedUrl(LOGIN_URI));
     }
 
     @Test
@@ -91,7 +111,10 @@ public class PatientJournalControllerTest {
                         .withStatus(HttpStatus.SC_OK)
                         .withBody(asString("patientUserInfo.json"))));
 
-        mockMvc.perform(post("/details")).andExpect(view().name("index"));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
+
+        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(redirectedUrl(DETAILS_URI));
     }
 
     @Test
@@ -113,7 +136,10 @@ public class PatientJournalControllerTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_UNAUTHORIZED)));
 
-        mockMvc.perform(post("/details")).andExpect(view().name("error"));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SESSION_KEY, getUserInfo("userInfo.json"));
+
+        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(view().name("error"));
     }
 
     @Test
@@ -136,6 +162,55 @@ public class PatientJournalControllerTest {
                         .withStatus(HttpStatus.SC_OK)
                         .withBody(asString("userInfo.json"))));
 
-        mockMvc.perform(post("/details")).andExpect(view().name("error"));
+        MockHttpSession session = new MockHttpSession();
+        session.setAttribute(SESSION_KEY, getUserInfo("userInfo.json"));
+        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(view().name("error"));
+    }
+
+    @Test
+    public void shouldGetPatientEncounters() throws Exception {
+        String clientId = "12345";
+        String authToken = "012345abcd6789";
+        String token = "00f452a2-2925-4e03-b772-971fd14982b2";
+        String response = "{\"access_token\" : \"" + token + "\"}";
+
+        givenThat(WireMock.get(urlEqualTo("/patients/123123123123/encounters"))
+                .withHeader("accept", equalTo("application/atom+xml"))
+                .withHeader(CLIENT_ID_KEY, matching(clientId))
+                .withHeader(AUTH_TOKEN_KEY, matching(token))
+                .withHeader(FROM_KEY, matching("utsab@gmail.com"))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_OK)
+                        .withHeader("Content-Type", "application/atom+xml")
+                        .withBody(FileUtil.asString("encounters/shrEncounterResponse.xml"))));
+
+
+        givenThat(WireMock.post(urlEqualTo("/signin"))
+                .withHeader(CLIENT_ID_KEY, equalTo(clientId))
+                .withHeader(AUTH_TOKEN_KEY, equalTo(authToken))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_OK)
+                        .withBody(response)));
+
+        givenThat(WireMock.get(urlMatching("/token/" + token))
+                .withHeader(CLIENT_ID_KEY, equalTo(clientId))
+                .withHeader(AUTH_TOKEN_KEY, equalTo(authToken))
+                .willReturn(aResponse()
+                        .withStatus(HttpStatus.SC_OK)
+                        .withBody(asString("patientUserInfo.json"))));
+
+        MockHttpSession validSession = new MockHttpSession();
+        validSession.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
+
+        mockMvc.perform(get(DETAILS_URI).session(validSession)).andExpect(view().name("index"));
+    }
+
+    @Test
+    public void shouldRedirectToLoginWhenSessionIsExpired() throws Exception {
+        mockMvc.perform(get(DETAILS_URI)).andExpect(redirectedUrl(LOGIN_URI));
+    }
+
+    private UserInfo getUserInfo(String path) throws IOException {
+        String response = asString(path);
+        return new ObjectMapper().readValue(response, UserInfo.class);
     }
 }

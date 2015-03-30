@@ -21,11 +21,11 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PatientServiceTest {
+public class IdentityServiceTest {
     @Mock
     private IdentityServiceClient identityServiceClient;
 
-    private PatientService patientService;
+    private IdentityService identityService;
 
     @Rule
     public ExpectedException thrown = ExpectedException.none();
@@ -34,7 +34,7 @@ public class PatientServiceTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        patientService = new PatientService(identityServiceClient);
+        identityService = new IdentityService(identityServiceClient);
     }
 
     @Test
@@ -46,7 +46,7 @@ public class PatientServiceTest {
         when(identityServiceClient.signin(credentials)).thenReturn(identityToken);
         when(identityServiceClient.getUserInfo(identityToken)).thenReturn(getPatientUserInfo(identityToken.toString()));
 
-        UserInfo userInfo = patientService.verifyPatient(credentials);
+        UserInfo userInfo = identityService.verifyPatient(credentials);
 
         verify(identityServiceClient, times(1)).signin(credentials);
         verify(identityServiceClient, times(1)).getUserInfo(identityToken);
@@ -67,7 +67,7 @@ public class PatientServiceTest {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Not Registered as Patient");
 
-        patientService.verifyPatient(credentials);
+        identityService.verifyPatient(credentials);
     }
 
     @Test
@@ -78,7 +78,7 @@ public class PatientServiceTest {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Not Authorized");
 
-        patientService.verifyPatient(credentials);
+        identityService.verifyPatient(credentials);
     }
 
     @Test
@@ -92,7 +92,7 @@ public class PatientServiceTest {
         thrown.expect(RuntimeException.class);
         thrown.expectMessage("Not Authorized");
 
-        patientService.verifyPatient(credentials);
+        identityService.verifyPatient(credentials);
     }
 
     private UserInfo getUserInfo(String token) {

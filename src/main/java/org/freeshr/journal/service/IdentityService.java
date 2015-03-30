@@ -13,14 +13,14 @@ import org.springframework.stereotype.Service;
 import java.io.IOException;
 
 @Service
-public class PatientService {
+public class IdentityService {
 
     private IdentityServiceClient identityServiceClient;
 
-    private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
+    private static final Logger logger = LoggerFactory.getLogger(IdentityService.class);
 
     @Autowired
-    public PatientService(IdentityServiceClient identityServiceClient) {
+    public IdentityService(IdentityServiceClient identityServiceClient) {
         this.identityServiceClient = identityServiceClient;
     }
 

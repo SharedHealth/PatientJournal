@@ -5,9 +5,9 @@ import org.freeshr.journal.model.EncounterBundleData;
 import org.freeshr.journal.model.EncounterBundlesData;
 import org.freeshr.journal.model.UserCredentials;
 import org.freeshr.journal.model.UserInfo;
-import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.EncounterService;
-import org.freeshr.journal.service.PatientService;
+import org.freeshr.journal.service.FacilityService;
+import org.freeshr.journal.service.IdentityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,20 +15,29 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.config.annotation.ViewControllerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 import org.springframework.web.util.UriUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.freeshr.journal.utils.HttpUtil.*;
+import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
+import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
+import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
 
 @Controller
 public class PatientJournalController extends WebMvcConfigurerAdapter {
+
+    public static final String SESSION_KEY = "userinfo";
+    public static final String DETAILS_URI = "/details";
+    public static final String LOGIN_URI = "/login";
+    public static final String SIGNIN_URI = "/signin";
 
     @Autowired
     ApplicationProperties applicationProperties;
@@ -40,20 +49,27 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     private FacilityService facilityService;
 
     @Autowired
-    private PatientService patientService;
+    private IdentityService identityService;
 
     public PatientJournalController() {
     }
 
     public PatientJournalController(ApplicationProperties applicationProperties, EncounterService
-            encounterService) {
+            encounterService, FacilityService facilityService, IdentityService identityService) {
         this.applicationProperties = applicationProperties;
         this.encounterService = encounterService;
+        this.facilityService = facilityService;
+        this.identityService = identityService;
     }
 
 
-    @RequestMapping(value = "/login", method = RequestMethod.GET)
-    public ModelAndView loginForm() {
+    @RequestMapping(value = LOGIN_URI, method = RequestMethod.GET)
+    public ModelAndView loginForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Object userInfo = request.getSession().getAttribute(SESSION_KEY);
+        if (null != userInfo) {
+            response.sendRedirect(DETAILS_URI);
+            return null;
+        }
         ModelAndView loginForm = new ModelAndView("loginForm");
         loginForm.addObject("userCredentials", new UserCredentials());
         return loginForm;
@@ -67,18 +83,37 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return revereList;
     }
 
-    @Override
-    public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/journal/{healthId}").setViewName("index");
+    @RequestMapping(value = SIGNIN_URI, method = RequestMethod.POST)
+    public ModelAndView signin(@ModelAttribute UserCredentials userCredentials, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (null == session) {
+            response.sendRedirect(LOGIN_URI);
+            return null;
+        }
+        try {
+            UserInfo userInfo = identityService.verifyPatient(userCredentials);
+            session = request.getSession(true);
+            session.setAttribute(SESSION_KEY, userInfo);
+            session.setMaxInactiveInterval(applicationProperties.getSessionTimeoutInSeconds());
+            response.sendRedirect(DETAILS_URI);
+            return null;
+        } catch (Exception e) {
+            return new ModelAndView("error", "errorMessage", e.getMessage());
+        }
     }
 
-    @RequestMapping(value = "/details", method = RequestMethod.POST)
-    public ModelAndView signin(@ModelAttribute UserCredentials userCredentials) {
+    @RequestMapping(value = DETAILS_URI, method = RequestMethod.GET)
+    public ModelAndView showPatientEncounters(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (null == session || null == session.getAttribute(SESSION_KEY)) {
+            response.sendRedirect(LOGIN_URI);
+            return null;
+        }
+        UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+        String healthId = userInfo.getPatientProfile().getId();
+        EncounterBundlesData encountersForPatient = null;
         try {
-            UserInfo userInfo = patientService.verifyPatient(userCredentials);
-            String healthId = userInfo.getPatientProfile().getId();
-
-            EncounterBundlesData encountersForPatient = encounterService.getEncountersForPatient(healthId,
+            encountersForPatient = encounterService.getEncountersForPatient(healthId,
                     createSecurityHeaders(userInfo));
             List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
             return new ModelAndView("index", "encounterBundlesData", reverseEncounterBundles(encounterBundles));

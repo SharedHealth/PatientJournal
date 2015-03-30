@@ -28,6 +28,9 @@ public class ApplicationProperties {
     @Value("${FACILITY_SERVER_URL}")
     private String facilityServerUrlPrefix;
 
+    @Value("${SESSION_TIMEOUT_SECONDS}")
+    private String sessionTimeoutInSeconds;
+
     public String getSHRBaseUrl() {
         return StringUtils.isEmpty(shrVersion) ? shrBaseUrl : String.format("%s/%s", shrBaseUrl, shrVersion);
     }
@@ -50,6 +53,10 @@ public class ApplicationProperties {
 
     public String getIdpClientId() {
         return idpClientId;
+    }
+
+    public int getSessionTimeoutInSeconds() {
+        return Integer.parseInt(sessionTimeoutInSeconds);
     }
 
     private String ensureUrlEndsWithSlash(String url) {

@@ -45,15 +45,11 @@ public class WebClient {
         return execute(request);
     }
 
-    public String post(String url, Map<String, String> headers, HttpEntity entity) {
-        try {
-            HttpPost request = new HttpPost(URI.create(url));
-            request.setEntity(entity);
-            addHeaders(request, headers);
-            return execute(request);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+    public String post(String url, Map<String, String> headers, HttpEntity entity) throws IOException {
+        HttpPost request = new HttpPost(URI.create(url));
+        request.setEntity(entity);
+        addHeaders(request, headers);
+        return execute(request);
     }
 
     private void addHeaders(HttpRequestBase request, Map<String, String> headers) {
