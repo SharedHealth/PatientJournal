@@ -10,14 +10,14 @@ import java.io.IOException;
 import java.util.Map;
 
 @Service
-public class PatientEncounterService {
+public class EncounterService {
     @Autowired
-    FreeSHR freeSHR;
+    private FreeSHR freeSHR;
 
-    public PatientEncounterService() {
+    public EncounterService() {
     }
 
-    public PatientEncounterService(FreeSHR freeSHR) {
+    public EncounterService(FreeSHR freeSHR) {
         this.freeSHR = freeSHR;
     }
 

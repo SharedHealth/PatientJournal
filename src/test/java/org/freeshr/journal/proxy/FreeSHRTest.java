@@ -21,6 +21,7 @@ import java.util.HashMap;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static junit.framework.TestCase.assertTrue;
+import static org.freeshr.journal.utils.HttpUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -39,7 +40,9 @@ public class FreeSHRTest {
     public void setUp() throws Exception {
         givenThat(get(urlEqualTo("/patients/123123123123/encounters"))
                 .withHeader("accept", equalTo("application/atom+xml"))
-                .withHeader("X-Auth-Token", matching("xxx"))
+                .withHeader(AUTH_TOKEN_KEY, equalTo("xxx"))
+                .withHeader(CLIENT_ID_KEY, equalTo("12345"))
+                .withHeader(FROM_KEY, equalTo("email@gmail.com"))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
@@ -68,7 +71,9 @@ public class FreeSHRTest {
 
     private HashMap<String, String> getSecurityHeaders() {
         HashMap<String, String> map = new HashMap<>();
-        map.put("X-Auth-Token", "xxx");
+        map.put(AUTH_TOKEN_KEY, "xxx");
+        map.put(CLIENT_ID_KEY, "12345");
+        map.put(FROM_KEY, "email@gmail.com");
         return map;
     }
 

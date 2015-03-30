@@ -13,9 +13,9 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-public class PatientEncounterServiceTest {
+public class EncounterServiceTest {
     @Mock
-    FreeSHR freeSHR;
+    private FreeSHR freeSHR;
 
     @Before
     public void setUp() throws Exception {
@@ -31,7 +31,7 @@ public class PatientEncounterServiceTest {
         value.addEncounterBundleModel(new EncounterBundleData(encounterBundle));
         when(freeSHR.getEncountersForPatient(patientId, null)).thenReturn(value);
 
-        EncounterBundlesData encountersForPatient = new PatientEncounterService(freeSHR).getEncountersForPatient
+        EncounterBundlesData encountersForPatient = new EncounterService(freeSHR).getEncountersForPatient
                 (patientId, null);
         assertEquals(1, encountersForPatient.getEncounterBundleDataList().size());
 
