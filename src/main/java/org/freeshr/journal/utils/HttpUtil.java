@@ -4,6 +4,7 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.UserCredentials;
+import org.freeshr.journal.model.UserInfo;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -30,4 +31,13 @@ public class HttpUtil {
         valuePairs.add(new BasicNameValuePair(PASSWORD_KEY, credentials.getPassword()));
         return valuePairs;
     }
+
+    public static Map<String, String> createSecurityHeaders(UserInfo userInfo) {
+        Map<String, String> headers = new HashMap<>();
+        headers.put(CLIENT_ID_KEY, userInfo.getId());
+        headers.put(AUTH_TOKEN_KEY, userInfo.getAccessToken());
+        headers.put(FROM_KEY, userInfo.getEmail());
+        return headers;
+    }
+
 }

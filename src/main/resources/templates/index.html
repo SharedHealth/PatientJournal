@@ -10,10 +10,11 @@
 <body>
 
     <div class="healthrecord">
-        <h1 class="patientid">Patient : <a
+        <h1 class="patientid">Patient  <a data-class="external-ref" data-ref-element-class="patientDetails"
                 th:href="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getReferenceSimple()}"
-                th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
+            th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
         </h1>
+        <div class="patientDetails"></div>
         <section class="block" th:each="bundleData: ${encounterBundlesData}">
             <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
         </section>

@@ -31,6 +31,9 @@ public class ApplicationProperties {
     @Value("${SESSION_TIMEOUT_SECONDS}")
     private String sessionTimeoutInSeconds;
 
+    @Value("${MCI_SERVER_BASE_URL}")
+    private String mciServerBaseUrl;
+
     public String getSHRBaseUrl() {
         return StringUtils.isEmpty(shrVersion) ? shrBaseUrl : String.format("%s/%s", shrBaseUrl, shrVersion);
     }
@@ -57,6 +60,10 @@ public class ApplicationProperties {
 
     public int getSessionTimeoutInSeconds() {
         return Integer.parseInt(sessionTimeoutInSeconds);
+    }
+
+    public String getMciServerBaseUrl() {
+        return ensureUrlEndsWithSlash(mciServerBaseUrl);
     }
 
     private String ensureUrlEndsWithSlash(String url) {

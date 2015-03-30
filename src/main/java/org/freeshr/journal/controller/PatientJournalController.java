@@ -8,6 +8,7 @@ import org.freeshr.journal.model.UserInfo;
 import org.freeshr.journal.service.EncounterService;
 import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.IdentityService;
+import org.freeshr.journal.service.PatientService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -23,13 +24,9 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
-import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
-import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
-import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
+import static org.freeshr.journal.utils.HttpUtil.createSecurityHeaders;
 
 @Controller
 public class PatientJournalController extends WebMvcConfigurerAdapter {
@@ -51,15 +48,19 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     @Autowired
     private IdentityService identityService;
 
+    @Autowired
+    private PatientService patientService;
+
     public PatientJournalController() {
     }
 
     public PatientJournalController(ApplicationProperties applicationProperties, EncounterService
-            encounterService, FacilityService facilityService, IdentityService identityService) {
+            encounterService, FacilityService facilityService, IdentityService identityService, PatientService patientService) {
         this.applicationProperties = applicationProperties;
         this.encounterService = encounterService;
         this.facilityService = facilityService;
         this.identityService = identityService;
+        this.patientService = patientService;
     }
 
 
@@ -123,18 +124,16 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     }
 
 
-    private Map<String, String> createSecurityHeaders(UserInfo userInfo) {
-        Map<String, String> headers = new HashMap<>();
-        headers.put(CLIENT_ID_KEY, userInfo.getId());
-        headers.put(AUTH_TOKEN_KEY, userInfo.getAccessToken());
-        headers.put(FROM_KEY, userInfo.getEmail());
-        return headers;
-    }
-
     @RequestMapping(value = "/external")
-    public ModelAndView fetchReference(@RequestParam("ref") String externalRefUrl) {
+    public ModelAndView fetchReference(@RequestParam("ref") String externalRefUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        HttpSession session = request.getSession(false);
+        if (null == session || null == session.getAttribute(SESSION_KEY)) {
+            response.sendRedirect(LOGIN_URI);
+            return null;
+        }
         try {
-            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"));
+            UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"), userInfo);
             return new ModelAndView(externalContent.getTemplateName(), externalContent.getModelName(), externalContent.getData());
         } catch (IOException e) {
             e.printStackTrace();
@@ -142,9 +141,12 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return null;
     }
 
-    private ExternalRef fetchExternalContent(String decodedRef) throws IOException {
+    private ExternalRef fetchExternalContent(String decodedRef, UserInfo userInfo) throws IOException {
         if (decodedRef.startsWith(applicationProperties.getFacilityServerUrlPrefix())) {
             return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
+        }
+        if (decodedRef.startsWith(applicationProperties.getMciServerBaseUrl())) {
+            return new ExternalRef("patient", "patient", patientService.getPatient(decodedRef, userInfo));
         }
         return null;
     }
