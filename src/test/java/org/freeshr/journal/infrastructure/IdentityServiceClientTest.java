@@ -48,7 +48,7 @@ public class IdentityServiceClientTest {
 
         when(properties.getIdpClientId()).thenReturn(clientId);
         when(properties.getIdpAuthToken()).thenReturn(authToken);
-        when(properties.getIdentityServerSigninUrl()).thenReturn("http://localhost:9997/signin");
+        when(properties.getIdentityServerLoginUrl()).thenReturn("http://localhost:9997/signin");
 
         givenThat(post(urlEqualTo("/signin"))
                 .withHeader(CLIENT_ID_KEY, equalTo(clientId))

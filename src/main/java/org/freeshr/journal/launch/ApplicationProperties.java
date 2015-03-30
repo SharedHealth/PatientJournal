@@ -13,14 +13,11 @@ public class ApplicationProperties {
     @Value("${SHR_VERSION}")
     private String shrVersion;
 
-    @Value("${IDENTITY_SERVER_BASE_URL}")
-    private String identityServerBaseUrl;
+    @Value("${IDENTITY_SERVER_LOGIN_URL}")
+    private String identityServerLoginUrl;
 
-    @Value("${IDENTITY_SERVER_SIGNIN_PATH}")
-    private String identityServerSigninPath;
-
-    @Value("${IDENTITY_SERVER_USER_INFO_PATH}")
-    private String identityServerUserInfoPath;
+    @Value("${IDENTITY_SERVER_USER_INFO_URL}")
+    private String identityServerUserInfoUrl;
 
     @Value("${IDP_CLIENT_ID}")
     private String idpClientId;
@@ -43,16 +40,12 @@ public class ApplicationProperties {
         return facilityServerUrlPrefix;
     }
 
-    public String getIdentityServerBaseUrl() {
-        return ensureUrlEndsWithSlash(identityServerBaseUrl);
-    }
-
-    public String getIdentityServerSigninUrl() {
-        return getIdentityServerBaseUrl()+ identityServerSigninPath;
+    public String getIdentityServerLoginUrl() {
+        return identityServerLoginUrl;
     }
 
     public String getIdentityServerUserInfoUrl() {
-        return getIdentityServerBaseUrl() + ensureUrlEndsWithSlash(identityServerUserInfoPath);
+        return ensureUrlEndsWithSlash(identityServerUserInfoUrl);
     }
 
     public String getIdpClientId() {

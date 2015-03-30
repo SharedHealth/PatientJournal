@@ -29,7 +29,7 @@ public class IdentityServiceClient {
     public IdentityToken signin(UserCredentials credentials) throws IOException {
         Map<String, String> headers = getIDPHeaders(properties);
         UrlEncodedFormEntity entity = new UrlEncodedFormEntity(getNameValuePairs(credentials));
-        String response = new WebClient().post(properties.getIdentityServerSigninUrl(), headers, entity);
+        String response = new WebClient().post(properties.getIdentityServerLoginUrl(), headers, entity);
         if (StringUtils.isNotEmpty(response)) {
             return new ObjectMapper().readValue(response, IdentityToken.class);
         }
