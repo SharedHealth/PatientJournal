@@ -1,11 +1,14 @@
 package org.freeshr.journal.launch;
 
 import org.apache.commons.lang3.StringUtils;
+import org.freeshr.journal.utils.StringUtil;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component("patientJournalProperties")
 public class ApplicationProperties {
+    public static final String URL_SEPERATOR = "/";
+
 
     @Value("${SHR_SERVER_BASE_URL}")
     private String shrBaseUrl;
@@ -25,14 +28,14 @@ public class ApplicationProperties {
     @Value("${IDP_AUTH_TOKEN}")
     private String idpAuthToken;
 
-    @Value("${FACILITY_SERVER_URL}")
-    private String facilityServerUrlPrefix;
+    @Value("${FACILITY_REGISTRY_URL}")
+    private String facilityRegistryUrl;
 
     @Value("${SESSION_TIMEOUT_SECONDS}")
     private String sessionTimeoutInSeconds;
 
-    @Value("${MCI_SERVER_BASE_URL}")
-    private String mciServerBaseUrl;
+    @Value("${MCI_SERVER_PATIENTS_URL}")
+    private String mciServerPatientsUrl;
 
     public String getSHRBaseUrl() {
         return StringUtils.isEmpty(shrVersion) ? shrBaseUrl : String.format("%s/%s", shrBaseUrl, shrVersion);
@@ -42,16 +45,16 @@ public class ApplicationProperties {
         return idpAuthToken;
     }
 
-    public String getFacilityServerUrlPrefix() {
-        return facilityServerUrlPrefix;
+    public String getFacilityRegistryUrl() {
+        return StringUtil.ensureSuffix(facilityRegistryUrl, URL_SEPERATOR);
     }
 
     public String getIdentityServerLoginUrl() {
-        return identityServerLoginUrl;
+        return StringUtil.removeSuffix(identityServerLoginUrl, URL_SEPERATOR);
     }
 
     public String getIdentityServerUserInfoUrl() {
-        return ensureUrlEndsWithSlash(identityServerUserInfoUrl);
+        return StringUtil.ensureSuffix(identityServerUserInfoUrl, URL_SEPERATOR);
     }
 
     public String getIdpClientId() {
@@ -62,13 +65,8 @@ public class ApplicationProperties {
         return Integer.parseInt(sessionTimeoutInSeconds);
     }
 
-    public String getMciServerBaseUrl() {
-        return ensureUrlEndsWithSlash(mciServerBaseUrl);
-    }
-
-    private String ensureUrlEndsWithSlash(String url) {
-        url = StringUtils.trim(url);
-        return url.endsWith("/") ? url : url + "/";
+    public String getMciServerPatientsUrl() {
+        return StringUtil.ensureSuffix(mciServerPatientsUrl, URL_SEPERATOR);
     }
 
 }

@@ -142,10 +142,10 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     }
 
     private ExternalRef fetchExternalContent(String decodedRef, UserInfo userInfo) throws IOException {
-        if (decodedRef.startsWith(applicationProperties.getFacilityServerUrlPrefix())) {
+        if (decodedRef.startsWith(applicationProperties.getFacilityRegistryUrl())) {
             return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
         }
-        if (decodedRef.startsWith(applicationProperties.getMciServerBaseUrl())) {
+        if (decodedRef.startsWith(applicationProperties.getMciServerPatientsUrl())) {
             return new ExternalRef("patient", "patient", patientService.getPatient(decodedRef, userInfo));
         }
         return null;
