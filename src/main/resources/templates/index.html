@@ -9,7 +9,8 @@
 </head>
 <body>
 
-    <div class="healthrecord">
+<a th:href="@{/logout}"><button class="logout">Logout</button></a>
+<div class="healthrecord">
         <h1 class="patientid">Patient  <a data-class="external-ref" data-ref-element-class="patientDetails"
                 th:href="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getReferenceSimple()}"
             th:text="${encounterBundlesData.get(0).getEncounterBundle().getResources().get(0).getSubject().getDisplaySimple()}"></a>
@@ -19,7 +20,8 @@
             <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
         </section>
     </div>
-    
+
+
     <script type="application/javascript">
             $( document ).ready(function() {
                 $("a[data-class='external-ref']").click(fetchExternal);

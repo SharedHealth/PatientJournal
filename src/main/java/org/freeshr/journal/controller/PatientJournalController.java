@@ -34,7 +34,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     public static final String SESSION_KEY = "userinfo";
     public static final String DETAILS_URI = "/details";
     public static final String LOGIN_URI = "/login";
-    public static final String SIGNIN_URI = "/signin";
+    public static final String LOGOUT_URI = "/logout";
 
     @Autowired
     ApplicationProperties applicationProperties;
@@ -84,8 +84,8 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return revereList;
     }
 
-    @RequestMapping(value = SIGNIN_URI, method = RequestMethod.POST)
-    public ModelAndView signin(@ModelAttribute UserCredentials userCredentials, HttpServletRequest request, HttpServletResponse response) throws IOException {
+    @RequestMapping(value = LOGIN_URI, method = RequestMethod.POST)
+    public ModelAndView login(@ModelAttribute UserCredentials userCredentials, HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (null == session) {
             response.sendRedirect(LOGIN_URI);
@@ -99,7 +99,10 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             response.sendRedirect(DETAILS_URI);
             return null;
         } catch (Exception e) {
-            return new ModelAndView("error", "errorMessage", e.getMessage());
+            ModelAndView loginForm = new ModelAndView("loginForm");
+            loginForm.addObject("userCredentials", new UserCredentials());
+            loginForm.addObject("error", e);
+            return loginForm;
         }
     }
 
@@ -123,12 +126,19 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         }
     }
 
+    @RequestMapping(value = LOGOUT_URI, method = RequestMethod.GET)
+    public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().invalidate();
+        response.sendRedirect(LOGIN_URI);
+        return null;
+    }
+
 
     @RequestMapping(value = "/external")
     public ModelAndView fetchReference(@RequestParam("ref") String externalRefUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (null == session || null == session.getAttribute(SESSION_KEY)) {
-            response.sendRedirect(LOGIN_URI);
+            response.sendError(401, "Session Expired");
             return null;
         }
         try {

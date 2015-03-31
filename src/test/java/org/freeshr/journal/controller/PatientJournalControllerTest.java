@@ -20,11 +20,14 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 
 import javax.annotation.Resource;
-
 import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
-import static org.freeshr.journal.controller.PatientJournalController.*;
+import static junit.framework.Assert.assertTrue;
+import static org.freeshr.journal.controller.PatientJournalController.DETAILS_URI;
+import static org.freeshr.journal.controller.PatientJournalController.LOGIN_URI;
+import static org.freeshr.journal.controller.PatientJournalController.LOGOUT_URI;
+import static org.freeshr.journal.controller.PatientJournalController.SESSION_KEY;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
 import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
@@ -32,6 +35,7 @@ import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
 import static org.mockito.MockitoAnnotations.initMocks;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
@@ -77,7 +81,7 @@ public class PatientJournalControllerTest {
 
     @Test
     public void shouldRedirectToLogInPageWhenSessionIsExpired() throws Exception {
-        mockMvc.perform(post(SIGNIN_URI)).andExpect(redirectedUrl(LOGIN_URI));
+        mockMvc.perform(post(LOGIN_URI)).andExpect(redirectedUrl(LOGIN_URI));
     }
 
     @Test
@@ -114,7 +118,7 @@ public class PatientJournalControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
 
-        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(redirectedUrl(DETAILS_URI));
+        mockMvc.perform(post(LOGIN_URI).session(session)).andExpect(redirectedUrl(DETAILS_URI));
     }
 
     @Test
@@ -139,7 +143,8 @@ public class PatientJournalControllerTest {
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SESSION_KEY, getUserInfo("userInfo.json"));
 
-        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(view().name("error"));
+        mockMvc.perform(post(LOGIN_URI).session(session)).andExpect(view().name("loginForm"))
+                .andExpect(model().attributeExists("error"));
     }
 
     @Test
@@ -164,7 +169,8 @@ public class PatientJournalControllerTest {
 
         MockHttpSession session = new MockHttpSession();
         session.setAttribute(SESSION_KEY, getUserInfo("userInfo.json"));
-        mockMvc.perform(post(SIGNIN_URI).session(session)).andExpect(view().name("error"));
+        mockMvc.perform(post(LOGIN_URI).session(session)).andExpect(view().name("loginForm"))
+                .andExpect(model().attributeExists("error"));
     }
 
     @Test
@@ -202,6 +208,14 @@ public class PatientJournalControllerTest {
         validSession.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
 
         mockMvc.perform(get(DETAILS_URI).session(validSession)).andExpect(view().name("index"));
+    }
+
+    @Test
+    public void shouldInvalidateTheSession() throws Exception {
+        MockHttpSession validSession = new MockHttpSession();
+        validSession.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
+        mockMvc.perform(get(LOGOUT_URI).session(validSession)).andExpect(redirectedUrl(LOGIN_URI));
+        assertTrue(validSession.isInvalid());
     }
 
     @Test

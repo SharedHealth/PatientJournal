@@ -15,6 +15,8 @@ import java.io.IOException;
 @Service
 public class IdentityService {
 
+    public static final String NOT_A_PATIENT_MESSAGE = "Not Registered as Patient";
+    public static final String INVALID_CREDENTIALS_MESSAGE = "Invalid Email or Password";
     private IdentityServiceClient identityServiceClient;
 
     private static final Logger logger = LoggerFactory.getLogger(IdentityService.class);
@@ -31,14 +33,14 @@ public class IdentityService {
             logger.debug(String.format("Got access token for user %s", userCredentials.getEmail()));
             UserInfo userInfo = identityServiceClient.getUserInfo(identityToken);
             if (userInfo.getPatientProfile() == null) {
-                throw new RuntimeException("Not Registered as Patient");
+                throw new RuntimeException(NOT_A_PATIENT_MESSAGE);
             }
             return userInfo;
 
         } catch (IOException e) {
             String message = String.format("Not able to login for user %s", userCredentials.getEmail());
             logger.error(message);
-            throw new RuntimeException("Not Authorized");
+            throw new RuntimeException(INVALID_CREDENTIALS_MESSAGE);
         }
     }
 }

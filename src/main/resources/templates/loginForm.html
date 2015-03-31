@@ -1,19 +1,39 @@
 <html>
+<head>
+    <title>Patient Journal Login</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/login.css"/>
+
+</head>
 <body>
-<form action="#" th:action="@{/signin}" th:object="${userCredentials}" method="post">
-    <table>
-        <tr>
-            <td>User name:</td>
-            <td><input type="text" th:field="*{email}" /></td>
-        </tr>
-        <tr>
-            <td>Password:</td>
-            <td><input type="password" th:field="*{password}" /></td>
-        </tr>
-        <tr>
-            <td><button type="submit">Submit</button></td>
-        </tr>
-    </table>
-</form>
+
+<div class="form-box">
+    <div class="header">
+        Welcome to the Patient Journal
+    </div>
+
+    <form action="#" th:action="@{/login}" th:object="${userCredentials}"
+          method="post">
+        <div class="body bg-gray">
+            <div th:if="${error != null}" class="error-content"
+                 th:text="${error.getMessage()}"></div>
+            <div class="form-group">
+                <label class="control-label" for="email">Email</label>
+                <input type="text"
+                       class="form-control" placeholder="Email Address"
+                       id="email"
+                       th:field="*{email}" required="required"/>
+            </div>
+            <div class="form-group">
+                <label class="control-label" for="password">Password</label>
+                <input type="password" id="password" class="form-control"
+                       placeholder="Password" th:field="*{password}"
+                       required="required"/>
+            </div>
+            <button type="submit" class="btn bg-olive btn-block">Sign in
+            </button>
+        </div>
+    </form>
+</div>
 </body>
 </html>

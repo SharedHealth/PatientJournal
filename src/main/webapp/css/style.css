@@ -5,6 +5,15 @@ body{
     font-size:16px;
     color:#4d4d4d;
 }
+.logout{
+    text-align:center;
+    font-size:14px;
+    border-radius:10px;
+    width:100px;
+    position:fixed;
+    right:50px;
+    background:#cccccc;
+}
 .healthrecord{
     width: 1000px;
     margin: 0px auto;
@@ -14,7 +23,11 @@ body{
     margin-bottom:30px;
     font-weight:normal;
 }
-.block{
+.patientDetails{
+    margin:3% 0% 4% 0%;
+    font-size:18px;
+}
+.block .patient-block{
     margin:0px 0px 20px;
 }
 .date{
@@ -23,7 +36,15 @@ body{
     color:#fff;
     font-size:12px;
 }
-.date .time{
+
+.patient-block-header{
+    background:#029590;
+    padding:3px 15px;
+    color:#fff;
+    font-size:18px;
+}
+
+.date .patient-block-header{
     display:inline-block;
     margin-left:20px;
 }

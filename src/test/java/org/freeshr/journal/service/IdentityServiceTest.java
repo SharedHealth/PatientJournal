@@ -15,6 +15,8 @@ import java.io.IOException;
 import java.util.UUID;
 
 import static java.util.Arrays.asList;
+import static org.freeshr.journal.service.IdentityService.INVALID_CREDENTIALS_MESSAGE;
+import static org.freeshr.journal.service.IdentityService.NOT_A_PATIENT_MESSAGE;
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -65,7 +67,7 @@ public class IdentityServiceTest {
         when(identityServiceClient.getUserInfo(identityToken)).thenReturn(getUserInfo(identityToken.toString()));
 
         thrown.expect(RuntimeException.class);
-        thrown.expectMessage("Not Registered as Patient");
+        thrown.expectMessage(NOT_A_PATIENT_MESSAGE);
 
         identityService.verifyPatient(credentials);
     }
@@ -76,7 +78,7 @@ public class IdentityServiceTest {
         when(identityServiceClient.signin(credentials)).thenThrow(new IOException());
 
         thrown.expect(RuntimeException.class);
-        thrown.expectMessage("Not Authorized");
+        thrown.expectMessage(INVALID_CREDENTIALS_MESSAGE);
 
         identityService.verifyPatient(credentials);
     }
@@ -90,7 +92,7 @@ public class IdentityServiceTest {
         when(identityServiceClient.getUserInfo(identityToken)).thenThrow(new IOException());
 
         thrown.expect(RuntimeException.class);
-        thrown.expectMessage("Not Authorized");
+        thrown.expectMessage(INVALID_CREDENTIALS_MESSAGE);
 
         identityService.verifyPatient(credentials);
     }
