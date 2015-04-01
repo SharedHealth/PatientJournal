@@ -3,11 +3,14 @@ package org.freeshr.journal.service;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;
+import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.Patient;
 import org.freeshr.journal.model.UserInfo;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito;
 
 import java.io.IOException;
 
@@ -18,11 +21,15 @@ import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
 import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.mockito.Mockito.*;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PatientServiceTest {
     @Rule
     public WireMockRule rule= new WireMockRule(9997);
+
+    @Mock
+    private ApplicationProperties properties;
 
     @Before
     public void setUp() throws Exception {
@@ -31,9 +38,11 @@ public class PatientServiceTest {
 
     @Test
     public void shouldGetPatientDetails() throws Exception {
-        PatientService patientService = new PatientService();
+        PatientService patientService = new PatientService(properties);
 
-        givenThat(get(urlEqualTo("/patient/11112086891"))
+        when(properties.getMciServerPatientsUrl()).thenReturn("http://localhost:9997/patients/");
+
+        givenThat(get(urlEqualTo("/patients/123123123123"))
                 .withHeader("accept", equalTo("application/json"))
                 .withHeader(FROM_KEY, equalTo("utsab@gmail.com"))
                 .withHeader(CLIENT_ID_KEY, equalTo("12345"))
@@ -41,10 +50,10 @@ public class PatientServiceTest {
                 .willReturn(aResponse().withStatus(HttpStatus.SC_OK)
                         .withBody(asString("patient.json"))));
 
-        Patient patient = patientService.getPatient("http://localhost:9997/patient/11112086891", getUserInfo());
+        Patient patient = patientService.getPatient(getUserInfo());
 
         assertNotNull(patient);
-        assertEquals("11112086891", patient.getHealthId());
+        assertEquals("123123123123", patient.getHealthId());
         assertEquals("Test Patient", patient.getName());
         assertEquals("M", patient.getGender());
     }

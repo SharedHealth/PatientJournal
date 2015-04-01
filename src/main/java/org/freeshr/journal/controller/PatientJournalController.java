@@ -3,6 +3,7 @@ package org.freeshr.journal.controller;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.EncounterBundleData;
 import org.freeshr.journal.model.EncounterBundlesData;
+import org.freeshr.journal.model.Patient;
 import org.freeshr.journal.model.UserCredentials;
 import org.freeshr.journal.model.UserInfo;
 import org.freeshr.journal.service.EncounterService;
@@ -113,14 +114,18 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             response.sendRedirect(LOGIN_URI);
             return null;
         }
-        UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
-        String healthId = userInfo.getPatientProfile().getId();
-        EncounterBundlesData encountersForPatient = null;
+
         try {
-            encountersForPatient = encounterService.getEncountersForPatient(healthId,
-                    createSecurityHeaders(userInfo));
+            UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+            String healthId = userInfo.getPatientProfile().getId();
+            Patient patient = patientService.getPatient(userInfo);
+            EncounterBundlesData encountersForPatient = encounterService.getEncountersForPatient(healthId, createSecurityHeaders(userInfo));
             List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
-            return new ModelAndView("index", "encounterBundlesData", reverseEncounterBundles(encounterBundles));
+            ModelAndView indexView = new ModelAndView("index");
+            indexView.addObject("encounterBundlesData", reverseEncounterBundles(encounterBundles));
+            indexView.addObject("patient", patient);
+            return indexView;
+
         } catch (Exception e) {
             return new ModelAndView("error", "errorMessage", e.getMessage());
         }
@@ -142,8 +147,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             return null;
         }
         try {
-            UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
-            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"), userInfo);
+            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"));
             return new ModelAndView(externalContent.getTemplateName(), externalContent.getModelName(), externalContent.getData());
         } catch (IOException e) {
             e.printStackTrace();
@@ -151,12 +155,9 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         return null;
     }
 
-    private ExternalRef fetchExternalContent(String decodedRef, UserInfo userInfo) throws IOException {
+    private ExternalRef fetchExternalContent(String decodedRef) throws IOException {
         if (decodedRef.startsWith(applicationProperties.getFacilityRegistryUrl())) {
             return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
-        }
-        if (decodedRef.startsWith(applicationProperties.getMciServerPatientsUrl())) {
-            return new ExternalRef("patient", "patient", patientService.getPatient(decodedRef, userInfo));
         }
         return null;
     }

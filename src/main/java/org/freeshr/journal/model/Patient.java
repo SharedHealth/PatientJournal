@@ -44,6 +44,12 @@ public class Patient {
     }
 
     public String getGender() {
+        if ("M".equalsIgnoreCase(gender))
+            return "Male";
+        if ("F".equalsIgnoreCase(gender))
+            return "Female";
+        if ("O".equalsIgnoreCase(gender))
+            return "Other";
         return gender;
     }
 

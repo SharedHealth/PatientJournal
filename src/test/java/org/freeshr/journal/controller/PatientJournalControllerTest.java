@@ -176,15 +176,25 @@ public class PatientJournalControllerTest {
     @Test
     public void shouldGetPatientEncounters() throws Exception {
         String clientId = "12345";
+        String email = "utsab@gmail.com";
         String authToken = "012345abcd6789";
         String token = "00f452a2-2925-4e03-b772-971fd14982b2";
         String response = "{\"access_token\" : \"" + token + "\"}";
+
+        givenThat(WireMock.get(urlEqualTo("/api/v1/patients/123123123123"))
+                .withHeader("accept", equalTo("application/json"))
+                .withHeader(FROM_KEY, equalTo(email))
+                .withHeader(CLIENT_ID_KEY, equalTo(clientId))
+                .withHeader(AUTH_TOKEN_KEY, equalTo(token))
+                .willReturn(aResponse().withStatus(HttpStatus.SC_OK)
+                        .withBody(asString("patient.json"))));
+
 
         givenThat(WireMock.get(urlEqualTo("/patients/123123123123/encounters"))
                 .withHeader("accept", equalTo("application/atom+xml"))
                 .withHeader(CLIENT_ID_KEY, matching(clientId))
                 .withHeader(AUTH_TOKEN_KEY, matching(token))
-                .withHeader(FROM_KEY, matching("utsab@gmail.com"))
+                .withHeader(FROM_KEY, matching(email))
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
