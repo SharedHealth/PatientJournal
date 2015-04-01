@@ -3,9 +3,11 @@ package org.freeshr.journal.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Joiner;
+import org.apache.log4j.Logger;
 import org.freeshr.journal.infrastructure.WebClient;
 import org.freeshr.journal.launch.ApplicationProperties;
-import org.freeshr.journal.utils.HttpUtil;
+import org.freeshr.journal.model.Address;
+import org.freeshr.journal.model.Facility;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,6 +23,8 @@ import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
 @Component
 public class FacilityService {
     private ApplicationProperties applicationProperties;
+
+    private Logger logger = Logger.getLogger(IdentityService.class);
     
     @Autowired
     public FacilityService(ApplicationProperties applicationProperties) {
@@ -28,6 +32,7 @@ public class FacilityService {
     }
 
     public Facility getFacility(String url) {
+        logger.debug(String.format("Fetching Facility Details from [%s]", url));
         Map<String, String> headers = new HashMap<>();
         headers.put("accept", "application/json");
         headers.put(AUTH_TOKEN_KEY, applicationProperties.getIdpAuthToken());

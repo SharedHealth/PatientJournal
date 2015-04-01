@@ -3,6 +3,7 @@ package org.freeshr.journal.service;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import org.apache.http.HttpStatus;
 import org.freeshr.journal.launch.ApplicationProperties;
+import org.freeshr.journal.model.Facility;
 import org.freeshr.journal.utils.FileUtil;
 import org.junit.Before;
 import org.junit.Rule;

@@ -31,6 +31,7 @@ apply plugin: 'rpm'
 apply plugin: 'war'
 
 sourceCompatibility = 1.7
+mainClassName = "org.freeshr.journal.launch.Application"
 
 jar {
     baseName = 'patient-journal'
@@ -44,7 +45,19 @@ test {
     environment localEnv
 }
 
+configurations.all {
+    exclude module: 'slf4j-log4j12'
+}
+
 dependencies {
+    compile('org.springframework.boot:spring-boot-starter-web:1.1.1.RELEASE') {
+        exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
+        exclude group: 'ch.qos.logback', module: "logback-classic"
+    }
+    compile('org.springframework.boot:spring-boot-starter-actuator:1.2.0.RELEASE') {
+        exclude group: 'ch.qos.logback', module: "logback-classic"
+    }
+    compile('org.springframework.boot:spring-boot-starter-log4j:1.2.2.RELEASE')
     compile group: "org.springframework.boot", name: "spring-boot-starter-web", version:"1.2.0.RELEASE"
     compile group: "org.springframework.boot", name: "spring-boot-starter-actuator", version:"1.2.0.RELEASE"
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
@@ -60,37 +73,24 @@ dependencies {
 }
 
 
-def getRunProcessBuilder() {
-    def builder = new ProcessBuilder('./gradlew', 'run')
-    builder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
-    return builder
-}
-
-def getDebugProcessBuilder() {
-    def builder = new ProcessBuilder('./gradlew', 'run', '--debug', '--debug-jvm')
-    builder.redirectOutput(ProcessBuilder.Redirect.INHERIT)
-    return builder
-}
-
-
-task runPJ << {
+task runPJ(type: JavaExec) {
     Properties properties = new Properties();
     properties.load(new FileInputStream(file('env/local.properties')))
-    ProcessBuilder builder = getRunProcessBuilder()
-    builder.environment().putAll(properties)
-    Process process = builder.start();
-    process.waitFor();
+    main = mainClassName
+    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG']
+    classpath = sourceSets.main.runtimeClasspath
+    environment properties
 }
 
-task debugPJ << {
+task debugPJ(type: JavaExec) {
     Properties properties = new Properties();
     properties.load(new FileInputStream(file('env/local.properties')))
-    ProcessBuilder builder = getDebugProcessBuilder()
-    builder.environment().putAll(properties)
-    Process process = builder.start();
-    process.waitFor();
+    main = mainClassName
+    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG']
+    classpath = sourceSets.main.runtimeClasspath
+    environment properties
+    debug = true
 }
-
 
 cobertura {
     coverageFormats = ['html', 'xml']
@@ -102,7 +102,7 @@ cobertura {
 test.finalizedBy(project.tasks.cobertura)
 
 
-mainClassName = "org.freeshr.journal.launch.Application"
+
 
 war {
     manifest {

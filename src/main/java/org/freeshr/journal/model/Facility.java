@@ -1,4 +1,4 @@
-package org.freeshr.journal.service;
+package org.freeshr.journal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 

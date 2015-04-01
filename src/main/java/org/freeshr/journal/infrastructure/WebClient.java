@@ -10,8 +10,7 @@ import org.apache.http.client.methods.HttpPost;
 import org.apache.http.client.methods.HttpRequestBase;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -25,7 +24,7 @@ public class WebClient {
     private String baseUrl;
     private Map<String, String> headers;
 
-    private static final Logger logger = LoggerFactory.getLogger(WebClient.class);
+    private Logger logger = Logger.getLogger(WebClient.class);
 
     public WebClient(String baseUrl, Map<String, String> headers) {
         this.baseUrl = baseUrl;
@@ -38,7 +37,7 @@ public class WebClient {
 
     public String get(String path) throws IOException {
         String url = getUrl(path);
-        logger.debug("Fetching details form url [%s]", url);
+        logger.debug(String.format("Fetching details form url [%s]", url));
         HttpGet request = new HttpGet(URI.create(url));
         addHeaders(request);
         return execute(request);
@@ -46,14 +45,14 @@ public class WebClient {
 
     public String get(String url, Map<String, String> headers) throws IOException{
         HttpGet request= new HttpGet(URI.create(url));
-        logger.debug("Fetching details form url [%s]", url);
+        logger.debug(String.format("Fetching details form url [%s]", url));
         addHeaders(request, headers);
         return execute(request);
     }
 
     public String post(String url, Map<String, String> headers, HttpEntity entity) throws IOException {
         HttpPost request = new HttpPost(URI.create(url));
-        logger.debug("Fetching details form url [%s]", url);
+        logger.debug(String.format("Fetching details form url [%s]", url));
         request.setEntity(entity);
         addHeaders(request, headers);
         return execute(request);

@@ -44,7 +44,7 @@ start(){
         # Start patient-journal
         create_dirs
         echo -e "\e[00;32mStarting patient-journal\e[00m"
-        if [ `user_exists $PATIENT_JOURNAL_USER` = "1" ]  && ["$CUR_USER" != "$PATIENT_JOURNAL_USER"] ;
+        if [ `user_exists $PATIENT_JOURNAL_USER` = "1" ]  && [ "$CUR_USER" != "$PATIENT_JOURNAL_USER" ] ;
         then
                 /bin/su $PATIENT_JOURNAL_USER -c $PATIENT_JOURNAL_RUN
         else

@@ -3,12 +3,11 @@ package org.freeshr.journal.service;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.freeshr.journal.infrastructure.WebClient;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.Patient;
 import org.freeshr.journal.model.UserInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +21,7 @@ public class PatientService {
 
     private ApplicationProperties properties;
 
-    private static final Logger logger = LoggerFactory.getLogger(PatientService.class);
+    private Logger logger = Logger.getLogger(PatientService.class);
 
     @Autowired
     public PatientService(ApplicationProperties properties) {
