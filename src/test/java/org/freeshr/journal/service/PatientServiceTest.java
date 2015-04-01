@@ -55,7 +55,7 @@ public class PatientServiceTest {
         assertNotNull(patient);
         assertEquals("123123123123", patient.getHealthId());
         assertEquals("Test Patient", patient.getName());
-        assertEquals("M", patient.getGender());
+        assertEquals("Male", patient.getGender());
     }
 
     private UserInfo getUserInfo() throws IOException {
