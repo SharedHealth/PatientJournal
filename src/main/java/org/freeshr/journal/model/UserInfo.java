@@ -7,7 +7,6 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-//TODO: To use apache CollectionsUtils
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class UserInfo {

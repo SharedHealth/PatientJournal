@@ -3,9 +3,13 @@
 <head>
     <title>Patient Journal</title>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <link rel="stylesheet" href="/css/style.css"/>
 </head>
 <body>
-    <th:div th:text="${errorMessage}">
-    </th:div>
+<a th:href="@{/logout}"><button class="logout">Logout</button></a>
+    <h3>
+        <th:div th:text="${errorMessage}">
+        </th:div>
+    </h3>
 </body>
 </html>

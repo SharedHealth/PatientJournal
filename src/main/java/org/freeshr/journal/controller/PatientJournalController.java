@@ -1,11 +1,9 @@
 package org.freeshr.journal.controller;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.log4j.Logger;
 import org.freeshr.journal.launch.ApplicationProperties;
-import org.freeshr.journal.model.EncounterBundleData;
-import org.freeshr.journal.model.EncounterBundlesData;
-import org.freeshr.journal.model.Patient;
-import org.freeshr.journal.model.UserCredentials;
-import org.freeshr.journal.model.UserInfo;
+import org.freeshr.journal.model.*;
 import org.freeshr.journal.service.EncounterService;
 import org.freeshr.journal.service.FacilityService;
 import org.freeshr.journal.service.IdentityService;
@@ -37,6 +35,8 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     public static final String LOGIN_URI = "/login";
     public static final String LOGOUT_URI = "/logout";
 
+    private Logger logger = Logger.getLogger(PatientJournalController.class);
+
     @Autowired
     ApplicationProperties applicationProperties;
 
@@ -64,7 +64,6 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         this.patientService = patientService;
     }
 
-
     @RequestMapping(value = LOGIN_URI, method = RequestMethod.GET)
     public ModelAndView loginForm(HttpServletRequest request, HttpServletResponse response) throws IOException {
         Object userInfo = request.getSession().getAttribute(SESSION_KEY);
@@ -76,6 +75,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
         loginForm.addObject("userCredentials", new UserCredentials());
         return loginForm;
     }
+
 
     private List<EncounterBundleData> reverseEncounterBundles(List<EncounterBundleData> list) {
         List<EncounterBundleData> revereList = new ArrayList<>();
@@ -89,6 +89,7 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     public ModelAndView login(@ModelAttribute UserCredentials userCredentials, HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (null == session) {
+            logger.debug("Session Expired");
             response.sendRedirect(LOGIN_URI);
             return null;
         }
@@ -100,9 +101,13 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             response.sendRedirect(DETAILS_URI);
             return null;
         } catch (Exception e) {
+            logger.error(String.format("Unable to Login for user %s", userCredentials.getEmail()));
             ModelAndView loginForm = new ModelAndView("loginForm");
             loginForm.addObject("userCredentials", new UserCredentials());
-            loginForm.addObject("error", e);
+            if (StringUtils.isBlank(e.getMessage()))
+                loginForm.addObject("error", new Exception("Can not identify user"));
+            else
+                loginForm.addObject("error", e);
             return loginForm;
         }
     }
@@ -111,13 +116,15 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     public ModelAndView showPatientEncounters(HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (null == session || null == session.getAttribute(SESSION_KEY)) {
+            logger.debug("Session Expired");
             response.sendRedirect(LOGIN_URI);
             return null;
         }
-
+        UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+        String healthId = userInfo.getPatientProfile().getId();
+        String message = String.format("Show Encounter Request for patient[%s]", healthId);
+        logger.info(String.format("ACCESS: USER=%s EMAIL=%s ACTION=%s", userInfo.getId(), userInfo.getEmail(), message));
         try {
-            UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
-            String healthId = userInfo.getPatientProfile().getId();
             Patient patient = patientService.getPatient(userInfo);
             EncounterBundlesData encountersForPatient = encounterService.getEncountersForPatient(healthId, createSecurityHeaders(userInfo));
             List<EncounterBundleData> encounterBundles = encountersForPatient.getEncounterBundleDataList();
@@ -127,38 +134,59 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             return indexView;
 
         } catch (Exception e) {
-            return new ModelAndView("error", "errorMessage", e.getMessage());
+            logger.error(String.format("Unable to fetch details for patient [%s]", healthId), e);
+            return new ModelAndView("error", "errorMessage", "No health record found.");
         }
     }
 
     @RequestMapping(value = LOGOUT_URI, method = RequestMethod.GET)
     public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        request.getSession().invalidate();
+        HttpSession session = request.getSession(false);
+        if (null == session || null == session.getAttribute(SESSION_KEY)) {
+            logger.debug("Session Expired before logout");
+            response.sendRedirect(LOGIN_URI);
+            return null;
+        }
+        UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+        logger.debug(String.format("User %s Logged out", userInfo.getEmail()));
+        session.invalidate();
         response.sendRedirect(LOGIN_URI);
         return null;
     }
-
 
     @RequestMapping(value = "/external")
     public ModelAndView fetchReference(@RequestParam("ref") String externalRefUrl, HttpServletRequest request, HttpServletResponse response) throws IOException {
         HttpSession session = request.getSession(false);
         if (null == session || null == session.getAttribute(SESSION_KEY)) {
+            logger.debug("Session Expired");
             response.sendError(401, "Session Expired");
             return null;
         }
         try {
-            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"));
+            UserInfo userInfo = (UserInfo) session.getAttribute(SESSION_KEY);
+            ExternalRef externalContent = fetchExternalContent(UriUtils.decode(externalRefUrl, "UTF-8"), userInfo);
             return new ModelAndView(externalContent.getTemplateName(), externalContent.getModelName(), externalContent.getData());
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(String.format("Unable to fetch request [%s]", externalRefUrl), e);
+        } catch (Exception e) {
+            logger.error(e.getMessage(), e);
         }
-        return null;
+        return new ModelAndView("notFound");
     }
 
-    private ExternalRef fetchExternalContent(String decodedRef) throws IOException {
+    @RequestMapping(value = "/*", method = RequestMethod.GET)
+    public void handleDefaultRequests(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        String requestURI = request.getRequestURI();
+        logger.debug(String.format("Got request for unknown path %s redirecting to %s", requestURI, LOGIN_URI));
+        response.sendRedirect(LOGIN_URI);
+    }
+
+    private ExternalRef fetchExternalContent(String decodedRef, UserInfo userInfo) {
         if (decodedRef.startsWith(applicationProperties.getFacilityRegistryUrl())) {
+            String message = String.format("Fetch Facility request for url [%s]", decodedRef);
+            logger.info(String.format("ACCESS: USER=%s EMAIL=%s ACTION=%s", userInfo.getId(), userInfo.getEmail(), message));
             return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
         }
-        return null;
+        throw new RuntimeException(String.format("Can not handle external reference %s", decodedRef));
     }
 }

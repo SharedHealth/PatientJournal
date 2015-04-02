@@ -24,8 +24,8 @@ import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
 public class FacilityService {
     private ApplicationProperties applicationProperties;
 
-    private Logger logger = Logger.getLogger(IdentityService.class);
-    
+    private Logger logger = Logger.getLogger(FacilityService.class);
+
     @Autowired
     public FacilityService(ApplicationProperties applicationProperties) {
         this.applicationProperties = applicationProperties;
@@ -42,7 +42,7 @@ public class FacilityService {
             String content = webClient.get("");
             return createFacility(content);
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error("unable to fetch facility", e);
         }
         return null;
     }
@@ -71,7 +71,6 @@ public class FacilityService {
         address.setUnionOrUrbanWardId((String) linkedHashMap.get("union_code"));
         return address;
     }
-
 
 
 }

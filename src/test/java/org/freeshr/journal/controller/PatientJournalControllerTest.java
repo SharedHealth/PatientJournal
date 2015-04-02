@@ -233,6 +233,11 @@ public class PatientJournalControllerTest {
         mockMvc.perform(get(DETAILS_URI)).andExpect(redirectedUrl(LOGIN_URI));
     }
 
+    @Test
+    public void shouldRedirectAnyRandomRequestToLogin() throws Exception {
+        mockMvc.perform(get("/randomRequest")).andExpect(redirectedUrl(LOGIN_URI));
+    }
+
     private UserInfo getUserInfo(String path) throws IOException {
         String response = asString(path);
         return new ObjectMapper().readValue(response, UserInfo.class);

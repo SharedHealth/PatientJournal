@@ -10,23 +10,20 @@ import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 
 import java.io.IOException;
 
 import static com.github.tomakehurst.wiremock.client.WireMock.*;
 import static org.freeshr.journal.utils.FileUtil.asString;
-import static org.freeshr.journal.utils.HttpUtil.AUTH_TOKEN_KEY;
-import static org.freeshr.journal.utils.HttpUtil.CLIENT_ID_KEY;
-import static org.freeshr.journal.utils.HttpUtil.FROM_KEY;
+import static org.freeshr.journal.utils.HttpUtil.*;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 public class PatientServiceTest {
     @Rule
-    public WireMockRule rule= new WireMockRule(9997);
+    public WireMockRule rule = new WireMockRule(9997);
 
     @Mock
     private ApplicationProperties properties;

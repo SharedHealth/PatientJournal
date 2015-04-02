@@ -1,2 +1,1 @@
-<th:block th:text="${facility.getFacilityName()}">
-</th:block>
+<th:block th:text="(${facility==null})?'Unable to fetch resource':(${facility.getFacilityName()})"></th:block>
