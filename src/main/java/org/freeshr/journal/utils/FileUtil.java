@@ -3,15 +3,14 @@ package org.freeshr.journal.utils;
 
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.apache.log4j.Logger;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
 public class FileUtil {
-    private static Logger logger = LoggerFactory.getLogger(FileUtil.class);
+    private static Logger logger = Logger.getLogger(FileUtil.class);
 
     public static String asString(String path) {
         try {

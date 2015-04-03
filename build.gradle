@@ -46,20 +46,18 @@ test {
 }
 
 configurations.all {
-    exclude module: 'slf4j-log4j12'
+    exclude module: 'spring-boot-starter-logging'
 }
 
 dependencies {
-    compile('org.springframework.boot:spring-boot-starter-web:1.1.1.RELEASE') {
+    compile('org.springframework.boot:spring-boot-starter-web:1.2.0.RELEASE') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
         exclude group: 'ch.qos.logback', module: "logback-classic"
     }
     compile('org.springframework.boot:spring-boot-starter-actuator:1.2.0.RELEASE') {
         exclude group: 'ch.qos.logback', module: "logback-classic"
     }
-    compile('org.springframework.boot:spring-boot-starter-log4j:1.2.2.RELEASE')
-    compile group: "org.springframework.boot", name: "spring-boot-starter-web", version:"1.2.0.RELEASE"
-    compile group: "org.springframework.boot", name: "spring-boot-starter-actuator", version:"1.2.0.RELEASE"
+    compile('org.springframework.boot:spring-boot-starter-log4j:1.2.0.RELEASE')
     compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile group: 'me.fhir', name:'fhir-0.12', version: '0.3'
     compile group: 'rome', name:'rome', version:'1.0'
