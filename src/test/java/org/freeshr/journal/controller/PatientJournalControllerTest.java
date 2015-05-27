@@ -181,7 +181,7 @@ public class PatientJournalControllerTest {
         String token = "00f452a2-2925-4e03-b772-971fd14982b2";
         String response = "{\"access_token\" : \"" + token + "\"}";
 
-        givenThat(WireMock.get(urlEqualTo("/api/v1/patients/123123123123"))
+        givenThat(WireMock.get(urlEqualTo("/api/default/patients/123123123123"))
                 .withHeader("accept", equalTo("application/json"))
                 .withHeader(FROM_KEY, equalTo(email))
                 .withHeader(CLIENT_ID_KEY, equalTo(clientId))
