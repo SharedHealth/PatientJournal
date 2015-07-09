@@ -11,7 +11,15 @@ import static org.junit.Assert.*;
 public class AtomFeedTest {
     @Test
     public void shouldReadEncounterFeedForPatient() throws Exception {
-        List<Entry> feed = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
-        assertEquals(1, feed.size());
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        assertEquals(1, entries.size());
+    }
+
+    @Test
+    public void shouldSkipEncounterEntryIfItHasTheUpdatedEncounterInTheFeed() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/patientUpdatedEncounterFeed.xml"));
+        assertEquals(5,entries.size());
+
+
     }
 }
