@@ -17,11 +17,11 @@
             <th:block th:each="condition: ${conditions}">
                 <th:block th:object="${condition}">
                     <tr>
-                        <td class="col-condition" th:text="*{getCode().getCoding().get(0).getDisplaySimple()}"></td>
+                        <td class="col-condition" fhir:type="*{getCode()}"></td>
                         <td class="col-status" th:text="*{getStatusSimple()}"></td>
-                        <td class="col-certainty" th:text="*{getCertainty()}?*{getCertainty().getCoding().get(0).getDisplaySimple()}"></td>
-                        <td class="col-severity" th:text="*{getSeverity()}?*{getSeverity().getCoding().get(0).getDisplaySimple()}"></td>
-                        <td class="col-onset" fhir:onset="*{getOnset()}"></td>
+                        <td class="col-certainty" fhir:type="*{getCertainty()}"></td>
+                        <td class="col-severity" fhir:type="*{getSeverity}"></td>
+                        <td class="col-onset" fhir:type="*{getOnset()}"></td>
                     </tr>
                 </th:block>
             </th:block>
