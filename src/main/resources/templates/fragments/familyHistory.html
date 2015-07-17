@@ -1,0 +1,59 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="familyHistories (familyHistories)">
+    <th:block th:each="familyHistory,currentItem: ${familyHistories}">
+
+        <th:block th:object="${familyHistory}">
+            <th:block th:with="relations=*{getRelation()}">
+                <th:block th:unless="${#lists.isEmpty(relations)}">
+                    <div class="div-family-history">
+                        <p th:text="'Relation '+${currentItem.count}" class="family-history-head"></p>
+
+                        <p class="family-history-subhead">Realtionship Details</p>
+                        <table class="table-relationship-details" cellpadding="0" cellspacing="0">
+                            <thead>
+                            <th>Relation</th>
+                            <th>Name of relation</th>
+                            <th>DOB</th>
+                            <th>Date of death</th>
+                            <th>Note</th>
+                            </thead>
+                            <tbody>
+                            <td th:text="*{getRelation().get(0).getRelationship().getCoding().get(0).getDisplaySimple()}"></td>
+                            <td th:text="*{getRelation().get(0).getNameSimple()}"></td>
+                            <td th:text="*{getRelation().get(0).getBorn()}?*{getRelation().get(0).getBorn().getValue().toHumanDisplay()}:''"></td>
+                            <td th:text="*{getRelation().get(0).getDeceased()}?*{getRelation().get(0).getDeceased().getValue().toHumanDisplay()}:''"></td>
+                            <td th:text="*{getRelation().get(0).getNoteSimple()}"></td>
+                            </tbody>
+                        </table>
+
+                        <th:block th:with="relationConditions=*{getRelation().get(0).getCondition()}">
+                            <th:block th:unless="${#lists.isEmpty(relationConditions)}">
+                                <p class="family-history-subhead">Condition</p>
+                                <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
+                                    <thead>
+                                    <th>Diagnosis</th>
+                                    <th>Outcome</th>
+                                    <th>Outcome</th>
+                                    <th>Note</th>
+                                    </thead>
+                                    <tbody>
+                                    <td th:text="${relationConditions.get(0).getType().getCoding().get(0).getDisplaySimple()}"></td>
+                                    <td th:text="${relationConditions.get(0).getOutcome()}?${relationConditions.get(0).getOutcome().getCoding().get(0).getDisplaySimple()}:''"></td>
+                                    <td th:text="${relationConditions.get(0).getOnset()}?${relationConditions.get(0).getOnset().getValueSimple()}:''"></td>
+                                    <td th:text="${relationConditions.get(0).getNoteSimple()}"></td>
+                                    </tbody>
+                                </table>
+                            </th:block>
+                        </th:block>
+                    </div>
+                </th:block>
+            </th:block>
+        </th:block>
+    </th:block>
+</th:block>
+</body>
+</html>

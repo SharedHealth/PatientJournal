@@ -10,6 +10,7 @@
     <th:block th:include="fragments/condition/finding :: conditions (${bundleData.getFindingConditions()})"></th:block>
     <th:block th:include="fragments/condition/symptom :: conditions (${bundleData.getSymptomConditions()})"></th:block>
     <th:block th:include="fragments/observation :: observations (${bundleData.getObservations()})"></th:block>
+    <th:block th:include="fragments/familyHistory :: familyHistories (${bundleData.getFamilyHistories()})"></th:block>
 </th:block>
 </body>
 </html>

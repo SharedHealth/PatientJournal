@@ -33,6 +33,10 @@ public class EncounterBundleData {
         return getResourceByType(ResourceType.Condition);
     }
 
+    public List<FamilyHistory> getFamilyHistories() {
+        return getResourceByType(ResourceType.FamilyHistory);
+    }
+
     public List<Condition> getDiagnosisConditions() {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
         List<Condition> diagnosis = new ArrayList<>();

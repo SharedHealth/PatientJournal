@@ -2,10 +2,7 @@ package org.freeshr.journal.model;
 
 import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
-import org.hl7.fhir.instance.model.Composition;
-import org.hl7.fhir.instance.model.Condition;
-import org.hl7.fhir.instance.model.Encounter;
-import org.hl7.fhir.instance.model.Observation;
+import org.hl7.fhir.instance.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -72,5 +69,11 @@ public class EncounterBundleDataTest {
     public void shouldGiveAllConditionOfTypeSymptom() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getSymptomConditions();
         assertEquals(0, complaintConditions.size());
+    }
+
+    @Test
+    public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
+        List<FamilyHistory> familyHistories = encounterBundleData.getFamilyHistories();
+        assertEquals(1, familyHistories.size());
     }
 }

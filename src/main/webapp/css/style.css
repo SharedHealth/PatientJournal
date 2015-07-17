@@ -74,7 +74,7 @@ body{
     display:none;
 }
 
-.table-condition{
+.table-condition, .table-relationship-details, .table-relationship-condition{
     min-width:950px;
     margin:25px 10px 10px;
     overflow:hidden;
@@ -143,4 +143,22 @@ body{
 }
 .table-observation .col-comments{
     width:20%;
+}
+
+.div-family-history{
+    border:2px solid;
+    margin:1% 1% 1% 1%
+}
+
+.family-history-head, .family-history-subhead{
+    font-weight:bold;
+    padding-left:2%;
+}
+
+.family-history-head{
+    font-size : 16px;
+}
+
+.family-history-subhead{
+    font-size : 14px;
 }
