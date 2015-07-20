@@ -12,21 +12,21 @@
                     <div class="div-family-history">
                         <p th:text="'Relation '+${currentItem.count}" class="family-history-head"></p>
 
-                        <p class="family-history-subhead">Realtionship Details</p>
+                        <p class="family-history-subhead"><Rela></Rela>tionship Details</p>
                         <table class="table-relationship-details" cellpadding="0" cellspacing="0">
                             <thead>
-                                <th>Relation</th>
-                                <th>Name of relation</th>
-                                <th>Born</th>
-                                <th>deceased</th>
-                                <th>Note</th>
+                                <th class="col-relationship-details">Relation</th>
+                                <th class="col-relationship-details">Name of relation</th>
+                                <th class="col-relationship-details">Born</th>
+                                <th class="col-relationship-details">Deceased</th>
+                                <th class="col-relationship-details">Note</th>
                             </thead>
                             <tbody>
-                                <td fhir:type="*{getRelation().get(0).getRelationship()}"></td>
-                                <td fhir:type="*{getRelation().get(0).getName()}"></td>
-                                <td fhir:type="*{getRelation().get(0).getBorn()}"></td>
-                                <td fhir:type="*{getRelation().get(0).getDeceased()}"></td>
-                                <td fhir:type="*{getRelation().get(0).getNote()}"></td>
+                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getRelationship()}"></td>
+                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getName()}"></td>
+                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getBorn()}"></td>
+                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getDeceased()}"></td>
+                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getNote()}"></td>
                             </tbody>
                         </table>
 
@@ -35,16 +35,16 @@
                                 <p class="family-history-subhead">Condition</p>
                                 <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
                                     <thead>
-                                        <th>Diagnosis</th>
-                                        <th>Outcome</th>
-                                        <th>Onset</th>
-                                        <th>Note</th>
+                                        <th class="col-relationship-condition">Diagnosis</th>
+                                        <th class="col-relationship-condition">Outcome</th>
+                                        <th class="col-relationship-condition">Onset</th>
+                                        <th class="col-relationship-condition">Note</th>
                                     </thead>
                                     <tbody>
-                                        <td fhir:type="${relationConditions.get(0).getType()}"></td>
-                                        <td fhir:type="${relationConditions.get(0).getOutcome()}"></td>
-                                        <td fhir:type="${relationConditions.get(0).getOnset()}"></td>
-                                        <td fhir:type="${relationConditions.get(0).getNote()}"></td>
+                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getType()}"></td>
+                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getOutcome()}"></td>
+                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getOnset()}"></td>
+                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getNote()}"></td>
                                     </tbody>
                                 </table>
                             </th:block>

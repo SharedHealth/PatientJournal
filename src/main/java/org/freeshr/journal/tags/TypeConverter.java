@@ -80,7 +80,7 @@ public class TypeConverter {
     }
 
     private static String fromAge(Age typeValue) {
-        return typeValue.getValueSimple() + " " + typeValue.getUnitsSimple();
+        return typeValue.getValueSimple() + " yrs";
     }
 
     private static String fromBoolean(Boolean typeValue) {
@@ -88,6 +88,8 @@ public class TypeConverter {
     }
 
     private static String fromRange(Range typeValue) {
-        return typeValue.getLow().getValueSimple() + "-" + typeValue.getHigh().getValueSimple();
+        Quantity low = typeValue.getLow();
+        Quantity high = typeValue.getHigh();
+        return low.getValueSimple() + " " + low.getUnitsSimple() + " - " + high.getValueSimple() + " " + high.getUnitsSimple();
     }
 }

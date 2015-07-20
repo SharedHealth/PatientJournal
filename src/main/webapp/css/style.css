@@ -74,7 +74,7 @@ body{
     display:none;
 }
 
-.table-condition, .table-relationship-details, .table-relationship-condition{
+.table-condition{
     min-width:950px;
     margin:25px 10px 10px;
     overflow:hidden;
@@ -146,8 +146,22 @@ body{
 }
 
 .div-family-history{
-    border:2px solid;
+    max-width:950px;
+    border:2px solid #cecece;
     margin:1% 1% 1% 1%
+}
+
+.table-relationship-details, .table-relationship-condition{
+    min-width:950px;
+    margin:0px 10px 10px;
+}
+
+.table-relationship-details, .col-relationship-details{
+    width:250px;
+}
+
+.table-relationship-condition, .col-relationship-condition{
+    width:250px;
 }
 
 .family-history-head, .family-history-subhead{
@@ -161,4 +175,6 @@ body{
 
 .family-history-subhead{
     font-size : 14px;
+    text-align : center;
+    background : #D8D8D8
 }
