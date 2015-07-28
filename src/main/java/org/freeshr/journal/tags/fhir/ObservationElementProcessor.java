@@ -33,36 +33,8 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
 
     private List<Node> executeEncounterBundle(List<Observation> observations) {
         List<Node> nodes = new ArrayList<>();
-
         Element table = new Element("table");
         table.setAttribute("class", "table-observation");
-        Element thead = new Element("thead");
-        table.addChild(thead);
-
-        Element headTr = new Element("tr");
-
-        Element nameTh = new Element("th");
-        nameTh.addChild(new Text("Observation"));
-        nameTh.setAttribute("class", "col-observation");
-        headTr.addChild(nameTh);
-
-        Element valueTh = new Element("th");
-        valueTh.addChild(new Text("Value"));
-        valueTh.setAttribute("class", "col-value");
-        headTr.addChild(valueTh);
-
-        Element interpretationTh = new Element("th");
-        interpretationTh.addChild(new Text("Interpretation"));
-        interpretationTh.setAttribute("class", "col-interpretation");
-        headTr.addChild(interpretationTh);
-
-        Element commentsTh = new Element("th");
-        commentsTh.addChild(new Text("Comments"));
-        commentsTh.setAttribute("class", "col-comments");
-        headTr.addChild(commentsTh);
-
-        thead.addChild(headTr);
-
 
         for (Observation observation : observations) {
             if (isChildObservation(observation, observations)) continue;
@@ -70,7 +42,16 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
             processObservation(observation, observations, 0, tbody);
             table.addChild(tbody);
         }
-        nodes.add(table);
+
+        Element divHead = new Element("div");
+        divHead.setAttribute("class", "div-resource");
+        divHead.addChild(new Text("Observations"));
+        nodes.add(divHead);
+
+        Element divContent = new Element("div");
+        divContent.addChild(table);
+        nodes.add(divContent);
+
         return nodes;
     }
 
@@ -78,30 +59,34 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
         Element tr = new Element("tr");
         tr.setAttribute("class", "level" + depth);
 
-        String name = observation.getName().getCoding().get(0).getDisplaySimple();
+        String name = convertToText(observation.getName());
         Element nameTd = new Element("td");
-        nameTd.setAttribute("class", "col-observation");
         nameTd.addChild(new Text(name));
 
-        String value = convertToText(observation.getValue());
         Element valueTd = new Element("td");
-        valueTd.setAttribute("class", "col-value");
-        valueTd.addChild(new Text(value));
 
-        String interpretation = (observation.getInterpretation() != null) ? observation.getInterpretation().getCoding().get(0).getDisplaySimple() : "";
-        Element interpretationTd = new Element("td");
-        interpretationTd.setAttribute("class", "col-interpretation");
-        interpretationTd.addChild(new Text(interpretation));
-
-        String comments = (observation.getCommentsSimple() != null) ? observation.getCommentsSimple() : "";
-        Element commentsTd = new Element("td");
-        commentsTd.setAttribute("class", "col-comments");
-        commentsTd.addChild(new Text(comments));
+        if (observation.getValue() != null) {
+            Element valueSpan = new Element("span");
+            valueSpan.addChild(new Text(convertToText(observation.getValue())));
+            valueTd.addChild(valueSpan);
+        }
+        if (observation.getInterpretation() != null) {
+            valueTd.addChild(createSpanForTab());
+            valueTd.addChild(createBoldSpanFor("Interpretation:- "));
+            Element interpretationSpan = new Element("span");
+            interpretationSpan.addChild(new Text(convertToText(observation.getInterpretation())));
+            valueTd.addChild(interpretationSpan);
+        }
+        if (observation.getComments() != null) {
+            valueTd.addChild(createSpanForTab());
+            valueTd.addChild(createBoldSpanFor("Comments:- "));
+            Element commentsSpan = new Element("span");
+            commentsSpan.addChild(new Text(observation.getCommentsSimple()));
+            valueTd.addChild(commentsSpan);
+        }
 
         tr.addChild(nameTd);
         tr.addChild(valueTd);
-        tr.addChild(interpretationTd);
-        tr.addChild(commentsTd);
 
         observationBody.addChild(tr);
 
@@ -113,6 +98,20 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
                 processObservation(childObservation, observations, depth, observationBody);
             }
         }
+    }
+
+    private Element createSpanForTab() {
+        Element tabSpan = new Element("span");
+        tabSpan.addChild(new Text("    |    "));
+        return tabSpan;
+    }
+
+    private Element createBoldSpanFor(String key) {
+        Element valueSpan = new Element("span");
+        Element strong = new Element("strong");
+        strong.addChild(new Text(key));
+        valueSpan.addChild(strong);
+        return valueSpan;
     }
 
     private Observation findChildObservation(String referenceSimple, List<Observation> observations) {

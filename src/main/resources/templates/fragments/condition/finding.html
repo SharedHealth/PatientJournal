@@ -5,27 +5,45 @@
 <body>
 <th:block th:fragment="conditions (conditions)">
     <th:block th:if="${!conditions.isEmpty()}">
-        <table class="table-condition" cellpadding="0" cellspacing="0">
-            <tr>
-                <th class="col-condition">Finding</th>
-                <th class="col-status">Status</th>
-                <th class="col-certainty">Certainty</th>
-                <th class="col-severity">Severity</th>
-                <th class="col-onset">Onset</th>
-            </tr>
-
+        <div class="div-resource">Findings</div>
+        <div>
             <th:block th:each="condition: ${conditions}">
-                <th:block th:object="${condition}">
-                    <tr>
-                        <td class="col-condition" fhir:type="*{getCode()}"></td>
-                        <td class="col-status" th:text="*{getStatusSimple()}"></td>
-                        <td class="col-certainty" fhir:type="*{getCertainty()}"></td>
-                        <td class="col-severity" fhir:type="*{getSeverity()}"></td>
-                        <td class="col-onset" fhir:type="*{getOnset()}"></td>
-                    </tr>
-                </th:block>
+                <table>
+                    <th:block th:object="${condition}">
+                        <th:block th:if="*{getCode()} != null">
+                            <tr>
+                                <td class="bolder-text">Finding</td>
+                                <td fhir:type="*{getCode()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getStatusSimple()} != null">
+                            <tr>
+                                <td class="bolder-text">Status</td>
+                                <td th:text="*{getStatusSimple()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getCertainty()} != null">
+                            <tr>
+                                <td class="bolder-text">Certainty</td>
+                                <td fhir:type="*{getCertainty()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getSeverity()} != null">
+                            <tr>
+                                <td class="bolder-text">Severity</td>
+                                <td fhir:type="*{getSeverity()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getOnset()} != null">
+                            <tr>
+                                <td class="bolder-text">Onset</td>
+                                <td fhir:type="*{getOnset()}"></td>
+                            </tr>
+                        </th:block>
+                    </th:block>
+                </table>
             </th:block>
-        </table>
+        </div>
     </th:block>
 </th:block>
 

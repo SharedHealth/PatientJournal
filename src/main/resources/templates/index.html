@@ -16,15 +16,15 @@
             <div class="patient-block-header">Patient Details</div>
             <table th:object="${patient}">
                 <tr>
-                    <th>HealthId</th>
+                    <td class="bolder-text">HealthId</td>
                     <td th:text="*{getHealthId()}"></td>
                 </tr>
                 <tr>
-                    <th>Name</th>
+                    <td class="bolder-text">Name</td>
                     <td th:text="*{getName()}"></td>
                 </tr>
                 <tr>
-                    <th>Gender</th>
+                    <td class="bolder-text">Gender</td>
                     <td th:text="*{getGender()}"></td>
                 </tr>
             </table>
@@ -39,6 +39,11 @@
     <script type="application/javascript">
             $( document ).ready(function() {
                 $("a[data-class='external-ref']").click(fetchExternal);
+                $(".div-resource").click(function () {
+                    $header = $(this);
+                    $content = $header.next();
+                    $content.slideToggle(500)
+                });
             });
 
     </script>

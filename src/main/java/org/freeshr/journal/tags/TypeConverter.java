@@ -5,6 +5,10 @@ import org.freeshr.journal.utils.DateUtil;
 import org.hl7.fhir.instance.model.*;
 import org.hl7.fhir.instance.model.Boolean;
 
+import java.math.BigDecimal;
+import java.util.Arrays;
+import java.util.List;
+
 public class TypeConverter {
 
     private static Logger logger = Logger.getLogger(TypeConverter.class);
@@ -39,6 +43,10 @@ public class TypeConverter {
                 return fromBoolean((Boolean) typeValue);
             if (typeValue.getClass().equals(Range.class))
                 return fromRange((Range) typeValue);
+            if (typeValue.getClass().equals(ResourceReference.class))
+                return fromResourceReference((ResourceReference) typeValue);
+            if (typeValue.getClass().equals(Schedule.class))
+                return fromSchedule((Schedule) typeValue);
         } catch (Exception ex) {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
         }
@@ -86,7 +94,15 @@ public class TypeConverter {
     }
 
     private static String fromQuantity(Quantity typeValue) {
-        return typeValue.getValueSimple() + " " + typeValue.getUnitsSimple();
+        BigDecimal value = typeValue.getValueSimple();
+        String units = typeValue.getUnitsSimple();
+
+        if (value == null) return "";
+
+        if (units != null)
+            return value + " " + units;
+        else
+            return String.valueOf(value);
     }
 
     private static String fromDateTime(DateTime typeValue) {
@@ -105,12 +121,32 @@ public class TypeConverter {
     private static String fromRange(Range typeValue) {
         Quantity low = typeValue.getLow();
         Quantity high = typeValue.getHigh();
-        String lowerRange = (low != null) ? low.getValueSimple() + " " + low.getUnitsSimple() : "";
-        String higherRange = (high != null) ? high.getValueSimple() + " " + high.getUnitsSimple() : "";
+        String lowerRange = (low != null) ? fromQuantity(low) : "";
+        String higherRange = (high != null) ? fromQuantity(high) : "";
         return lowerRange + " - " + higherRange;
     }
 
     private static String fromDateAndTime(DateAndTime value) {
         return DateUtil.toDateString(DateUtil.parseDate(value.toString()), "dd MMM yyyy HH:mm");
     }
+
+    private static String fromResourceReference(ResourceReference typeValue) {
+        return typeValue.getDisplaySimple();
+    }
+
+    private static String fromSchedule(Schedule typeValue) {
+        Schedule.ScheduleRepeatComponent repeat = typeValue.getRepeat();
+        if (repeat == null) return "Improper Schedule";
+        return String.format("%s times in a %s", repeat.getDurationSimple(), getUnitFullName(repeat.getUnitsSimple()));
+    }
+
+    private static String getUnitFullName(Schedule.UnitsOfTime unitsSimple) {
+        List<String> unitKeys = Arrays.asList("s", "min", "h", "d", "wk", "mo", "a");
+        List<String> unitValues = Arrays.asList("second.", "minute.", "hour.", "day.", "week.", "month.", "year.");
+        
+        int index = unitKeys.indexOf(unitsSimple.toCode());
+        return unitValues.get(index);
+    }
+
+
 }

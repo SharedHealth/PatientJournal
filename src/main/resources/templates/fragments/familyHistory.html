@@ -9,43 +9,85 @@
         <th:block th:object="${familyHistory}">
             <th:block th:with="relations=*{getRelation()}">
                 <th:block th:unless="${#lists.isEmpty(relations)}">
+                    <div class="div-resource">Family History</div>
                     <div class="div-family-history">
                         <p th:text="'Relation '+${currentItem.count}" class="family-history-head"></p>
 
                         <p class="family-history-subhead">Relationship Details</p>
-                        <table class="table-relationship-details" cellpadding="0" cellspacing="0">
-                            <thead>
-                                <th class="col-relationship-details">Relation</th>
-                                <th class="col-relationship-details">Name of relation</th>
-                                <th class="col-relationship-details">Born</th>
-                                <th class="col-relationship-details">Deceased</th>
-                                <th class="col-relationship-details">Note</th>
-                            </thead>
-                            <tbody>
-                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getRelationship()}"></td>
-                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getName()}"></td>
-                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getBorn()}"></td>
-                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getDeceased()}"></td>
-                                <td class="col-relationship-details" fhir:type="*{getRelation().get(0).getNote()}"></td>
-                            </tbody>
+                        <table cellpadding="0" cellspacing="0">
+                            <th:block th:with="firstRelation=*{getRelation().get(0)}">
+                                <th:block th:if="${firstRelation.getRelationship()} != null">
+                                    <tr>
+                                        <td class="bolder-text">Relation</td>
+                                        <td
+                                                fhir:type="${firstRelation.getRelationship()}"></td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:if="${firstRelation.getName()} != null">
+                                    <tr>
+                                        <td class="bolder-text">Name of Relation</td>
+                                        <td
+                                                fhir:type="${firstRelation.getName()}"></td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:if="${firstRelation.getBorn()} != null">
+                                    <tr>
+                                        <td class="bolder-text">Born</td>
+                                        <td
+                                                fhir:type="${firstRelation.getBorn()}"></td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:if="${firstRelation.getDeceased()} != null">
+                                    <tr>
+                                        <td class="bolder-text">Deceased</td>
+                                        <td
+                                                fhir:type="${firstRelation.getDeceased()}"></td>
+                                    </tr>
+                                </th:block>
+                                <th:block th:if="${firstRelation.getNote()} != null">
+                                    <tr>
+                                        <td class="bolder-text">Note</td>
+                                        <td
+                                                fhir:type="${firstRelation.getNote()}"></td>
+                                    </tr>
+                                </th:block>
+                            </th:block>
                         </table>
 
                         <th:block th:with="relationConditions=*{getRelation().get(0).getCondition()}">
                             <th:block th:unless="${#lists.isEmpty(relationConditions)}">
                                 <p class="family-history-subhead">Condition</p>
                                 <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
-                                    <thead>
-                                        <th class="col-relationship-condition">Diagnosis</th>
-                                        <th class="col-relationship-condition">Outcome</th>
-                                        <th class="col-relationship-condition">Onset</th>
-                                        <th class="col-relationship-condition">Note</th>
-                                    </thead>
-                                    <tbody>
-                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getType()}"></td>
-                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getOutcome()}"></td>
-                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getOnset()}"></td>
-                                        <td class="col-relationship-condition" fhir:type="${relationConditions.get(0).getNote()}"></td>
-                                    </tbody>
+                                    <th:block th:with="firstCondition=${relationConditions.get(0)}">
+                                        <th:block th:if="${firstCondition.getType()} != null">
+                                            <tr>
+                                                <td class="bolder-text">Diagnosis</td>
+                                                <td
+                                                        fhir:type="${firstCondition.getType()}"></td>
+                                            </tr>
+                                        </th:block>
+                                        <th:block th:if="${firstCondition.getOutcome()} != null">
+                                            <tr>
+                                                <td class="bolder-text">Outcome</td>
+                                                <td
+                                                        fhir:type="${firstCondition.getOutcome()}"></td>
+                                            </tr>
+                                        </th:block>
+                                        <th:block th:if="${firstCondition.getOnset()} != null">
+                                            <tr>
+                                                <td class="bolder-text">Onset</td>
+                                                <td
+                                                        fhir:type="${firstCondition.getOnset()}"></td>
+                                            </tr>
+                                        </th:block>
+                                        <th:block th:if="${firstCondition.getNote()} != null">
+                                            <tr>
+                                                <td class="bolder-text">Note</td>
+                                                <td
+                                                        fhir:type="${firstCondition.getNote()}"></td>
+                                            </tr>
+                                        </th:block>
+                                    </th:block>
                                 </table>
                             </th:block>
                         </th:block>

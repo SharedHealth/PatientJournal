@@ -50,30 +50,35 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveAllConditionOfTypeComplaint() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getComplaintConditions();
-        assertEquals(3, complaintConditions.size());
+        assertEquals(2, complaintConditions.size());
     }
 
     @Test
     public void shouldGiveAllConditionOfTypeDiagnosis() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getDiagnosisConditions();
-        assertEquals(2, complaintConditions.size());
+        assertEquals(1, complaintConditions.size());
     }
 
     @Test
     public void shouldGiveAllConditionOfTypeFinding() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getFindingConditions();
-        assertEquals(0, complaintConditions.size());
+        assertEquals(1, complaintConditions.size());
     }
 
     @Test
     public void shouldGiveAllConditionOfTypeSymptom() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getSymptomConditions();
-        assertEquals(0, complaintConditions.size());
+        assertEquals(1, complaintConditions.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
         List<FamilyHistory> familyHistories = encounterBundleData.getFamilyHistories();
         assertEquals(1, familyHistories.size());
+    }
+    @Test
+    public void shouldGiveAllResourcesOfTypeMedicationPrescription() throws Exception {
+        List<MedicationPrescription> medicationPrescriptions = encounterBundleData.getMedicationPrescriptions();
+        assertEquals(1, medicationPrescriptions.size());
     }
 }

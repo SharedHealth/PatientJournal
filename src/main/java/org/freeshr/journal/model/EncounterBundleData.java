@@ -36,6 +36,10 @@ public class EncounterBundleData {
     public List<FamilyHistory> getFamilyHistories() {
         return getResourceByType(ResourceType.FamilyHistory);
     }
+    
+    public List<MedicationPrescription> getMedicationPrescriptions() {
+        return getResourceByType(ResourceType.MedicationPrescription);
+    }
 
     public List<Condition> getDiagnosisConditions() {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);

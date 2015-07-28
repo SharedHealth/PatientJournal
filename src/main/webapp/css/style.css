@@ -17,6 +17,8 @@ body{
 .healthrecord{
     width: 1000px;
     margin: 0px auto;
+    margin-bottom: 100px;
+    border-bottom: 2px solid;
 }
 .patientid{
     font-size:32px;
@@ -35,6 +37,7 @@ body{
     padding:3px 15px;
     color:#fff;
     font-size:12px;
+    margin-bottom:10px;
 }
 
 .patient-block-header{
@@ -48,59 +51,27 @@ body{
     display:inline-block;
     margin-left:20px;
 }
-.healthrecord table th{
-    font-weight:normal;
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;
-}
-.healthrecord table td{
-    color:#797979;
-    font-size:13px;
-    -webkit-box-sizing:border-box;
-    -moz-box-sizing:border-box;
-    box-sizing:border-box;
-}
-.healthrecord table td,.healthrecord table th{
-    padding:2px 10px;
-    text-align: left;
-}
-.table-visit{
-    margin:10px 8px;
-    min-width:700px;
-}
 
-.table-visit .serviceProvider{
-    display:none;
-}
-
-.table-condition{
+.healthrecord table{
     min-width:950px;
     margin:25px 10px 10px;
     overflow:hidden;
 }
 
-.table-condition td:first-child{
-    width:300px;
-    padding-right:40px;
+.healthrecord table td{
+    color:#797979;
+    font-size:14px;
+    -webkit-box-sizing:border-box;
+    -moz-box-sizing:border-box;
+    box-sizing:border-box;
+}
+.healthrecord table td{
+    padding:2px 10px;
+    text-align: left;
 }
 
-.table-condition .col-condition{
-    width:35%;
-}
-
-.table-condition .col-onset{
-    width:20%;
-}
-
-.table-condition .col-severity,.table-condition .col-certainty,.table-condition .col-status{
-    width:15%;
-}
-
-.table-observation{
-    min-width:950px;
-    margin:25px 10px 10px;
-    border:1px solid #cecece;
+.healthrecord table tr td{
+    border:1px solid;
 }
 
 .table-observation .level0 td{
@@ -132,36 +103,11 @@ body{
 .table-observation > tbody:first-of-type tr:first-child td{
     padding-top:8px;
 }
-.table-observation .col-observation{
-    width:25%;
-}
-.table-observation .col-value{
-    width:35%;
-}
-.table-observation .col-interpretation{
-    width:20%;
-}
-.table-observation .col-comments{
-    width:20%;
-}
 
 .div-family-history{
-    max-width:950px;
+    max-width:1000px;
     border:2px solid #cecece;
     margin:1% 1% 1% 1%
-}
-
-.table-relationship-details, .table-relationship-condition{
-    min-width:950px;
-    margin:0px 10px 10px;
-}
-
-.table-relationship-details, .col-relationship-details{
-    width:250px;
-}
-
-.table-relationship-condition, .col-relationship-condition{
-    width:250px;
 }
 
 .family-history-head, .family-history-subhead{
@@ -177,4 +123,17 @@ body{
     font-size : 14px;
     text-align : center;
     background : #D8D8D8
+}
+
+.div-resource{
+    margin:1%;
+}
+
+.div-resource + div{
+    display:none
+}
+
+table .bolder-text{
+    font-weight : bolder;
+    width:30%;
 }
