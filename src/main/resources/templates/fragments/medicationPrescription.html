@@ -15,7 +15,12 @@
                             <th:block th:if="*{getPrescriber()} != null">
                                 <tr>
                                     <td class="bolder-text">Prescriber</td>
-                                    <td fhir:type="*{getPrescriber()}"></td>
+                                    <td>
+                                        <a data-class="external-ref" data-ref-element-class="provider"
+                                           th:href="*{getPrescriber().getReferenceSimple()}">Click here to view
+                                            Prescriber</a>
+                                        <div class="provider"></div>
+                                    </td>
                                 </tr>
                             </th:block>
                             <th:block th:if="*{getReason()} != null">

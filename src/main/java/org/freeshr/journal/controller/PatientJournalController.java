@@ -4,10 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.*;
-import org.freeshr.journal.service.EncounterService;
-import org.freeshr.journal.service.FacilityService;
-import org.freeshr.journal.service.IdentityService;
-import org.freeshr.journal.service.PatientService;
+import org.freeshr.journal.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -47,8 +44,10 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
     private FacilityService facilityService;
 
     @Autowired
-    private IdentityService identityService;
+    private ProviderService providerService;
 
+    @Autowired
+    private IdentityService identityService;
     @Autowired
     private PatientService patientService;
 
@@ -186,6 +185,11 @@ public class PatientJournalController extends WebMvcConfigurerAdapter {
             String message = String.format("Fetch Facility request for url [%s]", decodedRef);
             logger.info(String.format("ACCESS: USER=%s EMAIL=%s ACTION=%s", userInfo.getId(), userInfo.getEmail(), message));
             return new ExternalRef("facility", "facility", facilityService.getFacility(decodedRef));
+        }
+        if (decodedRef.startsWith(applicationProperties.getProviderRegistryUrl())) {
+            String message = String.format("Fetch Provider request for url [%s]", decodedRef);
+            logger.info(String.format("ACCESS: USER=%s EMAIL=%s ACTION=%s", userInfo.getId(), userInfo.getEmail(), message));
+            return new ExternalRef("provider", "provider", providerService.getProvider(decodedRef));
         }
         throw new RuntimeException(String.format("Can not handle external reference %s", decodedRef));
     }

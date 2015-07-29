@@ -10,6 +10,7 @@
             <div class="div-resource-container">
                 <span class="span-exp-col">+</span>
                 <span class="div-resource-head">Encounter Details</span>
+
                 <div class="div-resource-content">
                     <table cellpadding="0" cellspacing="0">
                         <tr>
@@ -43,8 +44,13 @@
                             <th:block th:unless="${#lists.isEmpty(participants)}">
                                 <tr>
                                     <td class="bolder-text">Providers</td>
-                                    <td th:each="participant: ${participants}">
-                                        <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
+                                    <td>
+                                        <th:block th:if="${participants.get(0).getIndividual()} != null">
+                                            <a data-class="external-ref" data-ref-element-class="provider"
+                                               th:href="${participants.get(0).getIndividual().getReferenceSimple()}">Click here to view
+                                                Provider</a>
+                                            <div class="provider"></div>
+                                        </th:block>
                                     </td>
                                 </tr>
                             </th:block>

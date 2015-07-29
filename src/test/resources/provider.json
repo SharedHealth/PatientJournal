@@ -1,0 +1,49 @@
+{
+  "name": "Md. Al-Amin",
+  "url": "http://hrmtest.dghs.gov.bd/api/1.0/providers/113024.json",
+  "id": 113024,
+  "active": 1,
+  "createdAt": "2014-12-17 13:39:09",
+  "updatedAt": "2014-12-20 05:35:01",
+  "birthDate": "1991-03-01",
+  "gender": "Male",
+  "organization": {
+    "reference": "http://hrmtest.dghs.gov.bd/api/1.0/facilities/10002085.json",
+    "display": "Lakhai Upazila Health Complex"
+  },
+  "identifiers": [
+    {
+      "system": "DGHS",
+      "value": 113024
+    },
+    {
+      "system": "NationalId",
+      "value": "19913616840000351"
+    },
+    {
+      "system": "PDS",
+      "value": ""
+    }
+  ],
+  "telecom": [
+    {
+      "system": "phone",
+      "value": "01744912186"
+    },
+    {
+      "system": "email",
+      "value": "al-amin71@yahoo.com"
+    }
+  ],
+  "address": {
+    "text": "UHC Lakhai,Habiganj."
+  },
+  "properties": {
+    "postingOption": "Against Sanctioned Post ",
+    "maritalStatus": "Unmarried",
+    "qualification": "HSC",
+    "category": "Field Staff",
+    "discipline": null,
+    "department": null
+  }
+}

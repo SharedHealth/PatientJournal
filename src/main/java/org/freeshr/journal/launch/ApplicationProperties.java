@@ -31,6 +31,9 @@ public class ApplicationProperties {
     @Value("${FACILITY_REGISTRY_URL}")
     private String facilityRegistryUrl;
 
+    @Value("${PROVIDER_REGISTRY_URL}")
+    private String providerRegistryUrl;
+
     @Value("${SESSION_TIMEOUT_SECONDS}")
     private String sessionTimeoutInSeconds;
 
@@ -47,6 +50,10 @@ public class ApplicationProperties {
 
     public String getFacilityRegistryUrl() {
         return StringUtil.ensureSuffix(facilityRegistryUrl, URL_SEPERATOR);
+    }
+
+    public String getProviderRegistryUrl() {
+        return StringUtil.ensureSuffix(providerRegistryUrl, URL_SEPERATOR);
     }
 
     public String getIdentityServerLoginUrl() {
