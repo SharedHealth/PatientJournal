@@ -7,46 +7,50 @@
 <th:block th:fragment="encounters (encounters)">
     <th:block th:each="encounter: ${encounters}">
         <th:block th:object="${encounter}">
-            <div class="div-resource">Encounter Details</div>
-            <div>
-                <table cellpadding="0" cellspacing="0">
-                    <tr>
-                        <td class="bolder-text">Visit Type</td>
-                        <td th:text="*{getClass_Simple()}"></td>
-                    </tr>
-                    <th:block th:with="types=*{getType()}">
-                        <th:block th:unless="${#lists.isEmpty(types)}">
-                            <tr>
-                                <td class="bolder-text">Encounter Type</td>
-                                <td th:each="type: ${types}">
-                                    <div th:text="${type.getTextSimple()}"></div>
-                                </td>
-                            </tr>
-                        </th:block>
-                    </th:block>
-                    <th:block th:if="*{getServiceProvider()} != null">
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Encounter Details</span>
+                <div class="div-resource-content">
+                    <table cellpadding="0" cellspacing="0">
                         <tr>
-                            <td class="bolder-text">Facility</td>
-                            <td>
-                                <a data-class="external-ref" data-ref-element-class="serviceProvider"
-                                   th:href="*{getServiceProvider().getReferenceSimple()}">Click here to view Provider
-                                    Facility</a>
-
-                                <div class="serviceProvider"></div>
-                            </td>
+                            <td class="bolder-text">Visit Type</td>
+                            <td th:text="*{getClass_Simple()}"></td>
                         </tr>
-                    </th:block>
-                    <th:block th:with="participants=*{getParticipant()}">
-                        <th:block th:unless="${#lists.isEmpty(participants)}">
+                        <th:block th:with="types=*{getType()}">
+                            <th:block th:unless="${#lists.isEmpty(types)}">
+                                <tr>
+                                    <td class="bolder-text">Encounter Type</td>
+                                    <td th:each="type: ${types}">
+                                        <div th:text="${type.getTextSimple()}"></div>
+                                    </td>
+                                </tr>
+                            </th:block>
+                        </th:block>
+                        <th:block th:if="*{getServiceProvider()} != null">
                             <tr>
-                                <td class="bolder-text">Providers</td>
-                                <td th:each="participant: ${participants}">
-                                    <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
+                                <td class="bolder-text">Facility</td>
+                                <td>
+                                    <a data-class="external-ref" data-ref-element-class="serviceProvider"
+                                       th:href="*{getServiceProvider().getReferenceSimple()}">Click here to view
+                                        Provider
+                                        Facility</a>
+
+                                    <div class="serviceProvider"></div>
                                 </td>
                             </tr>
                         </th:block>
-                    </th:block>
-                </table>
+                        <th:block th:with="participants=*{getParticipant()}">
+                            <th:block th:unless="${#lists.isEmpty(participants)}">
+                                <tr>
+                                    <td class="bolder-text">Providers</td>
+                                    <td th:each="participant: ${participants}">
+                                        <div th:text="${participant.getIndividual().getDisplaySimple()}?: ' '"></div>
+                                    </td>
+                                </tr>
+                            </th:block>
+                        </th:block>
+                    </table>
+                </div>
             </div>
         </th:block>
     </th:block>

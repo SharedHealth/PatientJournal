@@ -5,62 +5,64 @@
 <body>
 <th:block th:fragment="medicationPrescriptions (medicationPrescriptions)">
     <th:block th:unless="${#lists.isEmpty(medicationPrescriptions)}">
-        <div class="div-resource">Medication Prescriptions</div>
-        <div>
-            <th:block th:each="medicationPrescription: ${medicationPrescriptions}">
-                <th:block th:object="${medicationPrescription}">
-                    <table cellpadding="0" cellspacing="0">
-                        <th:block th:if="*{getPrescriber()} != null">
-                            <tr>
-                                <td class="bolder-text">Prescriber</td>
-                                <td fhir:type="*{getPrescriber()}"></td>
-                            </tr>
-                        </th:block>
-                        <th:block th:if="*{getReason()} != null">
-                            <tr>
-                                <td class="bolder-text">Reason</td>
-                                <td fhir:type="*{getReason()}"></td>
-                            </tr>
-                        </th:block>
-                        <th:block th:if="*{getMedication()} != null">
-                            <tr>
-                                <td class="bolder-text">Medication</td>
-                                <td fhir:type="*{getMedication()}"></td>
-                            </tr>
-                        </th:block>
-                        <th:block th:with="dosageInstructions=*{getDosageInstruction()}">
-                            <th:block th:unless="${#lists.isEmpty(dosageInstructions)}">
+        <div class="div-resource-container">
+            <span class="span-exp-col">+</span>
+            <span class="div-resource-head">Medication Prescriptions</span>
+            <div class="div-resource-content">
+                <th:block th:each="medicationPrescription: ${medicationPrescriptions}">
+                    <th:block th:object="${medicationPrescription}">
+                        <table cellpadding="0" cellspacing="0">
+                            <th:block th:if="*{getPrescriber()} != null">
                                 <tr>
-                                    <td class="bolder-text">Dosage</td>
-                                    <td th:each="dosageInstruction: ${dosageInstructions}">
-                                        <th:block th:if="${dosageInstruction.getTiming()} != null">
-                                            <span><strong>Timing:-</strong></span>
-                                            <span fhir:type="${dosageInstruction.getTiming()}"></span>
-                                        </th:block>
-                                        <th:block th:if="${dosageInstruction.getRoute()} != null">
-                                            <span>&nbsp;|&nbsp;</span>
-                                            <span><strong>Route:-</strong></span>
-                                            <span fhir:type="${dosageInstruction.getRoute()}"></span>
-                                        </th:block>
-                                        <th:block th:if="${dosageInstruction.getMethod()} != null">
-                                            <span>&nbsp;|&nbsp;</span>
-                                            <span><strong>Method:-</strong></span>
-                                            <span fhir:type="${dosageInstruction.getMethod()}"></span>
-                                        </th:block>
-                                        <th:block th:if="${dosageInstruction.getDoseQuantity()} != null">
-                                            <span>&nbsp;|&nbsp;</span>
-                                            <span><strong>Dose Quantity:-</strong></span>
-                                            <span fhir:type="${dosageInstruction.getDoseQuantity()}"></span>
-                                        </th:block>
-                                    </td>
+                                    <td class="bolder-text">Prescriber</td>
+                                    <td fhir:type="*{getPrescriber()}"></td>
                                 </tr>
                             </th:block>
-                        </th:block>
-                    </table>
+                            <th:block th:if="*{getReason()} != null">
+                                <tr>
+                                    <td class="bolder-text">Reason</td>
+                                    <td fhir:type="*{getReason()}"></td>
+                                </tr>
+                            </th:block>
+                            <th:block th:if="*{getMedication()} != null">
+                                <tr>
+                                    <td class="bolder-text">Medication</td>
+                                    <td fhir:type="*{getMedication()}"></td>
+                                </tr>
+                            </th:block>
+                            <th:block th:with="dosageInstructions=*{getDosageInstruction()}">
+                                <th:block th:unless="${#lists.isEmpty(dosageInstructions)}">
+                                    <tr>
+                                        <td class="bolder-text">Dosage</td>
+                                        <td th:each="dosageInstruction: ${dosageInstructions}">
+                                            <th:block th:if="${dosageInstruction.getTiming()} != null">
+                                                <span><strong>Timing:-</strong></span>
+                                                <span fhir:type="${dosageInstruction.getTiming()}"></span>
+                                            </th:block>
+                                            <th:block th:if="${dosageInstruction.getRoute()} != null">
+                                                <span>&nbsp;|&nbsp;</span>
+                                                <span><strong>Route:-</strong></span>
+                                                <span fhir:type="${dosageInstruction.getRoute()}"></span>
+                                            </th:block>
+                                            <th:block th:if="${dosageInstruction.getMethod()} != null">
+                                                <span>&nbsp;|&nbsp;</span>
+                                                <span><strong>Method:-</strong></span>
+                                                <span fhir:type="${dosageInstruction.getMethod()}"></span>
+                                            </th:block>
+                                            <th:block th:if="${dosageInstruction.getDoseQuantity()} != null">
+                                                <span>&nbsp;|&nbsp;</span>
+                                                <span><strong>Dose Quantity:-</strong></span>
+                                                <span fhir:type="${dosageInstruction.getDoseQuantity()}"></span>
+                                            </th:block>
+                                        </td>
+                                    </tr>
+                                </th:block>
+                            </th:block>
+                        </table>
+                    </th:block>
                 </th:block>
-            </th:block>
+            </div>
         </div>
-
     </th:block>
 </th:block>
 

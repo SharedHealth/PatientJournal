@@ -5,7 +5,9 @@
 <body>
 <th:block th:fragment="observations (observations)">
     <th:block th:object="${observations}">
-        <fhir:observation></fhir:observation>
+        <div class="div-resource-container">
+            <fhir:observation></fhir:observation>
+        </div>
     </th:block>
 </th:block>
 </body>

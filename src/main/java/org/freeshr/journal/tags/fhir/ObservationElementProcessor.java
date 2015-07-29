@@ -42,13 +42,18 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
             processObservation(observation, observations, 0, tbody);
             table.addChild(tbody);
         }
+        Element collapseExpandSpan = new Element("span");
+        collapseExpandSpan.setAttribute("class", "span-exp-col");
+        collapseExpandSpan.addChild(new Text("+"));
+        nodes.add(collapseExpandSpan);
 
-        Element divHead = new Element("div");
-        divHead.setAttribute("class", "div-resource");
-        divHead.addChild(new Text("Observations"));
-        nodes.add(divHead);
+        Element span = new Element("span");
+        span.setAttribute("class", "div-resource-head");
+        span.addChild(new Text(" Observations"));
+        nodes.add(span);
 
         Element divContent = new Element("div");
+        divContent.setAttribute("class", "div-resource-content");
         divContent.addChild(table);
         nodes.add(divContent);
 
@@ -61,6 +66,7 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
 
         String name = convertToText(observation.getName());
         Element nameTd = new Element("td");
+        nameTd.setAttribute("class","bolder-text");
         nameTd.addChild(new Text(name));
 
         Element valueTd = new Element("td");

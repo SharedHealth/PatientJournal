@@ -6,10 +6,14 @@
     <link rel="stylesheet" href="/css/style.css"/>
     <script src="/scripts/jquery-2.1.3.min.js"/>
     <script src="/scripts/external-ref.js"/>
+    <script src="/scripts/resource-toggle.js"/>
 </head>
 <body>
 
-<a th:href="@{/logout}"><button class="logout">Logout</button></a>
+<a th:href="@{/logout}">
+    <button class="logout">Logout</button>
+</a>
+
 <div class="healthrecord">
     <div class="patientDetails">
         <section class="patient-block">
@@ -30,23 +34,18 @@
             </table>
         </section>
     </div>
-        <section class="block" th:each="bundleData: ${encounterBundlesData}">
-            <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
-        </section>
-    </div>
+    <section class="block" th:each="bundleData: ${encounterBundlesData}">
+        <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
+    </section>
+</div>
 
 
-    <script type="application/javascript">
+<script type="application/javascript">
             $( document ).ready(function() {
                 $("a[data-class='external-ref']").click(fetchExternal);
-                $(".div-resource").click(function () {
-                    $header = $(this);
-                    $content = $header.next();
-                    $content.slideToggle(500)
-                });
+                $(".span-exp-col").click(toggleResourceContents);
             });
-
-    </script>
+</script>
 
 </body>
 </html>

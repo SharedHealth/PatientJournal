@@ -36,7 +36,7 @@ body{
     background:#029590;
     padding:3px 15px;
     color:#fff;
-    font-size:12px;
+    font-size:14px;
     margin-bottom:10px;
 }
 
@@ -125,12 +125,23 @@ body{
     background : #D8D8D8
 }
 
-.div-resource{
-    margin:1%;
+.div-resource-content{
+    display:none;
+    padding-left:20px;
 }
 
-.div-resource + div{
-    display:none
+.div-resource-container{
+    padding-bottom:1%;
+}
+
+.span-exp-col{
+    cursor:pointer;
+    border: 1px solid;
+    font-size: 13px;
+    padding: 0px 2px 0px 2px;
+    text-align:center;
+    width:15px;
+    display:inline-block;
 }
 
 table .bolder-text{
