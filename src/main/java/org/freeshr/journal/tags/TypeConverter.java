@@ -115,7 +115,7 @@ public class TypeConverter {
     }
 
     private static String fromBoolean(Boolean typeValue) {
-        return typeValue.getStringValue();
+        return "true".equals(typeValue.getStringValue()) ? "yes" : "no";
     }
 
     private static String fromRange(Range typeValue) {

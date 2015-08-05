@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="immunizations (immunizations)">
+    <th:block th:each="immunization,currentItem: ${immunizations}">
+        <th:block th:object="${immunization}">
+        <div class="div-resource-container">
+            <span class="span-exp-col">+</span>
+            <span class="div-resource-head">Immunization</span>
+
+            <div class="div-resource-content">
+                <table cellpadding="0" cellspacing="0">
+                    <tr th:if="*{getDate()} != null">
+                        <td class="bolder-text">Vaccination Date</td>
+                        <td fhir:type="*{getDate()}"></td>
+                    </tr>
+                    <tr th:if="*{getVaccineType()} != null">
+                        <td class="bolder-text">Vaccine</td>
+                        <td fhir:type="*{getVaccineType()}"></td>
+                    </tr>
+                    <tr th:if="*{getReported()} != null">
+                        <td class="bolder-text">Vaccination Reported</td>
+                        <td fhir:type="*{getReported()}"></td>
+                    </tr>
+                    <th:block th:with="explanation=*{getExplanation()}">
+                    <tr th:if="${explanation.getReason()} != null" th:each="reason : ${explanation.getReason()}">
+                        <td class="bolder-text">Vaccination Reason</td>
+                        <td fhir:type="${reason}"></td>
+                    </tr>
+                    <tr th:if="*{getRefusedIndicator()} != null">
+                        <td class="bolder-text">Vaccination Refused</td>
+                        <td fhir:type="*{getRefusedIndicator()}"></td>
+                    </tr>
+                    <tr th:if="${explanation.getReason()} != null" th:each="refusalReason : ${explanation.getRefusalReason()}">
+                        <td class="bolder-text">Refusal reason</td>
+                        <td fhir:type="${refusalReason}"></td>
+                    </tr>
+                    </th:block>
+                </table>
+            </div>
+        </div>
+        </th:block>
+    </th:block>
+</th:block>
+</body>
+</html>
