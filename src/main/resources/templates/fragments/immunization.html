@@ -25,18 +25,22 @@
                         <td fhir:type="*{getReported()}"></td>
                     </tr>
                     <th:block th:with="explanation=*{getExplanation()}">
-                    <tr th:if="${explanation.getReason()} != null" th:each="reason : ${explanation.getReason()}">
-                        <td class="bolder-text">Vaccination Reason</td>
-                        <td fhir:type="${reason}"></td>
-                    </tr>
+                        <th:block th:if="${explanation != null and explanation.getReason() != null}">
+                             <tr th:each="reason : ${explanation.getReason()}">
+                                <td class="bolder-text">Vaccination Reason</td>
+                                <td fhir:type="${reason}"></td>
+                            </tr>
+                        </th:block>
                     <tr th:if="*{getRefusedIndicator()} != null">
                         <td class="bolder-text">Vaccination Refused</td>
                         <td fhir:type="*{getRefusedIndicator()}"></td>
                     </tr>
-                    <tr th:if="${explanation.getReason()} != null" th:each="refusalReason : ${explanation.getRefusalReason()}">
-                        <td class="bolder-text">Refusal reason</td>
-                        <td fhir:type="${refusalReason}"></td>
-                    </tr>
+                        <th:block th:if="${explanation != null and explanation.getRefusalReason() != null}">
+                            <tr th:each="refusalReason : ${explanation.getRefusalReason()}">
+                                <td class="bolder-text">Refusal reason</td>
+                                <td fhir:type="${refusalReason}"></td>
+                            </tr>
+                        </th:block>
                     </th:block>
                 </table>
             </div>
