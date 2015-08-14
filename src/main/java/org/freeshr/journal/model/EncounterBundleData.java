@@ -93,4 +93,8 @@ public class EncounterBundleData {
         }
         return resources;
     }
+
+    public List<DiagnosticOrder> getDiagnosticOrder() {
+        return getResourceByType(ResourceType.DiagnosticOrder);
+    }
 }

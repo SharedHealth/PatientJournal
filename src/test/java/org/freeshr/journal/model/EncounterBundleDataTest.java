@@ -81,4 +81,14 @@ public class EncounterBundleDataTest {
         List<MedicationPrescription> medicationPrescriptions = encounterBundleData.getMedicationPrescriptions();
         assertEquals(1, medicationPrescriptions.size());
     }
+
+    @Test
+    public void shouldGiveAllResourcesOfTypeDiagnosticOrder() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticOrder.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<DiagnosticOrder> diagnosticOrders = encounterBundleData.getDiagnosticOrder();
+        assertEquals(1, diagnosticOrders.size());
+    }
 }
