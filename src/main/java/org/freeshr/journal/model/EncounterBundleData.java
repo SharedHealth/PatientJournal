@@ -41,7 +41,7 @@ public class EncounterBundleData {
         return getResourceByType(ResourceType.MedicationPrescription);
     }
 
-    public List<Condition> getImmunizations() {
+    public List<Immunization> getImmunizations() {
         return getResourceByType(ResourceType.Immunization);
     }
 
