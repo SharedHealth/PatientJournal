@@ -32,6 +32,7 @@ public class EncounterBundlesData {
             EncounterBundle encounterBundle = new EncounterBundle();
             String entryContent = getEntryContent(entry);
             AtomFeed encounterFeed = getResourceOrFeed(entryContent).getFeed();
+            encounterBundle.addFeed(encounterFeed);
             for (AtomEntry<? extends Resource> atomEntry : encounterFeed.getEntryList()) {
                 encounterBundle.addResource(atomEntry.getResource());
             }

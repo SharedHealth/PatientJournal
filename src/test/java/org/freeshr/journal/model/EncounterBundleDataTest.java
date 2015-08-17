@@ -75,7 +75,11 @@ public class EncounterBundleDataTest {
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
         List<FamilyHistory> familyHistories = encounterBundleData.getFamilyHistories();
         assertEquals(1, familyHistories.size());
+        for (FamilyHistory familyHistory : familyHistories) {
+            CodeableConcept relationship = familyHistory.getRelation().get(0).getRelationship();
+        }
     }
+
     @Test
     public void shouldGiveAllResourcesOfTypeMedicationPrescription() throws Exception {
         List<MedicationPrescription> medicationPrescriptions = encounterBundleData.getMedicationPrescriptions();
@@ -83,12 +87,14 @@ public class EncounterBundleDataTest {
     }
 
     @Test
-    public void shouldGiveAllResourcesOfTypeDiagnosticOrder() throws Exception {
+    public void shouldGiveListOfAllTestsWithProperDetails() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticOrder.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 
-        List<DiagnosticOrder> diagnosticOrders = encounterBundleData.getDiagnosticOrder();
-        assertEquals(1, diagnosticOrders.size());
+        List<TestOrder> testOrders = encounterBundleData.getTestOrders();
+        assertEquals(3, testOrders.size());
+        assertEquals("http://hrmtest.dghs.gov.bd/api/1.0/providers/113073.json", testOrders.get(0).getOrderer().getReferenceSimple());
+        assertEquals("Bld", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplaySimple());
     }
 }

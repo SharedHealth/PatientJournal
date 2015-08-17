@@ -1,0 +1,48 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="testOrders (testOrders)">
+    <th:block th:each="testOrder,currentItem: ${testOrders}">
+        <th:block th:object="${testOrder}">
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Test Order</span>
+
+                <div class="div-resource-content">
+                    <!--<th:block th:each="item,currentItem: ${diagnosticOrder.getItem()}">-->
+                        <p th:text="'Test Order '+${currentItem.count} " class="diagnostic-orders-subhead"></p>
+                        <table cellpadding="0" cellspacing="0">
+                            <tr>
+                                <td class="bolder-text">Test</td>
+                                <td fhir:type="${testOrder.getItem()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="bolder-text">Sample</td>
+                                <td fhir:type="${testOrder.getSample().getType()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="bolder-text">Orderer</td>
+                                <td>
+                                    <th:block th:if="${testOrder.getOrderer()} != null">
+                                        <a data-class="external-ref" data-ref-element-class="provider"
+                                           th:href="${testOrder.getOrderer().getReferenceSimple()}">Click here to
+                                            view orderer</a>
+
+                                        <div class="provider"></div>
+                                    </th:block>
+                                </td>
+                            </tr>
+                        </table>
+
+                    <!--</th:block>-->
+                </div>
+
+
+            </div>
+        </th:block>
+    </th:block>
+</th:block>
+
+</body>
+</html>

@@ -120,6 +120,7 @@ body{
 }
 
 .family-history-subhead{
+
     font-size : 14px;
     text-align : center;
     background : #D8D8D8
@@ -132,6 +133,14 @@ body{
 
 .div-resource-container{
     padding-bottom:1%;
+}
+
+.diagnostic-orders-subhead{
+    font-weight:bold;
+    padding-left:2%;
+    font-size : 14px;
+    text-align : center;
+    background : #D8D8D8
 }
 
 .span-exp-col{

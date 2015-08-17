@@ -85,6 +85,23 @@ public class EncounterBundleData {
         return symptom;
     }
 
+    public List<TestOrder> getTestOrders() {
+        List<DiagnosticOrder> diagnosticOrders = getResourceByType(ResourceType.DiagnosticOrder);
+        ArrayList<TestOrder> testOrders = new ArrayList<>();
+        for (DiagnosticOrder diagnosticOrder : diagnosticOrders) {
+            for (DiagnosticOrder.DiagnosticOrderItemComponent diagnosticOrderItemComponent : diagnosticOrder.getItem()) {
+                TestOrder testOrder = new TestOrder();
+                testOrder.setItem(diagnosticOrderItemComponent.getCode());
+                testOrder.setOrderer(diagnosticOrder.getOrderer());
+                List<ResourceReference> specimenReference = diagnosticOrderItemComponent.getSpecimen();
+                Specimen specimen = getResourceByReference(specimenReference.get(0));
+                testOrder.setSample(specimen);
+                testOrders.add(testOrder);
+            }
+        }
+        return testOrders;
+    }
+
     private <T extends Resource> List<T> getResourceByType(ResourceType resourceType) {
         List<T> resources = new ArrayList<>();
         for (Resource resource : encounterBundle.getResources()) {
@@ -94,7 +111,12 @@ public class EncounterBundleData {
         return resources;
     }
 
-    public List<DiagnosticOrder> getDiagnosticOrder() {
-        return getResourceByType(ResourceType.DiagnosticOrder);
+    private <T extends Resource> T getResourceByReference(ResourceReference resourceReference) {
+        List<T> resources = new ArrayList<>();
+        for (AtomEntry<? extends Resource> atomEntry : encounterBundle.getEncounterFeed().getEntryList()) {
+          if (resourceReference.getReferenceSimple().equals(atomEntry.getId()))
+              return (T) atomEntry.getResource();
+        }
+        return null;
     }
 }
