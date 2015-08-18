@@ -90,18 +90,27 @@ public class EncounterBundleData {
         ArrayList<TestOrder> testOrders = new ArrayList<>();
         for (DiagnosticOrder diagnosticOrder : diagnosticOrders) {
             for (DiagnosticOrder.DiagnosticOrderItemComponent diagnosticOrderItemComponent : diagnosticOrder.getItem()) {
-                TestOrder testOrder = new TestOrder();
-                testOrder.setItem(diagnosticOrderItemComponent.getCode());
-                testOrder.setOrderer(diagnosticOrder.getOrderer());
-                List<ResourceReference> specimenReference = diagnosticOrderItemComponent.getSpecimen();
-                if (!specimenReference.isEmpty()) {
-                    Specimen specimen = getResourceByReference(specimenReference.get(0));
-                    testOrder.setSample(specimen);
-                }
+                TestOrder testOrder = setTestOrderDetails(diagnosticOrder, diagnosticOrderItemComponent);
                 testOrders.add(testOrder);
             }
         }
         return testOrders;
+    }
+
+    private TestOrder setTestOrderDetails(DiagnosticOrder diagnosticOrder, DiagnosticOrder.DiagnosticOrderItemComponent diagnosticOrderItemComponent) {
+        TestOrder testOrder = new TestOrder();
+        testOrder.setItem(diagnosticOrderItemComponent.getCode());
+        testOrder.setOrderer(diagnosticOrder.getOrderer());
+        List<ResourceReference> specimenReference = diagnosticOrderItemComponent.getSpecimen();
+        setSample(testOrder, specimenReference);
+        return testOrder;
+    }
+
+    private void setSample(TestOrder testOrder, List<ResourceReference> specimenReference) {
+        if (!specimenReference.isEmpty()) {
+            Specimen specimen = getResourceByReference(specimenReference.get(0));
+            testOrder.setSample(specimen);
+        }
     }
 
     private <T extends Resource> List<T> getResourceByType(ResourceType resourceType) {
