@@ -10,32 +10,33 @@
                 <span class="div-resource-head">Test Order</span>
 
                 <div class="div-resource-content">
-                    <!--<th:block th:each="item,currentItem: ${diagnosticOrder.getItem()}">-->
-                        <p th:text="'Test Order '+${currentItem.count} " class="diagnostic-orders-subhead"></p>
-                        <table cellpadding="0" cellspacing="0">
-                            <tr>
-                                <td class="bolder-text">Test</td>
-                                <td fhir:type="${testOrder.getItem()}"></td>
-                            </tr>
+                    <p th:text="'Test Order '+${currentItem.count} " class="diagnostic-orders-subhead"></p>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="bolder-text">Test</td>
+                            <td fhir:type="${testOrder.getItem()}"></td>
+                        </tr>
+                        <th:block th:if="${testOrder.getSample()} != null">
                             <tr>
                                 <td class="bolder-text">Sample</td>
                                 <td fhir:type="${testOrder.getSample().getType()}"></td>
                             </tr>
+                        </th:block>
+                        <th:block th:if="${testOrder.getOrderer()} != null">
                             <tr>
                                 <td class="bolder-text">Orderer</td>
                                 <td>
-                                    <th:block th:if="${testOrder.getOrderer()} != null">
-                                        <a data-class="external-ref" data-ref-element-class="provider"
-                                           th:href="${testOrder.getOrderer().getReferenceSimple()}">Click here to
-                                            view orderer</a>
+                                    <a data-class="external-ref" data-ref-element-class="provider"
+                                       th:href="${testOrder.getOrderer().getReferenceSimple()}">Click here to
+                                        view orderer</a>
 
-                                        <div class="provider"></div>
-                                    </th:block>
+                                    <div class="provider"></div>
                                 </td>
                             </tr>
-                        </table>
+                        </th:block>
 
-                    <!--</th:block>-->
+                    </table>
+
                 </div>
 
 

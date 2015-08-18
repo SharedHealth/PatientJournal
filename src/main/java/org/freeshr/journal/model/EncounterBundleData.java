@@ -36,7 +36,7 @@ public class EncounterBundleData {
     public List<FamilyHistory> getFamilyHistories() {
         return getResourceByType(ResourceType.FamilyHistory);
     }
-    
+
     public List<MedicationPrescription> getMedicationPrescriptions() {
         return getResourceByType(ResourceType.MedicationPrescription);
     }
@@ -49,7 +49,7 @@ public class EncounterBundleData {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
         List<Condition> diagnosis = new ArrayList<>();
         for (Condition condition : resourceByType) {
-            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("diagnosis"))
+            if (condition.getCategory().getCoding().get(0).getCodeSimple().equals("diagnosis"))
                 diagnosis.add(condition);
         }
         return diagnosis;
@@ -59,7 +59,7 @@ public class EncounterBundleData {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
         List<Condition> complaint = new ArrayList<>();
         for (Condition condition : resourceByType) {
-            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("complaint"))
+            if (condition.getCategory().getCoding().get(0).getCodeSimple().equals("complaint"))
                 complaint.add(condition);
         }
         return complaint;
@@ -69,7 +69,7 @@ public class EncounterBundleData {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
         List<Condition> finding = new ArrayList<>();
         for (Condition condition : resourceByType) {
-            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("finding"))
+            if (condition.getCategory().getCoding().get(0).getCodeSimple().equals("finding"))
                 finding.add(condition);
         }
         return finding;
@@ -79,7 +79,7 @@ public class EncounterBundleData {
         List<Condition> resourceByType = getResourceByType(ResourceType.Condition);
         List<Condition> symptom = new ArrayList<>();
         for (Condition condition : resourceByType) {
-            if(condition.getCategory().getCoding().get(0).getCodeSimple().equals("symptom"))
+            if (condition.getCategory().getCoding().get(0).getCodeSimple().equals("symptom"))
                 symptom.add(condition);
         }
         return symptom;
@@ -94,8 +94,10 @@ public class EncounterBundleData {
                 testOrder.setItem(diagnosticOrderItemComponent.getCode());
                 testOrder.setOrderer(diagnosticOrder.getOrderer());
                 List<ResourceReference> specimenReference = diagnosticOrderItemComponent.getSpecimen();
-                Specimen specimen = getResourceByReference(specimenReference.get(0));
-                testOrder.setSample(specimen);
+                if (!specimenReference.isEmpty()) {
+                    Specimen specimen = getResourceByReference(specimenReference.get(0));
+                    testOrder.setSample(specimen);
+                }
                 testOrders.add(testOrder);
             }
         }
@@ -105,8 +107,8 @@ public class EncounterBundleData {
     private <T extends Resource> List<T> getResourceByType(ResourceType resourceType) {
         List<T> resources = new ArrayList<>();
         for (Resource resource : encounterBundle.getResources()) {
-            if(resource.getResourceType().equals(resourceType))
-                resources.add((T)resource);
+            if (resource.getResourceType().equals(resourceType))
+                resources.add((T) resource);
         }
         return resources;
     }
@@ -114,8 +116,8 @@ public class EncounterBundleData {
     private <T extends Resource> T getResourceByReference(ResourceReference resourceReference) {
         List<T> resources = new ArrayList<>();
         for (AtomEntry<? extends Resource> atomEntry : encounterBundle.getEncounterFeed().getEntryList()) {
-          if (resourceReference.getReferenceSimple().equals(atomEntry.getId()))
-              return (T) atomEntry.getResource();
+            if (resourceReference.getReferenceSimple().equals(atomEntry.getId()))
+                return (T) atomEntry.getResource();
         }
         return null;
     }
