@@ -14,37 +14,42 @@
     <button class="logout">Logout</button>
 </a>
 
-<div class="healthrecord">
-    <div class="patientDetails">
-        <section class="patient-block">
-            <div class="patient-block-header">Patient Details</div>
-            <table th:object="${patient}">
-                <tr>
-                    <td class="bolder-text">HealthId</td>
-                    <td th:text="*{getHealthId()}"></td>
-                </tr>
-                <tr>
-                    <td class="bolder-text">Name</td>
-                    <td th:text="*{getName()}"></td>
-                </tr>
-                <tr>
-                    <td class="bolder-text">Gender</td>
-                    <td th:text="*{getGender()}"></td>
-                </tr>
-            </table>
+<th:block th:if="${patient}">
+    <div class="healthrecord">
+        <div class="patientDetails">
+            <section class="patient-block">
+                <div class="patient-block-header">Patient Details</div>
+                <table th:object="${patient}">
+                    <tr>
+                        <td class="bolder-text">HealthId</td>
+                        <td th:text="*{getHealthId()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="bolder-text">Name</td>
+                        <td th:text="*{getName()}"></td>
+                    </tr>
+                    <tr>
+                        <td class="bolder-text">Gender</td>
+                        <td th:text="*{getGender()}"></td>
+                    </tr>
+                </table>
+            </section>
+        </div>
+        <section class="block" th:each="bundleData: ${encounterBundlesData}">
+            <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
         </section>
     </div>
-    <section class="block" th:each="bundleData: ${encounterBundlesData}">
-        <th:block th:include="fragments/encounterBundle ::encounterBundleData (${bundleData})"/>
-    </section>
-</div>
+</th:block>
+<th:block th:unless="${patient}">
+    Invalid Patient
+</th:block>
 
 
 <script type="application/javascript">
-            $( document ).ready(function() {
-                $("a[data-class='external-ref']").click(fetchExternal);
-                $(".span-exp-col").click(toggleResourceContents);
-            });
+    $(document).ready(function () {
+        $("a[data-class='external-ref']").click(fetchExternal);
+        $(".span-exp-col").click(toggleResourceContents);
+    });
 </script>
 
 </body>
