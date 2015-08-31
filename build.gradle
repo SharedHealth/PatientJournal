@@ -91,6 +91,10 @@ task debugPJ(type: JavaExec) {
     debug = true
 }
 
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.6'
+}
+
 cobertura {
     coverageFormats = ['html', 'xml']
     coverageIgnoreTrivial = true
