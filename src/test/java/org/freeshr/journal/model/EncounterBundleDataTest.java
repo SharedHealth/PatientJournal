@@ -75,9 +75,6 @@ public class EncounterBundleDataTest {
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
         List<FamilyHistory> familyHistories = encounterBundleData.getFamilyHistories();
         assertEquals(1, familyHistories.size());
-        for (FamilyHistory familyHistory : familyHistories) {
-            CodeableConcept relationship = familyHistory.getRelation().get(0).getRelationship();
-        }
     }
 
     @Test
@@ -96,5 +93,15 @@ public class EncounterBundleDataTest {
         assertEquals(3, testOrders.size());
         assertEquals("http://hrmtest.dghs.gov.bd/api/1.0/providers/113073.json", testOrders.get(0).getOrderer().getReferenceSimple());
         assertEquals("Bld", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplaySimple());
+    }
+
+    @Test
+    public void shouldGetAllResourcesOfTypeProcedure() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithProcedure.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<Procedure> procedures = encounterBundleData.getProcedures();
+        assertEquals(1, procedures.size());
     }
 }

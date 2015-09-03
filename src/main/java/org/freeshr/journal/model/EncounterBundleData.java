@@ -97,6 +97,10 @@ public class EncounterBundleData {
         return testOrders;
     }
 
+    public List<Procedure> getProcedures() {
+        return getResourceByType(ResourceType.Procedure);
+    }
+
     private TestOrder setTestOrderDetails(DiagnosticOrder diagnosticOrder, DiagnosticOrder.DiagnosticOrderItemComponent diagnosticOrderItemComponent) {
         TestOrder testOrder = new TestOrder();
         testOrder.setItem(diagnosticOrderItemComponent.getCode());

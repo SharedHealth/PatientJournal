@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+    <title>Patient Encounters</title>
+    <link rel="self" type="application/atom+xml" href="http://172.18.46.57:8081/patients/98103452747/encounters"/>
+    <link rel="via" type="application/atom+xml" href="http://172.18.46.57:8081/patients/98103452747/encounters"/>
+    <author>
+        <name>FreeSHR</name>
+    </author>
+    <id>31b0cc64-c998-416e-9a78-4ac72375ce96</id>
+    <generator uri="https://github.com/ICT4H/atomfeed">Atomfeed</generator>
+    <updated>2015-08-25T12:09:38Z</updated>
+    <entry>
+        <title>Encounter:590682ae-2d25-4568-9798-afad7a47bde7</title>
+        <link rel="via" type="application/xml"
+              href="/patients/98103452747/encounters/590682ae-2d25-4568-9798-afad7a47bde7"/>
+        <category term="encounter"/>
+        <id>9716df60-522e-11e5-c000-000000000000</id>
+        <updated>2015-09-03T11:26:16Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+            <![CDATA[<?xml version="1.0" encoding="UTF-8"?><feed xmlns="http://www.w3.org/2005/Atom"><title>Encounter</title><id>urn:111d608d-790d-4381-bb92-c5c3e5378fdd</id><updated>2015-09-03T15:44:49+05:30</updated><author><uri>http://hrmtest.dghs.gov.bd/api/1.0/facilities/10019841.json</uri></author><entry><title>Composition</title><id>urn:40bea6c1-8ffd-4f53-930c-be58f231dca5</id><updated>2015-09-03T15:45:03.136+05:30</updated><content type="text/xml"><Composition xmlns="http://hl7.org/fhir"><identifier><value value="urn:40bea6c1-8ffd-4f53-930c-be58f231dca5"/></identifier><date value="2015-09-03T15:44:49+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality><system value="http://hl7.org/fhir/v3/Confidentiality"/><code value="N"/></confidentiality><subject><reference value="http://172.18.46.56:8081/api/default/patients/98103452747"/><display value="98103452747"/></subject><author><reference value="http://hrmtest.dghs.gov.bd/api/1.0/facilities/10019841.json"/></author><encounter><reference value="urn:34e63525-bef0-405b-b0fb-25f4848d7c81"/><display value="Encounter"/></encounter><section><content><reference value="urn:34e63525-bef0-405b-b0fb-25f4848d7c81"/><display value="Encounter"/></content></section><section><content><reference value="urn:7dfa0891-e463-4aae-9f98-e2b920169860"/><display value="Procedure Template"/></content></section></Composition></content></entry><entry><title>Encounter</title><id>urn:34e63525-bef0-405b-b0fb-25f4848d7c81</id><updated>2015-09-03T15:45:03.136+05:30</updated><content type="text/xml"><Encounter xmlns="http://hl7.org/fhir"><identifier><value value="urn:34e63525-bef0-405b-b0fb-25f4848d7c81"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="OPD"/></type><subject><reference value="http://172.18.46.56:8081/api/default/patients/98103452747"/><display value="98103452747"/></subject><participant><individual><reference value="http://hrmtest.dghs.gov.bd/api/1.0/providers/113074.json"/></individual></participant><indication><reference value="urn:34e63525-bef0-405b-b0fb-25f4848d7c81"/><display value="Encounter"/></indication><serviceProvider><reference value="http://hrmtest.dghs.gov.bd/api/1.0/facilities/10019841.json"/></serviceProvider></Encounter></content></entry><entry><title>Procedure Template</title><id>urn:7dfa0891-e463-4aae-9f98-e2b920169860</id><updated>2015-09-03T15:45:03.147+05:30</updated><content type="text/xml"><Procedure xmlns="http://hl7.org/fhir"><identifier><value value="urn:7dfa0891-e463-4aae-9f98-e2b920169860"/></identifier><subject><reference value="http://172.18.46.56:8081/api/default/patients/98103452747"/><display value="98103452747"/></subject><type><coding><system value="http://172.18.46.56:9080/openmrs/ws/rest/v1/tr/referenceterms/0e1baffd-4d2a-4492-a9ba-89dbd40f57a8"/><code value="0UJD8ZZ"/><display value="Colposcopy"/></coding><coding><system value="http://172.18.46.56:9080/openmrs/ws/rest/v1/tr/concepts/1507d8df-93d4-473f-88fc-44de3f579abd"/><code value="1507d8df-93d4-473f-88fc-44de3f579abd"/><display value="Colposcopy"/></coding></type><date><start value="2015-07-06T00:00:00+05:30"/><end value="2015-09-25T00:00:00+05:30"/></date><outcome value="some outcome"/><followUp value="every 2 weeks"/></Procedure></content></entry></feed>]]></content>
+    </entry>
+</feed>
