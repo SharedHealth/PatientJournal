@@ -6,10 +6,11 @@
 <th:block th:fragment="compositions (compositions)">
     <th:block th:each="composition: ${compositions}">
         <th:block th:object="${composition}">
-            <th:block th:if="*{getEncounter().getDisplaySimple()}">
-                <div class="date" th:text="'Date:  '+*{getDateSimple().toHumanDisplay()}">
-                </div>
+            <th:block th:with="date=">
+                
             </th:block>
+            <div class="date" th:text="'Date:  '+*{getDate()}">
+            </div>
         </th:block>
     </th:block>
 </th:block>

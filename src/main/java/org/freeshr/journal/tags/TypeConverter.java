@@ -11,9 +11,10 @@ import java.util.List;
 
 public class TypeConverter {
 
+    private static final String DATE_FORMAT = "dd MMM yyyy HH:mm";
     private static Logger logger = Logger.getLogger(TypeConverter.class);
 
-    public static String convertToText(Type typeValue) {
+    public static String convertToText(Object typeValue) {
         try {
             if (typeValue == null)
                 return "";
@@ -51,6 +52,10 @@ public class TypeConverter {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
         }
         return "Unknown";
+    }
+
+    private static String fromJavaUtilDate(java.util.Date typeValue) {
+        return DateUtil.toDateString(typeValue, DATE_FORMAT);
     }
 
     private static String fromDate(Date typeValue) {
@@ -127,7 +132,7 @@ public class TypeConverter {
     }
 
     private static String fromDateAndTime(DateAndTime value) {
-        return DateUtil.toDateString(DateUtil.parseDate(value.toString()), "dd MMM yyyy HH:mm");
+        return DateUtil.toDateString(DateUtil.parseDate(value.toString()), DATE_FORMAT);
     }
 
     private static String fromResourceReference(ResourceReference typeValue) {
@@ -143,7 +148,7 @@ public class TypeConverter {
     private static String getUnitFullName(Schedule.UnitsOfTime unitsSimple) {
         List<String> unitKeys = Arrays.asList("s", "min", "h", "d", "wk", "mo", "a");
         List<String> unitValues = Arrays.asList("second.", "minute.", "hour.", "day.", "week.", "month.", "year.");
-        
+
         int index = unitKeys.indexOf(unitsSimple.toCode());
         return unitValues.get(index);
     }
