@@ -49,6 +49,23 @@ configurations.all {
     exclude module: 'spring-boot-starter-logging'
 }
 
+ext.libraries = [
+        spring_boot_logging  : "org.springframework.boot:spring-boot-starter-log4j:1.2.0.RELEASE",
+        guava                : "com.google.guava:guava:18.0",
+        rome                 : "rome:rome:1.0",
+        apache_httpclient    : "org.apache.httpcomponents:httpclient:4.3.6",
+        apache_commons_lang3 : "org.apache.commons:commons-lang3:3.3.2",
+        thymeleaf            : "org.springframework.boot:spring-boot-starter-thymeleaf",
+]
+ext.testLibraries = [
+        junit                : "junit:junit",
+        wiremock             : "com.github.tomakehurst:wiremock:1.52",
+        mockito              : "org.mockito:mockito-core:1.8.4",
+        spring_test          : "org.springframework:spring-test:4.0.3.RELEASE",
+        jayway_rest_assured  : "com.jayway.restassured:rest-assured:2.4.0"
+]
+
+
 dependencies {
     compile('org.springframework.boot:spring-boot-starter-web:1.2.0.RELEASE') {
         exclude group: 'org.springframework.boot', module: 'spring-boot-starter-logging'
@@ -57,18 +74,9 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator:1.2.0.RELEASE') {
         exclude group: 'ch.qos.logback', module: "logback-classic"
     }
-    compile('org.springframework.boot:spring-boot-starter-log4j:1.2.0.RELEASE')
-    compile group: 'com.google.guava', name: 'guava', version: '18.0'
     compile group: 'me.fhir', name:'fhir-0.12', version: '0.3'
-    compile group: 'rome', name:'rome', version:'1.0'
-    compile group: 'org.apache.httpcomponents', name:'httpclient', version: '4.3.6'
-    compile group: 'org.apache.commons', name:'commons-lang3', version: '3.3.2'
-    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
-    testCompile("junit:junit")
-    testCompile("com.github.tomakehurst:wiremock:1.52")
-    testCompile "org.mockito:mockito-core:1.8.4"
-    testCompile "org.springframework:spring-test:4.0.3.RELEASE"
-    testCompile 'com.jayway.restassured:rest-assured:2.4.0'
+    compile libraries.values()
+    testCompile testLibraries.values()
 }
 
 
