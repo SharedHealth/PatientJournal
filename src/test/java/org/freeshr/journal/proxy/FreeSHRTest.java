@@ -1,5 +1,8 @@
 package org.freeshr.journal.proxy;
 
+import ca.uhn.fhir.model.api.IResource;
+import ca.uhn.fhir.model.dstu2.resource.Composition;
+import ca.uhn.fhir.model.dstu2.resource.Encounter;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.sun.syndication.io.FeedException;
 import org.apache.http.HttpStatus;
@@ -9,8 +12,6 @@ import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundlesData;
 import org.freeshr.journal.utils.FileUtil;
-import org.hl7.fhir.instance.model.Resource;
-import org.hl7.fhir.instance.model.ResourceType;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -56,17 +57,15 @@ public class FreeSHRTest {
         FreeSHR freeSHR = new FreeSHR(new AtomFeed(), applicationProperties);
         EncounterBundlesData encounters = freeSHR.getEncountersForPatient("123123123123",
                 getSecurityHeaders());
-        assertEquals(1, encounters.getEncounterBundleDataList().size());
+        assertEquals(3, encounters.getEncounterBundleDataList().size());
         EncounterBundle encounterBundle = encounters.getEncounterBundleDataList().get(0).getEncounterBundle();
         assertEquals(2, encounterBundle.getResources().size());
         assertTrue(isEncounterOrComposition(encounterBundle.getResources().get(0)));
         assertTrue(isEncounterOrComposition(encounterBundle.getResources().get(1)));
     }
 
-    private boolean isEncounterOrComposition(Resource resource) {
-        return resource.getResourceType() == ResourceType.Encounter
-                ||
-                resource.getResourceType() == ResourceType.Composition;
+    private boolean isEncounterOrComposition(IResource resource) {
+        return resource instanceof Encounter || resource instanceof Composition;
     }
 
     private HashMap<String, String> getSecurityHeaders() {
@@ -76,6 +75,4 @@ public class FreeSHRTest {
         map.put(FROM_KEY, "email@gmail.com");
         return map;
     }
-
-
 }

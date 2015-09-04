@@ -27,7 +27,7 @@ public class EncounterServiceTest {
         String patientId = "5952907233237925889";
         EncounterBundlesData value = new EncounterBundlesData();
         EncounterBundle encounterBundle = new EncounterBundle();
-        encounterBundle.addResource(new Encounter());
+//        encounterBundle.addResource(new Encounter());
         value.addEncounterBundleModel(new EncounterBundleData(encounterBundle));
         when(freeSHR.getEncountersForPatient(patientId, null)).thenReturn(value);
 

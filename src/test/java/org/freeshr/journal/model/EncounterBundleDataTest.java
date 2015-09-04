@@ -1,8 +1,8 @@
 package org.freeshr.journal.model;
 
+import ca.uhn.fhir.model.dstu2.resource.*;
 import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
-import org.hl7.fhir.instance.model.*;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -38,19 +38,19 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveAllResourcesOfTypeObservation() throws Exception {
         List<Observation> observations = encounterBundleData.getObservations();
-        assertEquals(11, observations.size());
+        assertEquals(1, observations.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
         List<Condition> conditions = encounterBundleData.getConditions();
-        assertEquals(5, conditions.size());
+        assertEquals(4, conditions.size());
     }
 
     @Test
-    public void shouldGiveAllConditionOfTypeComplaint() throws Exception {
+    public void shouldGiveAllConditionOfTypeCompliant() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getComplaintConditions();
-        assertEquals(2, complaintConditions.size());
+        assertEquals(1, complaintConditions.size());
     }
 
     @Test
@@ -73,14 +73,14 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
-        List<FamilyHistory> familyHistories = encounterBundleData.getFamilyHistories();
+        List<FamilyMemberHistory> familyHistories = encounterBundleData.getFamilyHistories();
         assertEquals(1, familyHistories.size());
     }
 
     @Test
     public void shouldGiveAllResourcesOfTypeMedicationPrescription() throws Exception {
         List<MedicationPrescription> medicationPrescriptions = encounterBundleData.getMedicationPrescriptions();
-        assertEquals(1, medicationPrescriptions.size());
+        assertEquals(0, medicationPrescriptions.size());
     }
 
     @Test
@@ -90,9 +90,9 @@ public class EncounterBundleDataTest {
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 
         List<TestOrder> testOrders = encounterBundleData.getTestOrders();
-        assertEquals(3, testOrders.size());
-        assertEquals("http://hrmtest.dghs.gov.bd/api/1.0/providers/113073.json", testOrders.get(0).getOrderer().getReferenceSimple());
-        assertEquals("Bld", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplaySimple());
+        assertEquals(2, testOrders.size());
+        assertEquals("http://172.18.46.199:8080/api/1.0/providers/18.json", testOrders.get(0).getOrderer().getReference().getValueAsString());
+        assertEquals("Urine", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplay());
     }
 
     @Test

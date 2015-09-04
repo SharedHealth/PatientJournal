@@ -1,39 +1,37 @@
 package org.freeshr.journal.model;
 
-import org.hl7.fhir.instance.model.AtomFeed;
-import org.hl7.fhir.instance.model.Encounter;
-import org.hl7.fhir.instance.model.Resource;
-import org.hl7.fhir.instance.model.ResourceType;
+import ca.uhn.fhir.model.api.IResource;
+import ca.uhn.fhir.model.dstu2.resource.Bundle;
+import ca.uhn.fhir.model.dstu2.resource.Encounter;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class EncounterBundle {
-    private List<Resource> resources = new ArrayList<>();
-    private AtomFeed encounterFeed;
+    private List<IResource> resources = new ArrayList<>();
+    private Bundle bundle;
 
-    public void addResource(Resource resource) {
+    public void addResource(IResource resource) {
         resources.add(resource);
     }
 
-    public List<Resource> getResources() {
+    public List<IResource> getResources() {
         return new ArrayList<>(resources);
     }
 
+    public void setBundle(Bundle bundle) {
+        this.bundle = bundle;
+    }
+
     public Encounter getEncounter() {
-        for (Resource resource : resources) {
-            if(resource.getResourceType() == ResourceType.Encounter)
+        for (IResource resource : resources) {
+            if(resource instanceof Encounter)
                 return (Encounter) resource;
         }
         return null;
     }
 
-    public void addFeed(AtomFeed encounterFeed) {
-
-        this.encounterFeed = encounterFeed;
-    }
-
-    public AtomFeed getEncounterFeed() {
-        return encounterFeed;
+    public Bundle getBundle() {
+        return bundle;
     }
 }

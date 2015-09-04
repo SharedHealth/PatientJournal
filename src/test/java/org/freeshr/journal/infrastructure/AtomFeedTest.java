@@ -12,14 +12,12 @@ public class AtomFeedTest {
     @Test
     public void shouldReadEncounterFeedForPatient() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
-        assertEquals(1, entries.size());
+        assertEquals(3, entries.size());
     }
 
     @Test
     public void shouldSkipEncounterEntryIfItHasTheUpdatedEncounterInTheFeed() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/patientUpdatedEncounterFeed.xml"));
-        assertEquals(5,entries.size());
-
-
+        assertEquals(4,entries.size());
     }
 }

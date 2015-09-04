@@ -1,29 +1,28 @@
 package org.freeshr.journal.model;
 
-import org.hl7.fhir.instance.model.CodeableConcept;
-import org.hl7.fhir.instance.model.ResourceReference;
-import org.hl7.fhir.instance.model.Specimen;
 
-import java.util.List;
+import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import ca.uhn.fhir.model.dstu2.resource.Specimen;
 
 public class TestOrder {
-    private CodeableConcept item;
-    private ResourceReference orderer;
+    private CodeableConceptDt item;
+    private ResourceReferenceDt orderer;
     private Specimen sample;
 
-    public void setItem(CodeableConcept item) {
+    public void setItem(CodeableConceptDt item) {
         this.item = item;
     }
 
-    public CodeableConcept getItem() {
+    public CodeableConceptDt getItem() {
         return item;
     }
 
-    public void setOrderer(ResourceReference orderer) {
+    public void setOrderer(ResourceReferenceDt orderer) {
         this.orderer = orderer;
     }
 
-    public ResourceReference getOrderer() {
+    public ResourceReferenceDt getOrderer() {
         return orderer;
     }
 
