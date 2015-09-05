@@ -6,45 +6,45 @@
 <th:block th:fragment="immunizations (immunizations)">
     <th:block th:each="immunization,currentItem: ${immunizations}">
         <th:block th:object="${immunization}">
-        <div class="div-resource-container">
-            <span class="span-exp-col">+</span>
-            <span class="div-resource-head">Immunization</span>
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Immunization</span>
 
-            <div class="div-resource-content">
-                <table cellpadding="0" cellspacing="0">
-                    <tr th:if="*{getDate()} != null">
-                        <td class="bolder-text">Vaccination Date</td>
-                        <td fhir:type="*{getDate()}"></td>
-                    </tr>
-                    <tr th:if="*{getVaccineType()} != null">
-                        <td class="bolder-text">Vaccine</td>
-                        <td fhir:type="*{getVaccineType()}"></td>
-                    </tr>
-                    <tr th:if="*{getReported()} != null">
-                        <td class="bolder-text">Vaccination Reported</td>
-                        <td fhir:type="*{getReported()}"></td>
-                    </tr>
-                    <th:block th:with="explanation=*{getExplanation()}">
-                        <th:block th:if="${explanation != null and explanation.getReason() != null}">
-                             <tr th:each="reason : ${explanation.getReason()}">
-                                <td class="bolder-text">Vaccination Reason</td>
-                                <td fhir:type="${reason}"></td>
+                <div class="div-resource-content">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="bolder-text">Vaccination Date</td>
+                            <td fhir:type="*{getDate()}"></td>
+                        </tr>
+                        <tr>
+                            <td class="bolder-text">Vaccine</td>
+                            <td fhir:type="*{getVaccineType()}"></td>
+                        </tr>
+                        <tr>
+                            <td class="bolder-text">Vaccination Reported</td>
+                            <td fhir:type="*{getReported()}"></td>
+                        </tr>
+                        <th:block th:with="explanation=*{getExplanation()}">
+                            <th:block th:if="${explanation != null and explanation.getReason() != null}">
+                                <tr th:each="reason : ${explanation.getReason()}">
+                                    <td class="bolder-text">Vaccination Reason</td>
+                                    <td fhir:type="${reason}"></td>
+                                </tr>
+                            </th:block>
+                            <tr>
+                                <td class="bolder-text">Vaccination Refused</td>
+                                <td fhir:type="*{getWasNotGiven()}"></td>
                             </tr>
+                            <th:block th:if="${explanation != null and explanation.getReasonNotGiven() != null}">
+                                <tr th:each="refusalReason : ${explanation.getReasonNotGiven()}">
+                                    <td class="bolder-text">Refusal reason</td>
+                                    <td fhir:type="${refusalReason}"></td>
+                                </tr>
+                            </th:block>
                         </th:block>
-                    <tr th:if="*{getRefusedIndicator()} != null">
-                        <td class="bolder-text">Vaccination Refused</td>
-                        <td fhir:type="*{getRefusedIndicator()}"></td>
-                    </tr>
-                        <th:block th:if="${explanation != null and explanation.getRefusalReason() != null}">
-                            <tr th:each="refusalReason : ${explanation.getRefusalReason()}">
-                                <td class="bolder-text">Refusal reason</td>
-                                <td fhir:type="${refusalReason}"></td>
-                            </tr>
-                        </th:block>
-                    </th:block>
-                </table>
+                    </table>
+                </div>
             </div>
-        </div>
         </th:block>
     </th:block>
 </th:block>

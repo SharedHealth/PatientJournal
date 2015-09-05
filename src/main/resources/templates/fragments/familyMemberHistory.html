@@ -1,0 +1,84 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="familyMemberHistories (familyMemberHistories)">
+    <th:block th:each="familyMemberHistory: ${familyMemberHistories}">
+
+        <th:block th:object="${familyMemberHistory}">
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Family Member History</span>
+
+                <div class="div-family-member-history div-resource-content">
+                    <p class="family-history-subhead">Relationship Details</p>
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="bolder-text">Relation</td>
+                            <td fhir:type="*{getRelationship()}"></td>
+                        </tr>
+                        <th:block th:if="*{getName()} != null">
+                            <tr>
+                                <td class="bolder-text">Name of Relation</td>
+                                <td fhir:type="*{getName()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getBorn()} != null">
+                            <tr>
+                                <td class="bolder-text">Born</td>
+                                <td fhir:type="*{getBorn()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getDeceased()} != null">
+                            <tr>
+                                <td class="bolder-text">Deceased</td>
+                                <td fhir:type="*{getDeceased()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="*{getNote()} != null">
+                            <tr>
+                                <td class="bolder-text">Note</td>
+                                <td th:text="*{getNote()}"></td>
+                            </tr>
+                        </th:block>
+                    </table>
+
+                    <th:block th:with="relationConditions=*{getCondition()}">
+                        <th:block th:unless="${#lists.isEmpty(relationConditions)}">
+                            <p class="family-history-subhead">Condition</p>
+                            <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
+                                <th:block th:with="firstCondition=${relationConditions.get(0)}">
+                                    <tr>
+                                        <td class="bolder-text">Diagnosis</td>
+                                        <td fhir:type="${firstCondition.getType()}"></td>
+                                    </tr>
+                                    <th:block th:if="${firstCondition.getOutcome()} != null">
+                                        <tr>
+                                            <td class="bolder-text">Outcome</td>
+                                            <td fhir:type="${firstCondition.getOutcome()}"></td>
+                                        </tr>
+                                    </th:block>
+                                    <th:block th:if="${firstCondition.getOnset()} != null">
+                                        <tr>
+                                            <td class="bolder-text">Onset</td>
+                                            <td fhir:type="${firstCondition.getOnset()}"></td>
+                                        </tr>
+                                    </th:block>
+                                    <th:block th:if="${firstCondition.getNote()} != null">
+                                        <tr>
+                                            <td class="bolder-text">Note</td>
+                                            <td th:text="${firstCondition.getNote()}"></td>
+                                        </tr>
+                                    </th:block>
+                                </th:block>
+                            </table>
+                        </th:block>
+                    </th:block>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</th:block>
+</body>
+</html>

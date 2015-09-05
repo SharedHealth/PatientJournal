@@ -217,7 +217,7 @@ public class PatientJournalControllerTest {
         MockHttpSession validSession = new MockHttpSession();
         validSession.setAttribute(SESSION_KEY, getUserInfo("patientUserInfo.json"));
 
-//        mockMvc.perform(get(DETAILS_URI).session(validSession)).andExpect(view().name("index"));
+        mockMvc.perform(get(DETAILS_URI).session(validSession)).andExpect(view().name("index"));
     }
 
     @Test

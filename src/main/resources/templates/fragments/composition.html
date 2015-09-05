@@ -6,10 +6,9 @@
 <th:block th:fragment="compositions (compositions)">
     <th:block th:each="composition: ${compositions}">
         <th:block th:object="${composition}">
-            <th:block th:with="date=">
-                
-            </th:block>
-            <div class="date" th:text="'Date:  '+*{getDate()}">
+            <div class="date">
+                <span>Date:</span>
+                <span fhir:type="*{getDate()}"></span>
             </div>
         </th:block>
     </th:block>

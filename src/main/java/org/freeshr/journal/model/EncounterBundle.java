@@ -2,7 +2,6 @@ package org.freeshr.journal.model;
 
 import ca.uhn.fhir.model.api.IResource;
 import ca.uhn.fhir.model.dstu2.resource.Bundle;
-import ca.uhn.fhir.model.dstu2.resource.Encounter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -21,14 +20,6 @@ public class EncounterBundle {
 
     public void setBundle(Bundle bundle) {
         this.bundle = bundle;
-    }
-
-    public Encounter getEncounter() {
-        for (IResource resource : resources) {
-            if(resource instanceof Encounter)
-                return (Encounter) resource;
-        }
-        return null;
     }
 
     public Bundle getBundle() {

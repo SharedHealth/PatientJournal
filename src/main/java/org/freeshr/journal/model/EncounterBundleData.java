@@ -35,7 +35,7 @@ public class EncounterBundleData {
         return getResourceByType(Condition.class);
     }
 
-    public List<FamilyMemberHistory> getFamilyHistories() {
+    public List<FamilyMemberHistory> getFamilyMemberHistories() {
         return getResourceByType(FamilyMemberHistory.class);
     }
 

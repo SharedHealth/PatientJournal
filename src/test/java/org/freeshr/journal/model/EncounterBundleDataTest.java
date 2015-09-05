@@ -73,7 +73,7 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
-        List<FamilyMemberHistory> familyHistories = encounterBundleData.getFamilyHistories();
+        List<FamilyMemberHistory> familyHistories = encounterBundleData.getFamilyMemberHistories();
         assertEquals(1, familyHistories.size());
     }
 

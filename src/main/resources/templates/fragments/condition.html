@@ -1,0 +1,49 @@
+<!DOCTYPE html SYSTEM "http://www.thymeleaf.org/dtd/xhtml1-strict-thymeleaf-spring4-4.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<th:block th:fragment="conditions (conditions, conditionName)">
+    <th:block th:if="${!conditions.isEmpty()}">
+        <div class="div-resource-container">
+            <span class="span-exp-col">+</span>
+            <span class="div-resource-head" th:text="${conditionName}"></span>
+
+            <div class="div-resource-content">
+                <th:block th:each="condition: ${conditions}">
+                    <table>
+                        <th:block th:object="${condition}">
+                            <tr>
+                                <td class="bolder-text" th:text="${conditionName}"></td>
+                                <td fhir:type="*{getCode()}"></td>
+                            </tr>
+                            <tr>
+                                <td class="bolder-text">Status</td>
+                                <td th:text="*{getClinicalStatus()}"></td>
+                            </tr>
+                            <th:block th:if="*{getSeverity()} != null">
+                                <th:block th:with="codings=*{getSeverity().getCoding()}">
+                                    <th:block th:unless="${#lists.isEmpty(codings)}">
+                                        <tr>
+                                            <td class="bolder-text">Severity</td>
+                                            <td fhir:type="*{getSeverity()}"></td>
+                                        </tr>
+                                    </th:block>
+                                </th:block>
+                            </th:block>
+                            <th:block th:if="*{getOnset()} != null">
+                                <tr>
+                                    <td class="bolder-text">Onset</td>
+                                    <td fhir:type="*{getOnset()}"></td>
+                                </tr>
+                            </th:block>
+                        </th:block>
+                    </table>
+                </th:block>
+            </div>
+        </div>
+    </th:block>
+</th:block>
+
+</body>
+</html>

@@ -13,32 +13,36 @@
 
                 <div class="div-resource-content">
                     <table cellpadding="0" cellspacing="0">
-                        <tr>
-                            <td class="bolder-text">Visit Type</td>
-                            <td th:text="*{getClass_Simple()}"></td>
-                        </tr>
+                        <th:block th:if="*{getClassElement()} != null">
+                            <tr>
+                                <td class="bolder-text">Visit Type</td>
+                                <td th:text="*{getClassElement()}"></td>
+                            </tr>
+                        </th:block>
                         <th:block th:with="types=*{getType()}">
                             <th:block th:unless="${#lists.isEmpty(types)}">
                                 <tr>
                                     <td class="bolder-text">Encounter Type</td>
                                     <td th:each="type: ${types}">
-                                        <div th:text="${type.getTextSimple()}"></div>
+                                        <div th:text="${type.getText()}"></div>
                                     </td>
                                 </tr>
                             </th:block>
                         </th:block>
                         <th:block th:if="*{getServiceProvider()} != null">
-                            <tr>
-                                <td class="bolder-text">Facility</td>
-                                <td>
-                                    <a data-class="external-ref" data-ref-element-class="serviceProvider"
-                                       th:href="*{getServiceProvider().getReferenceSimple()}">Click here to view
-                                        Provider
-                                        Facility</a>
+                            <th:block th:if="*{getServiceProvider().getReference()} != null">
+                                <tr>
+                                    <td class="bolder-text">Facility</td>
+                                    <td>
+                                        <a data-class="external-ref" data-ref-element-class="serviceProvider"
+                                           th:href="*{getServiceProvider().getReference()}">Click here to view
+                                            Provider
+                                            Facility</a>
 
-                                    <div class="serviceProvider"></div>
-                                </td>
-                            </tr>
+                                        <div class="serviceProvider"></div>
+                                    </td>
+                                </tr>
+                            </th:block>
                         </th:block>
                         <th:block th:with="participants=*{getParticipant()}">
                             <th:block th:unless="${#lists.isEmpty(participants)}">
@@ -47,7 +51,8 @@
                                     <td>
                                         <th:block th:if="${participants.get(0).getIndividual()} != null">
                                             <a data-class="external-ref" data-ref-element-class="provider"
-                                               th:href="${participants.get(0).getIndividual().getReferenceSimple()}">Click here to view
+                                               th:href="${participants.get(0).getIndividual().getReference()}">Click
+                                                here to view
                                                 Provider</a>
                                             <div class="provider"></div>
                                         </th:block>
