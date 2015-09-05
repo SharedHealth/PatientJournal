@@ -95,10 +95,9 @@ task debugPJ(type: JavaExec) {
     Properties properties = new Properties();
     properties.load(new FileInputStream(file('env/local.properties')))
     main = mainClassName
-    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG']
+    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG',"-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"]
     classpath = sourceSets.main.runtimeClasspath
     environment properties
-    debug = true
 }
 
 task wrapper(type: Wrapper) {

@@ -23,6 +23,7 @@ public class ApplicationConfiguration {
     @Bean
     public TemplateResolver templateResolver(){
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
+        templateResolver.setCacheTTLMs(0L);
         templateResolver.setTemplateMode("HTML5");
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".html");
