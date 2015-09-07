@@ -74,9 +74,17 @@ body{
     border:1px solid;
 }
 
+.table-observation tbody::before{
+ content: '';
+ display: block;
+ height: 15px;
+
+}
+
 .table-observation .level0 td{
     font-size:15px;
 }
+
 .table-observation tbody tr.level0 td:first-child{
     padding-left: 10px;
 }

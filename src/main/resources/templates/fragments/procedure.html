@@ -10,34 +10,31 @@
                 <span class="div-resource-head">Procedure</span>
 
                 <div class="div-resource-content">
-                    <p th:text="'Procedure '+${currentItem.count} "></p>
                     <table cellpadding="0" cellspacing="0">
-                        <th:block th:if="${procedure.getDate()} != null">
+                        <th:block th:if="${procedure.getPerformed()} != null">
                             <tr>
                                 <td class="bolder-text">Date</td>
-                                <td fhir:type="${procedure.getDate()}"></td>
+                                <td fhir:type="${procedure.getPerformed()}"></td>
                             </tr>
                         </th:block>
                         <tr>
-                                <td class="bolder-text">Procedure</td>
-                                <td fhir:type="${procedure.getType()}"></td>
+                            <td class="bolder-text">Procedure</td>
+                            <td fhir:type="${procedure.getType()}"></td>
                         </tr>
                         <th:block th:if="${procedure.getOutcome()} != null">
                             <tr>
                                 <td class="bolder-text">Outcome</td>
                                 <td fhir:type="${procedure.getOutcome()}"></td>
                             </tr>
-                        </th:block><th:block th:if="${procedure.getOutcome()} != null">
-                        <tr>
-                            <td class="bolder-text">Follow up</td>
-                            <td fhir:type="${procedure.getFollowUp()}"></td>
-                        </tr>
+                        </th:block>
+                        <th:block th:if="${procedure.getFollowUp()} != null">
+                            <tr>
+                                <td class="bolder-text">Follow up</td>
+                                <td fhir:type="${procedure.getFollowUp()}"></td>
+                            </tr>
                         </th:block>
                     </table>
-
                 </div>
-
-
             </div>
         </th:block>
     </th:block>

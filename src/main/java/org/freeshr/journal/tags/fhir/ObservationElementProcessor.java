@@ -1,7 +1,16 @@
 package org.freeshr.journal.tags.fhir;
 
 
-import org.hl7.fhir.instance.model.Observation;
+import ca.uhn.fhir.model.api.IResource;
+import ca.uhn.fhir.model.dstu2.composite.BoundCodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import ca.uhn.fhir.model.dstu2.resource.Composition;
+import ca.uhn.fhir.model.dstu2.resource.Encounter;
+import ca.uhn.fhir.model.dstu2.resource.Observation;
+import ca.uhn.fhir.model.dstu2.valueset.ObservationInterpretationCodesEnum;
+import ca.uhn.fhir.model.primitive.IdDt;
+import org.freeshr.journal.model.EncounterBundleData;
+import org.springframework.util.CollectionUtils;
 import org.thymeleaf.Arguments;
 import org.thymeleaf.dom.Element;
 import org.thymeleaf.dom.Node;
@@ -12,6 +21,7 @@ import org.thymeleaf.standard.expression.VariableExpression;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
 
 import static org.freeshr.journal.tags.TypeConverter.convertToText;
@@ -26,20 +36,21 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
     @SuppressWarnings("uncheck")
     protected List<Node> getMarkupSubstitutes(Arguments arguments, Element element) {
         String expression = ((VariableExpression) arguments.getLocalVariable(SpringContextVariableNames.SPRING_BOUND_OBJECT_EXPRESSION)).getExpression();
-        List<Observation> observations = (List<Observation>) arguments.getLocalVariable(expression);
-        if (observations.isEmpty()) return Collections.emptyList();
-        return executeEncounterBundle(observations);
+        EncounterBundleData encounterBundle = (EncounterBundleData) arguments.getLocalVariable(expression);
+        if (encounterBundle == null || CollectionUtils.isEmpty(encounterBundle.getObservations()))
+            return Collections.emptyList();
+        List<Observation> topLevelObs = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle, Observation.class);
+        return executeEncounterBundle(topLevelObs, encounterBundle.getObservations());
     }
 
-    private List<Node> executeEncounterBundle(List<Observation> observations) {
+    private List<Node> executeEncounterBundle(List<Observation> topLevelObs, List<Observation> allObs) {
         List<Node> nodes = new ArrayList<>();
         Element table = new Element("table");
         table.setAttribute("class", "table-observation");
 
-        for (Observation observation : observations) {
-            if (isChildObservation(observation, observations)) continue;
+        for (Observation observation : topLevelObs) {
             Element tbody = new Element("tbody");
-            processObservation(observation, observations, 0, tbody);
+            processObservation(observation, allObs, 0, tbody);
             table.addChild(tbody);
         }
         Element collapseExpandSpan = new Element("span");
@@ -60,13 +71,13 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
         return nodes;
     }
 
-    private void processObservation(Observation observation, List<Observation> observations, int depth, Element observationBody) {
+    private void processObservation(Observation observation, List<Observation> allObs, int depth, Element observationBody) {
         Element tr = new Element("tr");
         tr.setAttribute("class", "level" + depth);
 
-        String name = convertToText(observation.getName());
+        String name = convertToText(observation.getCode());
         Element nameTd = new Element("td");
-        nameTd.setAttribute("class","bolder-text");
+        nameTd.setAttribute("class", "bolder-text");
         nameTd.addChild(new Text(name));
 
         Element valueTd = new Element("td");
@@ -76,18 +87,19 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
             valueSpan.addChild(new Text(convertToText(observation.getValue())));
             valueTd.addChild(valueSpan);
         }
-        if (observation.getInterpretation() != null) {
+        BoundCodeableConceptDt<ObservationInterpretationCodesEnum> interpretation = observation.getInterpretation();
+        if (interpretation != null && (!CollectionUtils.isEmpty(interpretation.getCoding()))) {
             valueTd.addChild(createSpanForTab());
             valueTd.addChild(createBoldSpanFor("Interpretation:- "));
             Element interpretationSpan = new Element("span");
-            interpretationSpan.addChild(new Text(convertToText(observation.getInterpretation())));
+            interpretationSpan.addChild(new Text(convertToText(interpretation)));
             valueTd.addChild(interpretationSpan);
         }
         if (observation.getComments() != null) {
             valueTd.addChild(createSpanForTab());
             valueTd.addChild(createBoldSpanFor("Comments:- "));
             Element commentsSpan = new Element("span");
-            commentsSpan.addChild(new Text(observation.getCommentsSimple()));
+            commentsSpan.addChild(new Text(observation.getComments()));
             valueTd.addChild(commentsSpan);
         }
 
@@ -98,10 +110,12 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
 
         if (observation.getRelated().isEmpty()) return;
         depth++;
-        for (Observation.ObservationRelatedComponent observationRelatedComponent : observation.getRelated()) {
-            Observation childObservation = findChildObservation(observationRelatedComponent.getTarget().getReferenceSimple(), observations);
+        for (Observation.Related related : observation.getRelated()) {
+            IdDt reference = related.getTarget().getReference();
+            if (reference == null) continue;
+            Observation childObservation = findChildObservation(reference.getValue(), allObs);
             if (childObservation != null) {
-                processObservation(childObservation, observations, depth, observationBody);
+                processObservation(childObservation, allObs, depth, observationBody);
             }
         }
     }
@@ -120,23 +134,45 @@ public class ObservationElementProcessor extends AbstractMarkupSubstitutionEleme
         return valueSpan;
     }
 
-    private Observation findChildObservation(String referenceSimple, List<Observation> observations) {
-        for (Observation observation : observations) {
-            if (referenceSimple.equals(observation.getIdentifier().getValueSimple()))
+    private Observation findChildObservation(String referenceSimple, List<Observation> allObs) {
+        for (Observation observation : allObs) {
+            if (referenceSimple.equals(observation.getId().getValue()))
                 return observation;
         }
         return null;
     }
 
-    private boolean isChildObservation(Observation observation, List<Observation> observations) {
-        for (Observation obs : observations) {
-            for (Observation.ObservationRelatedComponent observationRelatedComponent : obs.getRelated()) {
-                if (observationRelatedComponent.getTarget().getReferenceSimple().equals(observation.getIdentifier().getValueSimple()))
-                    return true;
+    private <T extends IResource> List<T> identifyTopLevelResourcesOfTypeByExclusion(EncounterBundleData encounterBundle, Class<T> type) {
+        List<IResource> allResources = encounterBundle.getEncounterBundle().getResources();
+        List<ResourceReferenceDt> childResourceReferences = new ArrayList<>();
+        for (IResource resource : allResources) {
+            if (resource instanceof Composition || resource instanceof Encounter) continue;
+            childResourceReferences.addAll(resource.getAllPopulatedChildElementsOfType(ResourceReferenceDt.class));
+        }
+        HashSet<ResourceReferenceDt> childReferences = new HashSet<>();
+        childReferences.addAll(childResourceReferences);
+
+        ArrayList<T> topLevelResources = new ArrayList<>();
+
+        for (IResource resource : allResources) {
+            if (type.isInstance(resource)) {
+                if (!isChildReference(childReferences, resource.getId().getValue())) {
+                    topLevelResources.add((T) resource);
+                }
+            }
+        }
+        return topLevelResources;
+    }
+
+    private boolean isChildReference(HashSet<ResourceReferenceDt> childReferenceDts, String resourceRef) {
+        for (ResourceReferenceDt childRef : childReferenceDts) {
+            if (!childRef.getReference().isEmpty() && childRef.getReference().getValue().equals(resourceRef)) {
+                return true;
             }
         }
         return false;
     }
+
 
     @Override
     public int getPrecedence() {
