@@ -38,7 +38,7 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveAllResourcesOfTypeObservation() throws Exception {
         List<Observation> observations = encounterBundleData.getObservations();
-        assertEquals(1, observations.size());
+        assertEquals(16, observations.size());
     }
 
     @Test
@@ -74,7 +74,7 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveAllResourcesOfTypeFamilyHistory() throws Exception {
         List<FamilyMemberHistory> familyHistories = encounterBundleData.getFamilyMemberHistories();
-        assertEquals(1, familyHistories.size());
+        assertEquals(3, familyHistories.size());
     }
 
     @Test
@@ -85,23 +85,15 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGiveListOfAllTestsWithProperDetails() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticOrder.xml"));
-        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
-
         List<TestOrder> testOrders = encounterBundleData.getTestOrders();
         assertEquals(2, testOrders.size());
         assertEquals("http://172.18.46.199:8080/api/1.0/providers/18.json", testOrders.get(0).getOrderer().getReference().getValueAsString());
-        assertEquals("Urine", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplay());
+        assertEquals("Bld", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplay());
     }
 
     @Test
     public void shouldGetAllResourcesOfTypeProcedure() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithProcedure.xml"));
-        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
-
         List<Procedure> procedures = encounterBundleData.getProcedures();
-        assertEquals(1, procedures.size());
+        assertEquals(3, procedures.size());
     }
 }

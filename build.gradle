@@ -76,7 +76,6 @@ dependencies {
     compile('org.springframework.boot:spring-boot-starter-actuator:1.2.0.RELEASE') {
         exclude group: 'ch.qos.logback', module: "logback-classic"
     }
-    compile group: 'me.fhir', name:'fhir-0.12', version: '0.3'
     compile libraries.values()
     testCompile testLibraries.values()
 }

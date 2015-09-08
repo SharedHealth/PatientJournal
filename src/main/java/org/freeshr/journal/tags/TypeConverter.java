@@ -14,7 +14,7 @@ import java.util.List;
 public class TypeConverter {
 
     private static final String DATE_FORMAT = "dd MMM yyyy HH:mm";
-    
+
     public static final String INVALID_PERIOD = "Invalid Period";
     public static final String PERIOD_START_UNKNOWN = "Unknown";
     public static final String PERIOD_END_ONGOING = "Ongoing";
@@ -67,6 +67,9 @@ public class TypeConverter {
             if (typeValue.getClass().equals(DateTimeDt.class))
                 return fromDateTimeDt((DateTimeDt) typeValue);
 
+            if (typeValue.getClass().equals(Boolean.class))
+                return fromBoolean((Boolean) typeValue);
+
             if (typeValue.getClass().equals(BooleanDt.class))
                 return fromBooleanDt((BooleanDt) typeValue);
 
@@ -83,6 +86,10 @@ public class TypeConverter {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
         }
         return typeValue.toString();
+    }
+
+    private static String fromBoolean(Boolean typeValue) {
+        return Boolean.TRUE.equals(typeValue) ? "YES" : "NO";
     }
 
     private static String fromList(List values) {
@@ -161,7 +168,7 @@ public class TypeConverter {
     }
 
     private static String fromBooleanDt(BooleanDt typeValue) {
-        return java.lang.Boolean.TRUE.equals(typeValue.getValue()) ? "yes" : "no";
+        return Boolean.TRUE.equals(typeValue.getValue()) ? "YES" : "NO";
     }
 
     private static String fromRangeDt(RangeDt typeValue) {
