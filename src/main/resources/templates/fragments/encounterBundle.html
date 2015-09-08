@@ -10,7 +10,7 @@
     <th:block th:include="fragments/condition :: conditions (${bundleData.getFindingConditions()},'Finding')"></th:block>
     <th:block th:include="fragments/condition :: conditions (${bundleData.getSymptomConditions()},'Symptom')"></th:block>
     <!--<th:block th:include="fragments/medicationPrescription :: medicationPrescriptions (${bundleData.getMedicationPrescriptions()})"></th:block>-->
-    <th:block th:include="fragments/observation :: observations (${bundleData})"></th:block>
+    <th:block th:include="fragments/observation :: observations (${bundleData.getSHRObservations()})"></th:block>
     <th:block th:include="fragments/familyMemberHistory :: familyMemberHistories (${bundleData.getFamilyMemberHistories()})"></th:block>
     <th:block th:include="fragments/immunization :: immunizations (${bundleData.getImmunizations()})"></th:block>
     <th:block th:include="fragments/testOrder :: testOrders (${bundleData.getTestOrders()})"></th:block>

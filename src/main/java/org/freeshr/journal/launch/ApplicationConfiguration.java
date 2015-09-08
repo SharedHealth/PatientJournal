@@ -24,6 +24,7 @@ public class ApplicationConfiguration {
     public TemplateResolver templateResolver(){
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
         templateResolver.setTemplateMode("HTML5");
+        templateResolver.setCacheTTLMs(0L);
         templateResolver.setPrefix("templates/");
         templateResolver.setSuffix(".html");
         return templateResolver;

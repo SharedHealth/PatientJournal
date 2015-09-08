@@ -11,6 +11,7 @@ import java.util.List;
 import static org.freeshr.journal.model.EncounterBundlesData.fromFeedEntries;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class EncounterBundleDataTest {
 
@@ -95,5 +96,27 @@ public class EncounterBundleDataTest {
     public void shouldGetAllResourcesOfTypeProcedure() throws Exception {
         List<Procedure> procedures = encounterBundleData.getProcedures();
         assertEquals(3, procedures.size());
+    }
+
+    @Test
+    public void shouldGetAllShrObservationsAccordingToHierarchy() throws Exception {
+        List<SHRObservation> shrObservations = encounterBundleData.getSHRObservations();
+        assertEquals(3, shrObservations.size());
+        SHRObservation firstObservation = shrObservations.get(0);
+        SHRObservation secondObservation = shrObservations.get(1);
+        SHRObservation thirdObservation = shrObservations.get(2);
+
+        assertSHRObservation(firstObservation, 0, 4);
+        assertSHRObservation(secondObservation, 0, 4);
+        assertSHRObservation(thirdObservation, 0, 3);
+
+        SHRObservation bloodPressureObservation = thirdObservation.getChildren().get(0);
+        assertSHRObservation(bloodPressureObservation, 1, 2);
+    }
+
+    private void assertSHRObservation(SHRObservation firstObservation, int depth, int numberOfChildren) {
+        assertNotNull(firstObservation);
+        assertEquals(depth, firstObservation.getDepth());
+        assertEquals(numberOfChildren, firstObservation.getChildren().size());
     }
 }
