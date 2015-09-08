@@ -20,7 +20,6 @@ public class FHIRDialect extends AbstractDialect{
     public Set<IProcessor> getProcessors() {
         final Set<IProcessor> processors = new HashSet<IProcessor>();
         processors.add(new FHIRTypeProcessor());
-        processors.add(new ObservationElementProcessor());
         return processors;
     }
 }
