@@ -53,43 +53,29 @@ public class EncounterBundleData {
     }
 
     public List<Condition> getDiagnosisConditions() {
-        List<Condition> resourceByType = getResourceByType(Condition.class);
-        List<Condition> diagnosis = new ArrayList<>();
-        for (Condition condition : resourceByType) {
-            if (condition.getCategory().getCoding().get(0).getCode().equals("diagnosis"))
-                diagnosis.add(condition);
-        }
-        return diagnosis;
+        return getConditionsOfCategory("diagnosis");
     }
 
     public List<Condition> getComplaintConditions() {
-        List<Condition> resourceByType = getResourceByType(Condition.class);
-        List<Condition> complaint = new ArrayList<>();
-        for (Condition condition : resourceByType) {
-            if (condition.getCategory().getCoding().get(0).getCode().equals("complaint"))
-                complaint.add(condition);
-        }
-        return complaint;
+        return getConditionsOfCategory("complaint");
     }
 
     public List<Condition> getFindingConditions() {
-        List<Condition> resourceByType = getResourceByType(Condition.class);
-        List<Condition> finding = new ArrayList<>();
-        for (Condition condition : resourceByType) {
-            if (condition.getCategory().getCoding().get(0).getCode().equals("finding"))
-                finding.add(condition);
-        }
-        return finding;
+        return getConditionsOfCategory("finding");
     }
 
     public List<Condition> getSymptomConditions() {
+        return getConditionsOfCategory("symptom");
+    }
+
+    private List<Condition> getConditionsOfCategory(String category) {
         List<Condition> resourceByType = getResourceByType(Condition.class);
-        List<Condition> symptom = new ArrayList<>();
+        List<Condition> diagnosis = new ArrayList<>();
         for (Condition condition : resourceByType) {
-            if (condition.getCategory().getCoding().get(0).getCode().equals("symptom"))
-                symptom.add(condition);
+            if (condition.getCategory().getCoding().get(0).getCode().equals(category))
+                diagnosis.add(condition);
         }
-        return symptom;
+        return diagnosis;
     }
 
     public List<TestOrder> getTestOrders() {
@@ -118,25 +104,15 @@ public class EncounterBundleData {
 
     private void setSpecimen(TestOrder testOrder, List<ResourceReferenceDt> specimens) {
         if (!specimens.isEmpty()) {
-            for (IResource resource : encounterBundle.getResources()) {
-                if (resource.getId().equals(specimens.get(0).getReference())) {
-                    testOrder.setSample((Specimen) resource);
-                }
-            }
+            IdDt reference = specimens.get(0).getReference();
+            Specimen specimen = (Specimen) getResourceByReference(reference);
+            if (specimen != null)
+                testOrder.setSample(specimen);
         }
     }
 
     public List<Procedure> getProcedures() {
         return getResourceByType(Procedure.class);
-    }
-
-    private <T extends IResource> List<T> getResourceByType(Class<T> type) {
-        List<T> resources = new ArrayList<>();
-        for (IResource resource : encounterBundle.getResources()) {
-            if (type.isInstance(resource))
-                resources.add((T) resource);
-        }
-        return resources;
     }
 
     public List<SHRObservation> getSHRObservations() {
@@ -149,6 +125,15 @@ public class EncounterBundleData {
             shrObservations.add(shrObservation);
         }
         return shrObservations;
+    }
+
+    private <T extends IResource> List<T> getResourceByType(Class<T> type) {
+        List<T> resources = new ArrayList<>();
+        for (IResource resource : encounterBundle.getResources()) {
+            if (type.isInstance(resource))
+                resources.add((T) resource);
+        }
+        return resources;
     }
 
     private SHRObservation createShrObservation(Observation observation, List<Observation> allObs, int depth) {
@@ -164,7 +149,7 @@ public class EncounterBundleData {
             IdDt reference = related.getTarget().getReference();
             if (reference == null) continue;
             Observation childObservation = findChildObservation(reference.getValue(), allObs);
-            
+
             if (childObservation != null) {
                 SHRObservation childShrObservation = createShrObservation(childObservation, allObs, depth);
                 shrObservation.addChild(childShrObservation);
@@ -219,4 +204,33 @@ public class EncounterBundleData {
         return null;
     }
 
+    public List<TestResult> getTestResults() {
+        List<DiagnosticReport> diagnosticReports = getResourceByType(DiagnosticReport.class);
+        ArrayList<TestResult> testResults = new ArrayList<>();
+        for (DiagnosticReport diagnosticReport : diagnosticReports) {
+            TestResult testResult = createTestResult(diagnosticReport);
+            testResults.add(testResult);
+        }
+        return testResults;
+    }
+
+    private TestResult createTestResult(DiagnosticReport diagnosticReport) {
+        TestResult testResult = new TestResult(diagnosticReport.getName());
+        List<ResourceReferenceDt> resultRefs = diagnosticReport.getResult();
+        for (ResourceReferenceDt resultRef : resultRefs) {
+            Observation observation = (Observation) getResourceByReference(resultRef.getReference());
+            if (observation != null && observation.getValue() != null)
+                testResult.addResult(observation.getValue());
+        }
+        return testResult;
+    }
+
+    private IResource getResourceByReference(IdDt reference) {
+        for (IResource resource : encounterBundle.getResources()) {
+            if (resource.getId().equals(reference)) {
+                return resource;
+            }
+        }
+        return null;
+    }
 }

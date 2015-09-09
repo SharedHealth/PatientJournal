@@ -1,0 +1,19 @@
+<th:block th:fragment="testResults (testResults)">
+    <th:block th:each="testResult: ${testResults}">
+        <th:block th:object="${testResult}">
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Test Result</span>
+
+                <div class="div-resource-content">
+                    <table cellpadding="0" cellspacing="0">
+                        <tr>
+                            <td class="bolder-text" fhir:type="${testResult.getName()}"></td>
+                            <td fhir:type="${testResult.getResults()}"></td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</th:block>

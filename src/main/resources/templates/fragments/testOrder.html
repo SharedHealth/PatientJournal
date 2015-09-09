@@ -1,11 +1,10 @@
 <th:block th:fragment="testOrders (testOrders)">
-    <th:block th:each="testOrder,currentItem: ${testOrders}">
+    <th:block th:each="testOrder: ${testOrders}">
         <th:block th:object="${testOrder}">
             <div class="div-resource-container">
                 <span class="span-exp-col">+</span>
                 <span class="div-resource-head">Test Order</span>
                 <div class="div-resource-content">
-                    <p th:text="'Test Order '+${currentItem.count} " class="diagnostic-orders-subhead"></p>
                     <table cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="bolder-text">Test</td>

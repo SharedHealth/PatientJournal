@@ -99,6 +99,22 @@ public class EncounterBundleDataTest {
     }
 
     @Test
+    public void shouldGetAllTestResults() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticReport.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+        
+        List<TestResult> testResults = encounterBundleData.getTestResults();
+        assertEquals(2, testResults.size());
+        
+        assertNotNull(testResults.get(0).getName());
+        assertNotNull(testResults.get(0).getResults());
+        
+        assertNotNull(testResults.get(1).getName());
+        assertNotNull(testResults.get(1).getResults());
+    }
+
+    @Test
     public void shouldGetAllShrObservationsAccordingToHierarchy() throws Exception {
         List<SHRObservation> shrObservations = encounterBundleData.getSHRObservations();
         assertEquals(3, shrObservations.size());
