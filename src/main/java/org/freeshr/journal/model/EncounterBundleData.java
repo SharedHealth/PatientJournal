@@ -9,8 +9,9 @@ import ca.uhn.fhir.model.primitive.IdDt;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
+
+import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesOfTypeByExclusion;
 
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
@@ -115,8 +116,17 @@ public class EncounterBundleData {
         return getResourceByType(Procedure.class);
     }
 
+    private <T extends IResource> List<T> getResourceByType(Class<T> type) {
+        List<T> resources = new ArrayList<>();
+        for (IResource resource : encounterBundle.getResources()) {
+            if (type.isInstance(resource))
+                resources.add((T) resource);
+        }
+        return resources;
+    }
+
     public List<SHRObservation> getSHRObservations() {
-        List<Observation> topLevelObs = identifyTopLevelResourcesOfTypeByExclusion(Observation.class);
+        List<Observation> topLevelObs = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle, Observation.class);
         ArrayList<SHRObservation> shrObservations = new ArrayList<>();
         List<Observation> allObs = this.getObservations();
         for (Observation topLevelOb : topLevelObs) {
@@ -125,15 +135,6 @@ public class EncounterBundleData {
             shrObservations.add(shrObservation);
         }
         return shrObservations;
-    }
-
-    private <T extends IResource> List<T> getResourceByType(Class<T> type) {
-        List<T> resources = new ArrayList<>();
-        for (IResource resource : encounterBundle.getResources()) {
-            if (type.isInstance(resource))
-                resources.add((T) resource);
-        }
-        return resources;
     }
 
     private SHRObservation createShrObservation(Observation observation, List<Observation> allObs, int depth) {
@@ -163,37 +164,6 @@ public class EncounterBundleData {
         if (interpretation == null) return false;
         if (!CollectionUtils.isEmpty(interpretation.getCoding())) return true;
         return interpretation.getText() != null;
-    }
-
-    private <T extends IResource> List<T> identifyTopLevelResourcesOfTypeByExclusion(Class<T> type) {
-        List<IResource> allResources = encounterBundle.getResources();
-        List<ResourceReferenceDt> childResourceReferences = new ArrayList<>();
-        for (IResource resource : allResources) {
-            if (resource instanceof Composition || resource instanceof Encounter) continue;
-            childResourceReferences.addAll(resource.getAllPopulatedChildElementsOfType(ResourceReferenceDt.class));
-        }
-        HashSet<ResourceReferenceDt> childReferences = new HashSet<>();
-        childReferences.addAll(childResourceReferences);
-
-        ArrayList<T> topLevelResources = new ArrayList<>();
-
-        for (IResource resource : allResources) {
-            if (type.isInstance(resource)) {
-                if (!isChildReference(childReferences, resource.getId().getValue())) {
-                    topLevelResources.add((T) resource);
-                }
-            }
-        }
-        return topLevelResources;
-    }
-
-    private boolean isChildReference(HashSet<ResourceReferenceDt> childReferenceDts, String resourceRef) {
-        for (ResourceReferenceDt childRef : childReferenceDts) {
-            if (!childRef.getReference().isEmpty() && childRef.getReference().getValue().equals(resourceRef)) {
-                return true;
-            }
-        }
-        return false;
     }
 
     private Observation findChildObservation(String referenceSimple, List<Observation> allObs) {
