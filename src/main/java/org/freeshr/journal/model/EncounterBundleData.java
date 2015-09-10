@@ -183,8 +183,9 @@ public class EncounterBundleData {
         List<ResourceReferenceDt> resultRefs = diagnosticReport.getResult();
         for (ResourceReferenceDt resultRef : resultRefs) {
             Observation observation = (Observation) getResourceByReference(resultRef.getReference());
-            if (observation != null && observation.getValue() != null)
-                testResult.addResult(observation.getValue());
+            SHRObservation shrObservation = convertToSHRObservation(observation, 0);
+            if (shrObservation != null)
+                testResult.addResult(shrObservation);
         }
         return testResult;
     }

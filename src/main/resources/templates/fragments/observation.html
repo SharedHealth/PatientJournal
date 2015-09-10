@@ -17,27 +17,27 @@
 
 <th:block th:fragment="observationsRec (shrObservation)">
     <th:block th:object="${shrObservation}">
-        <tr th:class="'level'+*{getDepth()}">
-            <td class="bolder-text" fhir:type="*{getName()}"></td>
+        <tr th:class="'level'+${shrObservation.getDepth()}">
+            <td class="bolder-text" fhir:type="${shrObservation.getName()}"></td>
             <td>
-                <th:block th:if="*{getValue()} != null">
-                    <span fhir:type="*{getValue()}"></span>
+                <th:block th:if="${shrObservation.getValue()} != null">
+                    <span fhir:type="${shrObservation.getValue()}"></span>
                 </th:block>
-                <th:block th:if="*{getInterpretation()} != null">
+                <th:block th:if="${shrObservation.getInterpretation()} != null">
                         <span>
                             <span><b>Interpretation:-</b></span>
-                            <span fhir:type="*{getInterpretation()}"></span>
+                            <span fhir:type="${shrObservation.getInterpretation()}"></span>
                         </span>
                 </th:block>
-                <th:block th:if="*{getComments()} != null">
+                <th:block th:if="${shrObservation.getComments()} != null">
                         <span>
                             <span><b>Comments:-</b></span>
-                            <span fhir:type="*{getComments()}"></span>
+                            <span fhir:type="${shrObservation.getComments()}"></span>
                         </span>
                 </th:block>
             </td>
         </tr>
-        <th:block th:each="childObservation: *{getChildren()}">
+        <th:block th:each="childObservation: ${shrObservation.getChildren()}">
             <th:block th:include="fragments/observation :: observationsRec (${childObservation})"></th:block>
         </th:block>
     </th:block>

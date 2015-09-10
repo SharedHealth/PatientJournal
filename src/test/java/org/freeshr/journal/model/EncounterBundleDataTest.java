@@ -35,7 +35,7 @@ public class EncounterBundleDataTest {
         List<Encounter> encounters = encounterBundleData.getEncounters();
         assertEquals(1, encounters.size());
     }
-    
+
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
         List<Condition> conditions = encounterBundleData.getConditions();
@@ -97,15 +97,18 @@ public class EncounterBundleDataTest {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticReport.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
-        
+
         List<TestResult> testResults = encounterBundleData.getTestResults();
         assertEquals(2, testResults.size());
-        
+
         assertNotNull(testResults.get(0).getName());
-        assertNotNull(testResults.get(0).getResults());
-        
         assertNotNull(testResults.get(1).getName());
-        assertNotNull(testResults.get(1).getResults());
+
+        List<SHRObservation> firstTestResults = testResults.get(0).getResults();
+        assertEquals(1, firstTestResults.size());
+        List<SHRObservation> secondTestResults = testResults.get(1).getResults();
+        assertEquals(2, secondTestResults.size());
+        assertEquals(3, secondTestResults.get(1).getChildren().size());
     }
 
     @Test

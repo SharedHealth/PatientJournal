@@ -6,12 +6,20 @@
                 <span class="div-resource-head">Test Result</span>
 
                 <div class="div-resource-content">
+                    <p class="subhead">Test</p>
                     <table cellpadding="0" cellspacing="0">
                         <tr>
-                            <td class="bolder-text" fhir:type="${testResult.getName()}"></td>
-                            <td fhir:type="${testResult.getResults()}"></td>
+                            <td class="bolder-text">Name</td>
+                            <td fhir:type="${testResult.getName()}"></td>
                         </tr>
                     </table>
+                    <p class="subhead">Results</p>
+                    <th:block th:each="shrObservation: ${testResult.getResults()}">
+                        <table cellpadding="0" cellspacing="0" class="table-observation">
+                            <th:block
+                                    th:include="fragments/observation :: observationsRec (${shrObservation})"></th:block>
+                        </table>
+                    </th:block>
                 </div>
             </div>
         </th:block>
