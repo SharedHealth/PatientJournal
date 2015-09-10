@@ -43,12 +43,15 @@
                                 <tr>
                                     <td class="bolder-text">Providers</td>
                                     <td>
-                                        <th:block th:if="${participants.get(0).getIndividual()} != null">
-                                            <a data-class="external-ref" data-ref-element-class="provider"
-                                               th:href="${participants.get(0).getIndividual().getReference()}">Click
-                                                here to view
-                                                Provider</a>
-                                            <div class="provider"></div>
+                                        <th:block th:each="participant: ${participants}">
+                                            <th:block th:if="${participant.getIndividual()} != null">
+                                                <a data-class="external-ref" data-ref-element-class="provider"
+                                                   th:href="${participant.getIndividual().getReference()}">Click
+                                                    here to view
+                                                    Provider</a>
+                                                <span class="provider"></span>
+                                                <span>|</span>
+                                            </th:block>
                                         </th:block>
                                     </td>
                                 </tr>

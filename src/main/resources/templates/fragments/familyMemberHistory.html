@@ -41,33 +41,34 @@
 
                     <th:block th:with="relationConditions=*{getCondition()}">
                         <th:block th:unless="${#lists.isEmpty(relationConditions)}">
-                            <p class="subhead">Condition</p>
-                            <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
-                                <th:block th:with="firstCondition=${relationConditions.get(0)}">
+                            <th:block th:each="condition,currentItem: ${relationConditions}">
+                                <p class="subhead" th:text="'Condition '+${currentItem.count}"></p>
+                                <table class="table-relationship-condition" cellpadding="0" cellspacing="0">
+
                                     <tr>
                                         <td class="bolder-text">Diagnosis</td>
-                                        <td fhir:type="${firstCondition.getType()}"></td>
+                                        <td fhir:type="${condition.getType()}"></td>
                                     </tr>
-                                    <th:block th:if="${firstCondition.getOutcome()} != null">
+                                    <th:block th:if="${condition.getOutcome()} != null">
                                         <tr>
                                             <td class="bolder-text">Outcome</td>
-                                            <td fhir:type="${firstCondition.getOutcome()}"></td>
+                                            <td fhir:type="${condition.getOutcome()}"></td>
                                         </tr>
                                     </th:block>
-                                    <th:block th:if="${firstCondition.getOnset()} != null">
+                                    <th:block th:if="${condition.getOnset()} != null">
                                         <tr>
                                             <td class="bolder-text">Onset</td>
-                                            <td fhir:type="${firstCondition.getOnset()}"></td>
+                                            <td fhir:type="${condition.getOnset()}"></td>
                                         </tr>
                                     </th:block>
-                                    <th:block th:if="${firstCondition.getNote()} != null">
+                                    <th:block th:if="${condition.getNote()} != null">
                                         <tr>
                                             <td class="bolder-text">Note</td>
-                                            <td th:text="${firstCondition.getNote()}"></td>
+                                            <td th:text="${condition.getNote()}"></td>
                                         </tr>
                                     </th:block>
-                                </th:block>
-                            </table>
+                                </table>
+                            </th:block>
                         </th:block>
                     </th:block>
                 </div>

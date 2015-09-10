@@ -1,8 +1,8 @@
 function showServiceProvider(anchor, element_ref_class) {
    return function(data) {
-     var div = anchor.parent().find("."+element_ref_class);
-     div.html(data);
-     div.show();
+     var element = anchor.next();
+     element.html(data);
+     element.show();
      anchor.hide();
    }
 }
