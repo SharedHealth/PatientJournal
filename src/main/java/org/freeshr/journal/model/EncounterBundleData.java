@@ -15,9 +15,11 @@ import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelReso
 
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
+    private List<IResource> topLevelResources;
 
     public EncounterBundleData(EncounterBundle encounterBundle) {
         this.encounterBundle = encounterBundle;
+        this.topLevelResources = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
     }
 
     public EncounterBundle getEncounterBundle() {
@@ -25,15 +27,11 @@ public class EncounterBundleData {
     }
 
     public List<Composition> getCompositions() {
-        return getResourceByType(Composition.class);
-    }
-
-    public List<Observation> getObservations() {
-        return getResourceByType(Observation.class);
+        return encounterBundle.getCompositions();
     }
 
     public List<Encounter> getEncounters() {
-        return getResourceByType(Encounter.class);
+        return encounterBundle.getEncounters();
     }
 
 
@@ -69,6 +67,36 @@ public class EncounterBundleData {
         return getConditionsOfCategory("symptom");
     }
 
+    public List<Procedure> getProcedures() {
+        return getResourceByType(Procedure.class);
+    }
+
+    public List<TestOrder> getTestOrders() {
+        List<DiagnosticOrder> diagnosticOrders = getResourceByType(DiagnosticOrder.class);
+        return getAllTestOrdersInDiagnosticOrders(diagnosticOrders);
+    }
+
+    public List<SHRObservation> getSHRObservations() {
+        List<Observation> topLevelObs = getResourceByType(Observation.class);
+        List<SHRObservation> shrObservations = new ArrayList<>();
+        for (Observation topLevelOb : topLevelObs) {
+            int depth = 0;
+            SHRObservation shrObservation = convertToSHRObservation(topLevelOb, depth);
+            shrObservations.add(shrObservation);
+        }
+        return shrObservations;
+    }
+
+    public List<TestResult> getTestResults() {
+        List<DiagnosticReport> diagnosticReports = getResourceByType(DiagnosticReport.class);
+        ArrayList<TestResult> testResults = new ArrayList<>();
+        for (DiagnosticReport diagnosticReport : diagnosticReports) {
+            TestResult testResult = createTestResult(diagnosticReport);
+            testResults.add(testResult);
+        }
+        return testResults;
+    }
+
     private List<Condition> getConditionsOfCategory(String category) {
         List<Condition> resourceByType = getResourceByType(Condition.class);
         List<Condition> diagnosis = new ArrayList<>();
@@ -77,11 +105,6 @@ public class EncounterBundleData {
                 diagnosis.add(condition);
         }
         return diagnosis;
-    }
-
-    public List<TestOrder> getTestOrders() {
-        List<DiagnosticOrder> diagnosticOrders = getResourceByType(DiagnosticOrder.class);
-        return getAllTestOrdersInDiagnosticOrders(diagnosticOrders);
     }
 
     private ArrayList<TestOrder> getAllTestOrdersInDiagnosticOrders(List<DiagnosticOrder> diagnosticOrders) {
@@ -112,50 +135,39 @@ public class EncounterBundleData {
         }
     }
 
-    public List<Procedure> getProcedures() {
-        return getResourceByType(Procedure.class);
-    }
-
     private <T extends IResource> List<T> getResourceByType(Class<T> type) {
         List<T> resources = new ArrayList<>();
-        for (IResource resource : encounterBundle.getResources()) {
+        for (IResource resource : topLevelResources) {
             if (type.isInstance(resource))
                 resources.add((T) resource);
         }
         return resources;
     }
 
-    public List<SHRObservation> getSHRObservations() {
-        List<Observation> topLevelObs = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle, Observation.class);
-        ArrayList<SHRObservation> shrObservations = new ArrayList<>();
-        List<Observation> allObs = this.getObservations();
-        for (Observation topLevelOb : topLevelObs) {
-            int depth = 0;
-            SHRObservation shrObservation = createShrObservation(topLevelOb, allObs, depth);
-            shrObservations.add(shrObservation);
+    private SHRObservation convertToSHRObservation(Observation observation, int depth) {
+        SHRObservation shrObservation = createSHRObservation(observation, depth);
+        if (observation.getRelated().isEmpty()) return shrObservation;
+        depth++;
+        for (Observation.Related related : observation.getRelated()) {
+            IdDt reference = related.getTarget().getReference();
+            if (reference == null) continue;
+            Observation childObservation = (Observation) getResourceByReference(reference);
+
+            if (childObservation != null) {
+                SHRObservation childShrObservation = convertToSHRObservation(childObservation, depth);
+                shrObservation.addChild(childShrObservation);
+            }
         }
-        return shrObservations;
+        return shrObservation;
     }
 
-    private SHRObservation createShrObservation(Observation observation, List<Observation> allObs, int depth) {
+    private SHRObservation createSHRObservation(Observation observation, int depth) {
         SHRObservation shrObservation = new SHRObservation(depth);
         shrObservation.setName(observation.getCode());
         if (observation.getValue() != null) shrObservation.setValue(observation.getValue());
         if (observation.getComments() != null) shrObservation.setComments(observation.getComments());
         if (hasInterpretation(observation))
             shrObservation.setInterpretation(observation.getInterpretation());
-        if (observation.getRelated().isEmpty()) return shrObservation;
-        depth++;
-        for (Observation.Related related : observation.getRelated()) {
-            IdDt reference = related.getTarget().getReference();
-            if (reference == null) continue;
-            Observation childObservation = findChildObservation(reference.getValue(), allObs);
-
-            if (childObservation != null) {
-                SHRObservation childShrObservation = createShrObservation(childObservation, allObs, depth);
-                shrObservation.addChild(childShrObservation);
-            }
-        }
         return shrObservation;
     }
 
@@ -164,24 +176,6 @@ public class EncounterBundleData {
         if (interpretation == null) return false;
         if (!CollectionUtils.isEmpty(interpretation.getCoding())) return true;
         return interpretation.getText() != null;
-    }
-
-    private Observation findChildObservation(String referenceSimple, List<Observation> allObs) {
-        for (Observation observation : allObs) {
-            if (referenceSimple.equals(observation.getId().getValue()))
-                return observation;
-        }
-        return null;
-    }
-
-    public List<TestResult> getTestResults() {
-        List<DiagnosticReport> diagnosticReports = getResourceByType(DiagnosticReport.class);
-        ArrayList<TestResult> testResults = new ArrayList<>();
-        for (DiagnosticReport diagnosticReport : diagnosticReports) {
-            TestResult testResult = createTestResult(diagnosticReport);
-            testResults.add(testResult);
-        }
-        return testResults;
     }
 
     private TestResult createTestResult(DiagnosticReport diagnosticReport) {

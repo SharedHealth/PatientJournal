@@ -11,7 +11,7 @@ import java.util.HashSet;
 import java.util.List;
 
 public class EncounterBundleUtil {
-    public static  <T extends IResource> List<T> identifyTopLevelResourcesOfTypeByExclusion(EncounterBundle encounterBundle, Class<T> type) {
+    public static List<IResource> identifyTopLevelResourcesOfTypeByExclusion(EncounterBundle encounterBundle) {
         List<IResource> allResources = encounterBundle.getResources();
         List<ResourceReferenceDt> childResourceReferences = new ArrayList<>();
         for (IResource resource : allResources) {
@@ -21,14 +21,12 @@ public class EncounterBundleUtil {
         HashSet<ResourceReferenceDt> childReferences = new HashSet<>();
         childReferences.addAll(childResourceReferences);
 
-        ArrayList<T> topLevelResources = new ArrayList<>();
+        ArrayList<IResource> topLevelResources = new ArrayList<>();
 
         for (IResource resource : allResources) {
             if (resource instanceof Composition || resource instanceof Encounter) continue;
-            if (type.isInstance(resource)) {
-                if (!isChildReference(childReferences, resource.getId().getValue())) {
-                    topLevelResources.add((T) resource);
-                }
+            if (!isChildReference(childReferences, resource.getId().getValue())) {
+                topLevelResources.add(resource);
             }
         }
         return topLevelResources;

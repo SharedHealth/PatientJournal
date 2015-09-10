@@ -35,13 +35,7 @@ public class EncounterBundleDataTest {
         List<Encounter> encounters = encounterBundleData.getEncounters();
         assertEquals(1, encounters.size());
     }
-
-    @Test
-    public void shouldGiveAllResourcesOfTypeObservation() throws Exception {
-        List<Observation> observations = encounterBundleData.getObservations();
-        assertEquals(16, observations.size());
-    }
-
+    
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
         List<Condition> conditions = encounterBundleData.getConditions();
@@ -87,9 +81,9 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveListOfAllTestsWithProperDetails() throws Exception {
         List<TestOrder> testOrders = encounterBundleData.getTestOrders();
-        assertEquals(2, testOrders.size());
+        assertEquals(3, testOrders.size());
         assertEquals("http://172.18.46.199:8080/api/1.0/providers/18.json", testOrders.get(0).getOrderer().getReference().getValueAsString());
-        assertEquals("Bld", testOrders.get(0).getSample().getType().getCoding().get(0).getDisplay());
+        assertEquals("Bld", testOrders.get(1).getSample().getType().getCoding().get(0).getDisplay());
     }
 
     @Test
@@ -122,11 +116,11 @@ public class EncounterBundleDataTest {
         SHRObservation secondObservation = shrObservations.get(1);
         SHRObservation thirdObservation = shrObservations.get(2);
 
-        assertSHRObservation(firstObservation, 0, 4);
+        assertSHRObservation(firstObservation, 0, 3);
         assertSHRObservation(secondObservation, 0, 4);
-        assertSHRObservation(thirdObservation, 0, 3);
+        assertSHRObservation(thirdObservation, 0, 4);
 
-        SHRObservation bloodPressureObservation = thirdObservation.getChildren().get(0);
+        SHRObservation bloodPressureObservation = firstObservation.getChildren().get(0);
         assertSHRObservation(bloodPressureObservation, 1, 2);
     }
 
