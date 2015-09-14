@@ -50,10 +50,12 @@
                                         <td fhir:type="${condition.getType()}"></td>
                                     </tr>
                                     <th:block th:if="${condition.getOutcome()} != null">
+                                        <th:block th:if="${condition.getOutcome().getText()} != null or !(${#lists.isEmpty(condition.getOutcome().getCoding())})">
                                         <tr>
                                             <td class="bolder-text">Outcome</td>
                                             <td fhir:type="${condition.getOutcome()}"></td>
                                         </tr>
+                                    </th:block>
                                     </th:block>
                                     <th:block th:if="${condition.getOnset()} != null">
                                         <tr>
