@@ -87,12 +87,6 @@ public class EncounterBundleDataTest {
     }
 
     @Test
-    public void shouldGetAllResourcesOfTypeProcedure() throws Exception {
-        List<Procedure> procedures = encounterBundleData.getProcedures();
-        assertEquals(3, procedures.size());
-    }
-
-    @Test
     public void shouldGetAllTestResults() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticReport.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
@@ -109,6 +103,22 @@ public class EncounterBundleDataTest {
         List<SHRObservation> secondTestResults = testResults.get(1).getResults();
         assertEquals(2, secondTestResults.size());
         assertEquals(3, secondTestResults.get(1).getChildren().size());
+    }
+
+    @Test
+    public void shouldGetAllSHRProcedures() throws Exception {
+        List<SHRProcedure> shrProcedures = encounterBundleData.getSHRProcedures();
+
+        assertEquals(3, shrProcedures.size());
+        SHRProcedure firstProcedure = shrProcedures.get(0);
+
+        assertNotNull(firstProcedure.getDate());
+        assertNotNull(firstProcedure.getType());
+        assertNotNull(firstProcedure.getOutcome());
+        assertEquals(2, firstProcedure.getFollowUp().size());
+        assertEquals(1, firstProcedure.getProcedureReports().size());
+
+        assertEquals(0, shrProcedures.get(1).getFollowUp().size());
     }
 
     @Test

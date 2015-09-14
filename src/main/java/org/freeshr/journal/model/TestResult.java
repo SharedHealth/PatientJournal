@@ -9,13 +9,9 @@ public class TestResult {
     private CodeableConceptDt name;
     private List<SHRObservation> results;
 
-    public TestResult(CodeableConceptDt name) {
+    public TestResult(CodeableConceptDt name, List<SHRObservation> shrObservations) {
         this.name = name;
-        this.results = new ArrayList<>();
-    }
-
-    public void addResult(SHRObservation result) {
-        this.results.add(result);
+        this.results = new ArrayList<>(shrObservations);
     }
 
     public CodeableConceptDt getName() {

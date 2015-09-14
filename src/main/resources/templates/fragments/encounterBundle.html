@@ -11,5 +11,5 @@
     <th:block th:include="fragments/immunization :: immunizations (${bundleData.getImmunizations()})"></th:block>
     <th:block th:include="fragments/testResult :: testResults (${bundleData.getTestResults()})"></th:block>
     <th:block th:include="fragments/testOrder :: testOrders (${bundleData.getTestOrders()})"></th:block>
-    <th:block th:include="fragments/procedure :: procedures (${bundleData.getProcedures()})"></th:block>
+    <th:block th:include="fragments/procedure :: procedures (${bundleData.getSHRProcedures()})"></th:block>
 </th:block>
