@@ -48,7 +48,7 @@
                                             <td>
                                                 <th:block th:if="${report.getProviderReference()} != null">
                                                     <a data-class="external-ref" data-ref-element-class="provider"
-                                                       th:href="${report.getProviderReference()}">Click
+                                                       th:href="${report.getProviderReference().getReference()}">Click
                                                         here to view
                                                         Provider</a>
                                                     <span class="provider"></span>
