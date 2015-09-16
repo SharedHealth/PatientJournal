@@ -88,7 +88,7 @@ public class TypeConverterTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
         period1.setStart(startDate, TemporalPrecisionEnum.DAY);
-        assertEquals("17 Jun 2015 00:00 - " + PERIOD_END_ONGOING, convertToText(period1));
+        assertEquals("17 Jun 2015 00:00", convertToText(period1));
 
         PeriodDt period2 = new PeriodDt();
         Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");

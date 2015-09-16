@@ -17,7 +17,6 @@ public class TypeConverter {
 
     public static final String INVALID_PERIOD = "Invalid Period";
     public static final String PERIOD_START_UNKNOWN = "Unknown";
-    public static final String PERIOD_END_ONGOING = "Ongoing";
     public static final String INVALID_REFERENCE = "invalid reference";
 
 
@@ -128,7 +127,12 @@ public class TypeConverter {
     private static String fromPeriodDt(PeriodDt typeValue) {
         if (typeValue.getStart() == null && typeValue.getEnd() == null) return INVALID_PERIOD;
         String start = (typeValue.getStart() != null) ? fromJavaUtilDate(typeValue.getStart()) : PERIOD_START_UNKNOWN;
-        String end = (typeValue.getEnd() != null) ? fromJavaUtilDate(typeValue.getEnd()) : PERIOD_END_ONGOING;
+        String end;
+        if (typeValue.getEnd() == null)
+            return start;
+        else
+            end = fromJavaUtilDate(typeValue.getEnd());
+
         return start + " - " + end;
     }
 
