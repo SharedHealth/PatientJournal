@@ -42,9 +42,9 @@ public class EncounterBundleData {
         return getResourceByType(FamilyMemberHistory.class);
     }
 
-    public List<MedicationPrescription> getMedicationPrescriptions() {
-        return getResourceByType(MedicationPrescription.class);
-    }
+//    public List<MedicationPrescription> getMedicationPrescriptions() {
+//        return getResourceByType(MedicationPrescription.class);
+//    }
 
     public List<Immunization> getImmunizations() {
         return getResourceByType(Immunization.class);
@@ -87,7 +87,7 @@ public class EncounterBundleData {
         List<TestResult> testResults = new ArrayList<>();
         for (DiagnosticReport diagnosticReport : diagnosticReports) {
             List<SHRObservation> shrObservations = extractSHRObservationsFromDiagnosisReport(diagnosticReport);
-            TestResult testResult = new TestResult(diagnosticReport.getName(), shrObservations);
+            TestResult testResult = new TestResult(diagnosticReport.getCode(), shrObservations);
             testResults.add(testResult);
         }
         return testResults;
@@ -98,13 +98,13 @@ public class EncounterBundleData {
         List<SHRProcedure> shrProcedures = new ArrayList<>();
         for (Procedure procedure : procedures) {
             CodeableConceptDt outcome = hasValue(procedure.getOutcome()) ? procedure.getOutcome() : null;
-            SHRProcedure shrProcedure = new SHRProcedure(procedure.getPerformed(), procedure.getType(), outcome, procedure.getFollowUp());
+            SHRProcedure shrProcedure = new SHRProcedure(procedure.getPerformed(), procedure.getCode(), outcome, procedure.getFollowUp());
             for (ResourceReferenceDt resourceReferenceDt : procedure.getReport()) {
                 IResource resourceByReference = getResourceByReference(resourceReferenceDt.getReference());
                 if ((null == resourceByReference) || !(resourceByReference instanceof DiagnosticReport)) continue;
                 DiagnosticReport diagnosticReport = (DiagnosticReport) resourceByReference;
                 List<SHRObservation> resultNotes = extractSHRObservationsFromDiagnosisReport(diagnosticReport);
-                SHRProcedureReport report = new SHRProcedureReport(diagnosticReport.getName(), diagnosticReport.getPerformer(), diagnosticReport.getCodedDiagnosis(), resultNotes);
+                SHRProcedureReport report = new SHRProcedureReport(diagnosticReport.getCode(), diagnosticReport.getPerformer(), diagnosticReport.getCodedDiagnosis(), resultNotes);
                 shrProcedure.addReport(report);
             }
             shrProcedures.add(shrProcedure);

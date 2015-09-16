@@ -32,11 +32,11 @@ public class EncounterBundleUtilTest {
         }
     }
 
-    @Test
-    public void shouldIdentifyTopLevelDiagnosticReports() throws Exception {
-        List<IResource> diagnosticReports = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
-        assertEquals(2, diagnosticReports.size());
-    }
+//    @Test
+//    public void shouldIdentifyTopLevelDiagnosticReports() throws Exception {
+//        List<IResource> diagnosticReports = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
+//        assertEquals(2, diagnosticReports.size());
+//    }
 
     @Test
     public void shouldIdentifyTopLevelResourcesOtherThanEncounterAndComposition() throws Exception {

@@ -41,7 +41,7 @@ public class TypeConverterTest {
 
         StringDt units = new StringDt();
         units.setValue("mg");
-        quantity.setUnits(units);
+        quantity.setUnit(units);
 
         assertEquals("12 mg", convertToText(quantity));
     }
@@ -111,12 +111,11 @@ public class TypeConverterTest {
     @Test
     public void shouldConvertARange() throws Exception {
         RangeDt range1 = new RangeDt();
-        QuantityDt upperLimit = new QuantityDt(12);
+        SimpleQuantityDt upperLimit = new SimpleQuantityDt(12);
         range1.setHigh(upperLimit);
-        
         assertEquals(" - 12", convertToText(range1));
 
-        QuantityDt lowerLimit = new QuantityDt(6);
+        SimpleQuantityDt lowerLimit = new SimpleQuantityDt(6);
         range1.setLow(lowerLimit);
         
         assertEquals("6 - 12", convertToText(range1));

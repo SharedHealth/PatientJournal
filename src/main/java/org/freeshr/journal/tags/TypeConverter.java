@@ -152,7 +152,7 @@ public class TypeConverter {
 
     private static String fromQuantityDt(QuantityDt typeValue) {
         BigDecimal value = typeValue.getValue();
-        String units = typeValue.getUnits();
+        String units = typeValue.getUnit();
 
         if (value == null) return "";
 
@@ -176,8 +176,8 @@ public class TypeConverter {
     }
 
     private static String fromRangeDt(RangeDt typeValue) {
-        QuantityDt low = typeValue.getLow();
-        QuantityDt high = typeValue.getHigh();
+        SimpleQuantityDt low = typeValue.getLow();
+        SimpleQuantityDt high = typeValue.getHigh();
         String lowerRange = (low != null) ? fromQuantityDt(low) : "";
         String higherRange = (high != null) ? fromQuantityDt(high) : "";
         return lowerRange + " - " + higherRange;
