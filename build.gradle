@@ -17,7 +17,7 @@ buildscript {
 repositories {
     mavenLocal()
     mavenCentral()
-    maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
+    maven { url "https://repo.spring.io/libs-release" }
     jcenter()
 }
 
@@ -56,8 +56,8 @@ ext.libraries = [
         apache_httpclient    : "org.apache.httpcomponents:httpclient:4.3.6",
         apache_commons_lang3 : "org.apache.commons:commons-lang3:3.3.2",
         thymeleaf            : "org.springframework.boot:spring-boot-starter-thymeleaf",
-        hapi_fhir_base       : "ca.uhn.hapi.fhir:hapi-fhir-base:1.2-SNAPSHOT",
-        hapi_fhir_structures : "ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:1.2-SNAPSHOT"
+        hapi_fhir_base       : 'ca.uhn.hapi.fhir:hapi-fhir-base:1.2',
+        hapi_fhir_structures : 'ca.uhn.hapi.fhir:hapi-fhir-structures-dstu2:1.2'
 ]
 ext.testLibraries = [
         junit                : "junit:junit",

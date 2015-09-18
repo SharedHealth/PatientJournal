@@ -39,13 +39,13 @@ public class EncounterBundleDataTest {
     @Test
     public void shouldGiveAllResourcesOfTypeCondition() throws Exception {
         List<Condition> conditions = encounterBundleData.getConditions();
-        assertEquals(4, conditions.size());
+        assertEquals(5, conditions.size());
     }
 
     @Test
     public void shouldGiveAllConditionOfTypeCompliant() throws Exception {
         List<Condition> complaintConditions = encounterBundleData.getComplaintConditions();
-        assertEquals(1, complaintConditions.size());
+        assertEquals(2, complaintConditions.size());
     }
 
     @Test
@@ -72,66 +72,60 @@ public class EncounterBundleDataTest {
         assertEquals(3, familyHistories.size());
     }
 
-//    @Test
-//    public void shouldGiveAllResourcesOfTypeMedicationPrescription() throws Exception {
-//        List<MedicationPrescription> medicationPrescriptions = encounterBundleData.getMedicationPrescriptions();
-//        assertEquals(0, medicationPrescriptions.size());
-//    }
+    @Test
+    public void shouldGiveAllResourcesOfTypeMedicationOrder() throws Exception {
+        List<MedicationOrder> medicationOrders = encounterBundleData.getMedicationOrders();
+        assertEquals(1, medicationOrders.size());
+    }
 
-//    @Test
-//    public void shouldGetAllTestResults() throws Exception {
-//        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithDiagnosticReport.xml"));
-//        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
-//        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
-//
-//        List<TestResult> testResults = encounterBundleData.getTestResults();
-//        assertEquals(2, testResults.size());
-//
-//        assertNotNull(testResults.get(0).getName());
-//        assertNotNull(testResults.get(1).getName());
-//
-//        List<SHRObservation> firstTestResults = testResults.get(0).getResults();
-//        assertEquals(1, firstTestResults.size());
-//        List<SHRObservation> secondTestResults = testResults.get(1).getResults();
-//        assertEquals(2, secondTestResults.size());
-//        assertEquals(3, secondTestResults.get(1).getChildren().size());
-//    }
+    @Test
+    public void shouldGetAllTestResults() throws Exception {
+        List<TestResult> testResults = encounterBundleData.getTestResults();
+        assertEquals(4, testResults.size());
 
-//    @Test
-//    public void shouldGetAllSHRProcedures() throws Exception {
-//        List<SHRProcedure> shrProcedures = encounterBundleData.getSHRProcedures();
-//
-////        assertEquals(3, shrProcedures.size());
-//        SHRProcedure firstProcedure = shrProcedures.get(0);
-//
-//        assertNotNull(firstProcedure.getDate());
-//        assertNotNull(firstProcedure.getType());
-//        assertNotNull(firstProcedure.getOutcome());
-//        assertEquals(2, firstProcedure.getFollowUp().size());
-//        assertEquals(1, firstProcedure.getProcedureReports().size());
-//
-//        assertEquals(0, shrProcedures.get(1).getFollowUp().size());
-//    }
+        assertNotNull(testResults.get(0).getName());
+        assertNotNull(testResults.get(1).getName());
 
-//    @Test
-//    public void shouldGetAllShrObservationsAccordingToHierarchy() throws Exception {
-//        List<SHRObservation> shrObservations = encounterBundleData.getSHRObservations();
-//        assertEquals(3, shrObservations.size());
-//        SHRObservation firstObservation = shrObservations.get(0);
-//        SHRObservation secondObservation = shrObservations.get(1);
-//        SHRObservation thirdObservation = shrObservations.get(2);
-//
-//        assertSHRObservation(firstObservation, 0, 3);
-//        assertSHRObservation(secondObservation, 0, 4);
-//        assertSHRObservation(thirdObservation, 0, 4);
-//
-//        SHRObservation bloodPressureObservation = firstObservation.getChildren().get(0);
-//        assertSHRObservation(bloodPressureObservation, 1, 2);
-//    }
+        List<SHRObservation> firstTestResults = testResults.get(0).getResults();
+        assertEquals(1, firstTestResults.size());
+        List<SHRObservation> secondTestResults = testResults.get(1).getResults();
+        assertEquals(2, secondTestResults.size());
+        assertEquals(3, secondTestResults.get(1).getChildren().size());
+    }
 
-    private void assertSHRObservation(SHRObservation firstObservation, int depth, int numberOfChildren) {
-        assertNotNull(firstObservation);
-        assertEquals(depth, firstObservation.getDepth());
-        assertEquals(numberOfChildren, firstObservation.getChildren().size());
+    @Test
+    public void shouldGetAllSHRProcedures() throws Exception {
+        List<SHRProcedure> shrProcedures = encounterBundleData.getSHRProcedures();
+
+        assertEquals(1, shrProcedures.size());
+        SHRProcedure firstProcedure = shrProcedures.get(0);
+
+        assertNotNull(firstProcedure.getDate());
+        assertNotNull(firstProcedure.getType());
+        assertNotNull(firstProcedure.getOutcome());
+        assertEquals(2, firstProcedure.getFollowUp().size());
+        assertEquals(1, firstProcedure.getProcedureReports().size());
+    }
+
+    @Test
+    public void shouldGetAllShrObservationsAccordingToHierarchy() throws Exception {
+        List<SHRObservation> shrObservations = encounterBundleData.getSHRObservations();
+        assertEquals(3, shrObservations.size());
+        SHRObservation firstObservation = shrObservations.get(0);
+        SHRObservation secondObservation = shrObservations.get(1);
+        SHRObservation thirdObservation = shrObservations.get(2);
+
+        assertSHRObservation(firstObservation, 0, 4);
+        assertSHRObservation(secondObservation, 0, 4);
+        assertSHRObservation(thirdObservation, 0, 3);
+
+        SHRObservation vitals = thirdObservation.getChildren().get(0);
+        assertSHRObservation(vitals, 1, 2);
+    }
+
+    private void assertSHRObservation(SHRObservation observation, int depth, int numberOfChildren) {
+        assertNotNull(observation);
+        assertEquals(depth, observation.getDepth());
+        assertEquals(numberOfChildren, observation.getChildren().size());
     }
 }

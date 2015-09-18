@@ -12,7 +12,7 @@ import org.junit.Test;
 import java.util.List;
 
 import static org.freeshr.journal.infrastructure.FhirBundleUtil.parseBundle;
-import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesOfTypeByExclusion;
+import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesByExclusion;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -32,15 +32,15 @@ public class EncounterBundleUtilTest {
         }
     }
 
-//    @Test
-//    public void shouldIdentifyTopLevelDiagnosticReports() throws Exception {
-//        List<IResource> diagnosticReports = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
-//        assertEquals(2, diagnosticReports.size());
-//    }
+    @Test
+    public void shouldIdentifyTopLevelDiagnosticReports() throws Exception {
+        List<IResource> diagnosticReports = identifyTopLevelResourcesByExclusion(encounterBundle);
+        assertEquals(4, diagnosticReports.size());
+    }
 
     @Test
     public void shouldIdentifyTopLevelResourcesOtherThanEncounterAndComposition() throws Exception {
-        List<IResource> resources = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
+        List<IResource> resources = identifyTopLevelResourcesByExclusion(encounterBundle);
         for (IResource resource : resources) {
             assertFalse(isEncounterOrComposition(resource));
         }

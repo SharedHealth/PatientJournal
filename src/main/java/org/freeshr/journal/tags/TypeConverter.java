@@ -36,6 +36,9 @@ public class TypeConverter {
             if (typeValue.getClass().equals(QuantityDt.class))
                 return fromQuantityDt((QuantityDt) typeValue);
 
+            if (typeValue.getClass().equals(SimpleQuantityDt.class))
+                return fromQuantityDt((QuantityDt) typeValue);
+
             if (typeValue.getClass().equals(CodeableConceptDt.class))
                 return fromCodeableConceptDt((CodeableConceptDt) typeValue);
 
@@ -80,6 +83,10 @@ public class TypeConverter {
 
             if (typeValue.getClass().equals(ResourceReferenceDt.class))
                 return fromResourceReferenceDt((ResourceReferenceDt) typeValue);
+
+            if (typeValue.getClass().equals(AnnotationDt.class))
+                return fromAnnotationDt((AnnotationDt) typeValue);
+
 
         } catch (Exception ex) {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
@@ -153,13 +160,12 @@ public class TypeConverter {
     private static String fromQuantityDt(QuantityDt typeValue) {
         BigDecimal value = typeValue.getValue();
         String units = typeValue.getUnit();
+        String code = typeValue.getCode();
 
         if (value == null) return "";
-
-        if (units != null)
-            return value + " " + units;
-        else
-            return String.valueOf(value);
+        if (code != null) return value + " " + code;
+        if (units != null) return value + " " + units;
+        return String.valueOf(value);
     }
 
     private static String fromDateTimeDt(DateTimeDt typeValue) {
@@ -186,6 +192,10 @@ public class TypeConverter {
     private static String fromResourceReferenceDt(ResourceReferenceDt typeValue) {
         IdDt reference = typeValue.getReference();
         return reference == null ? INVALID_REFERENCE : reference.getValue();
+    }
+
+    private static String fromAnnotationDt(AnnotationDt typeValue) {
+        return typeValue.getText();
     }
 
 

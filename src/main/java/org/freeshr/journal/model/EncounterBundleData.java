@@ -10,7 +10,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesOfTypeByExclusion;
+import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesByExclusion;
 
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
@@ -18,7 +18,7 @@ public class EncounterBundleData {
 
     public EncounterBundleData(EncounterBundle encounterBundle) {
         this.encounterBundle = encounterBundle;
-        this.topLevelResources = identifyTopLevelResourcesOfTypeByExclusion(encounterBundle);
+        this.topLevelResources = identifyTopLevelResourcesByExclusion(encounterBundle);
     }
 
     public EncounterBundle getEncounterBundle() {
@@ -42,9 +42,9 @@ public class EncounterBundleData {
         return getResourceByType(FamilyMemberHistory.class);
     }
 
-//    public List<MedicationPrescription> getMedicationPrescriptions() {
-//        return getResourceByType(MedicationPrescription.class);
-//    }
+    public List<MedicationOrder> getMedicationOrders() {
+        return getResourceByType(MedicationOrder.class);
+    }
 
     public List<Immunization> getImmunizations() {
         return getResourceByType(Immunization.class);

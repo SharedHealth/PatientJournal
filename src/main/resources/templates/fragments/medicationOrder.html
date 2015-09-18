@@ -1,18 +1,18 @@
-<th:block th:fragment="medicationPrescriptions (medicationPrescriptions)">
-    <th:block th:unless="${#lists.isEmpty(medicationPrescriptions)}">
+<th:block th:fragment="medicationOrders (medicationOrders)">
+    <th:block th:unless="${#lists.isEmpty(medicationOrders)}">
         <div class="div-resource-container">
             <span class="span-exp-col">+</span>
             <span class="div-resource-head">Medication Prescriptions</span>
             <div class="div-resource-content">
-                <th:block th:each="medicationPrescription: ${medicationPrescriptions}">
-                    <th:block th:object="${medicationPrescription}">
+                <th:block th:each="medicationOrder: ${medicationOrders}">
+                    <th:block th:object="${medicationOrder}">
                         <table cellpadding="0" cellspacing="0">
                             <th:block th:if="*{getPrescriber()} != null">
                                 <tr>
                                     <td class="bolder-text">Prescriber</td>
                                     <td>
                                         <a data-class="external-ref" data-ref-element-class="provider"
-                                           th:href="*{getPrescriber().getReferenceSimple()}">Click here to view
+                                            th:href="*{getPrescriber().getReference()}">Click here to view
                                             Prescriber</a>
                                         <div class="provider"></div>
                                     </td>
@@ -49,10 +49,10 @@
                                                 <span><strong>Method:-</strong></span>
                                                 <span fhir:type="${dosageInstruction.getMethod()}"></span>
                                             </th:block>
-                                            <th:block th:if="${dosageInstruction.getDoseQuantity()} != null">
+                                            <th:block th:if="${dosageInstruction.getDose()} != null">
                                                 <span>&nbsp;|&nbsp;</span>
-                                                <span><strong>Dose Quantity:-</strong></span>
-                                                <span fhir:type="${dosageInstruction.getDoseQuantity()}"></span>
+                                                <span><strong>Dose:-</strong></span>
+                                                <span fhir:type="${dosageInstruction.getDose()}"></span>
                                             </th:block>
                                         </td>
                                     </tr>

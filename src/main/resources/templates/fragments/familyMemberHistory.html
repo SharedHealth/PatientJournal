@@ -31,10 +31,10 @@
                                 <td fhir:type="*{getDeceased()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="*{getNote()} != null">
+                        <th:block th:if="*{getNote()} != null and *{getNote().getText()} != null">
                             <tr>
                                 <td class="bolder-text">Note</td>
-                                <td th:text="*{getNote()}"></td>
+                                <td fhir:type="*{getNote()}"></td>
                             </tr>
                         </th:block>
                     </table>
@@ -47,7 +47,7 @@
 
                                     <tr>
                                         <td class="bolder-text">Diagnosis</td>
-                                        <td fhir:type="${condition.getType()}"></td>
+                                        <td fhir:type="${condition.getCode()}"></td>
                                     </tr>
                                     <th:block th:if="${condition.getOutcome()} != null">
                                         <th:block th:if="${condition.getOutcome().getText()} != null or !(${#lists.isEmpty(condition.getOutcome().getCoding())})">
@@ -63,10 +63,10 @@
                                             <td fhir:type="${condition.getOnset()}"></td>
                                         </tr>
                                     </th:block>
-                                    <th:block th:if="${condition.getNote()} != null">
+                                    <th:block th:if="${condition.getNote()} != null and ${condition.getNote().getText()} != null">
                                         <tr>
                                             <td class="bolder-text">Note</td>
-                                            <td th:text="${condition.getNote()}"></td>
+                                            <td fhir:type="${condition.getNote()}"></td>
                                         </tr>
                                     </th:block>
                                 </table>
