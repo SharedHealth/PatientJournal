@@ -2,7 +2,8 @@
     <th:block th:unless="${#lists.isEmpty(medicationOrders)}">
         <div class="div-resource-container">
             <span class="span-exp-col">+</span>
-            <span class="div-resource-head">Medication Prescriptions</span>
+            <span class="div-resource-head">Medication Order</span>
+
             <div class="div-resource-content">
                 <th:block th:each="medicationOrder: ${medicationOrders}">
                     <th:block th:object="${medicationOrder}">
@@ -12,8 +13,9 @@
                                     <td class="bolder-text">Prescriber</td>
                                     <td>
                                         <a data-class="external-ref" data-ref-element-class="provider"
-                                            th:href="*{getPrescriber().getReference()}">Click here to view
+                                           th:href="*{getPrescriber().getReference()}">Click here to view
                                             Prescriber</a>
+
                                         <div class="provider"></div>
                                     </td>
                                 </tr>
@@ -44,12 +46,7 @@
                                                 <span><strong>Route:-</strong></span>
                                                 <span fhir:type="${dosageInstruction.getRoute()}"></span>
                                             </th:block>
-                                            <th:block th:if="${dosageInstruction.getMethod()} != null">
-                                                <span>&nbsp;|&nbsp;</span>
-                                                <span><strong>Method:-</strong></span>
-                                                <span fhir:type="${dosageInstruction.getMethod()}"></span>
-                                            </th:block>
-                                            <th:block th:if="${dosageInstruction.getDose()} != null">
+                                                <th:block th:if="${dosageInstruction.getDose()} != null">
                                                 <span>&nbsp;|&nbsp;</span>
                                                 <span><strong>Dose:-</strong></span>
                                                 <span fhir:type="${dosageInstruction.getDose()}"></span>

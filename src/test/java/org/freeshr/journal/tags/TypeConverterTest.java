@@ -2,6 +2,8 @@ package org.freeshr.journal.tags;
 
 import ca.uhn.fhir.model.api.TemporalPrecisionEnum;
 import ca.uhn.fhir.model.dstu2.composite.*;
+import ca.uhn.fhir.model.dstu2.valueset.EventTimingEnum;
+import ca.uhn.fhir.model.dstu2.valueset.UnitsOfTimeEnum;
 import ca.uhn.fhir.model.primitive.DecimalDt;
 import ca.uhn.fhir.model.primitive.StringDt;
 import org.junit.Test;
@@ -25,7 +27,7 @@ public class TypeConverterTest {
     public void shouldConvertADateType() throws Exception {
         Date date = new SimpleDateFormat("dd-MM-yyyy").parse("17-06-2015T00:00:00+05:30");
         String text = convertToText(date);
-        assertEquals("17 Jun 2015 00:00", text);
+        assertEquals("17 Jun 2015", text);
     }
 
     @Test
@@ -88,15 +90,15 @@ public class TypeConverterTest {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
         period1.setStart(startDate, TemporalPrecisionEnum.DAY);
-        assertEquals("17 Jun 2015 00:00", convertToText(period1));
+        assertEquals("17 Jun 2015", convertToText(period1));
 
         PeriodDt period2 = new PeriodDt();
         Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");
         period2.setEnd(endDate, TemporalPrecisionEnum.DAY);
-        assertEquals(PERIOD_START_UNKNOWN + " - 17 Jun 2016 00:00", convertToText(period2));
+        assertEquals(PERIOD_START_UNKNOWN + " - 17 Jun 2016", convertToText(period2));
 
         period2.setStart(startDate, TemporalPrecisionEnum.DAY);
-        assertEquals("17 Jun 2015 00:00 - 17 Jun 2016 00:00", convertToText(period2));
+        assertEquals("17 Jun 2015 - 17 Jun 2016", convertToText(period2));
     }
 
     @Test
@@ -117,8 +119,54 @@ public class TypeConverterTest {
 
         SimpleQuantityDt lowerLimit = new SimpleQuantityDt(6);
         range1.setLow(lowerLimit);
-        
+
         assertEquals("6 - 12", convertToText(range1));
-            
+
+    }
+
+    @Test
+    public void shouldConvertATimingDtRepeatHavingFrequency() throws Exception {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
+        Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");
+
+        PeriodDt period = new PeriodDt();
+        period.setStart(startDate, TemporalPrecisionEnum.DAY);
+        period.setEnd(endDate, TemporalPrecisionEnum.DAY);
+
+
+        TimingDt.Repeat repeat = new TimingDt.Repeat();
+        repeat.setBounds(period);
+        repeat.setFrequency(2);
+        repeat.setPeriod(1);
+        repeat.setPeriodUnits(UnitsOfTimeEnum.D);
+
+        TimingDt timing = new TimingDt();
+        timing.setRepeat(repeat);
+
+        assertEquals("2 time(s) in 1 Day. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(timing));
+    }
+
+    @Test
+    public void shouldConvertATimingDtRepeatHavingWhen() throws Exception {
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
+        Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
+        Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");
+
+        PeriodDt period = new PeriodDt();
+        period.setStart(startDate, TemporalPrecisionEnum.DAY);
+        period.setEnd(endDate, TemporalPrecisionEnum.DAY);
+
+
+        TimingDt.Repeat repeat = new TimingDt.Repeat();
+        repeat.setBounds(period);
+        repeat.setWhen(EventTimingEnum.ACM);
+        repeat.setPeriod(1);
+        repeat.setPeriodUnits(UnitsOfTimeEnum.H);
+
+        TimingDt timing = new TimingDt();
+        timing.setRepeat(repeat);
+
+        assertEquals("1 Hour before breakfast. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(timing));
     }
 }

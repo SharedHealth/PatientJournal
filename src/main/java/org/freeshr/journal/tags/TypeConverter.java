@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import static java.util.Arrays.asList;
+
 public class TypeConverter {
 
     private static final String DATE_FORMAT = "dd MMM yyyy HH:mm";
@@ -87,6 +89,9 @@ public class TypeConverter {
             if (typeValue.getClass().equals(AnnotationDt.class))
                 return fromAnnotationDt((AnnotationDt) typeValue);
 
+            if (typeValue.getClass().equals(TimingDt.class))
+                return fromTimingDt((TimingDt) typeValue);
+
 
         } catch (Exception ex) {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
@@ -107,7 +112,10 @@ public class TypeConverter {
     }
 
     private static String fromJavaUtilDate(Date typeValue) {
-        return DateUtil.toDateString(typeValue, DATE_FORMAT);
+        String dateString = DateUtil.toDateString(typeValue, DATE_FORMAT);
+        if (dateString.endsWith(" 00:00"))
+            return dateString.substring(0, dateString.length() - 6);
+        return dateString;
     }
 
     private static String fromDateDt(DateDt typeValue) {
@@ -198,5 +206,44 @@ public class TypeConverter {
         return typeValue.getText();
     }
 
+    private static String fromTimingDt(TimingDt typeValue) {
+        String result = "";
+        TimingDt.Repeat repeat = typeValue.getRepeat();
+        if (repeat == null) return "timing not specified";
+        Integer frequency = repeat.getFrequency();
+        String when = repeat.getWhen();
+        BigDecimal period = repeat.getPeriod();
+        String periodUnits = repeat.getPeriodUnits();
+        if (period != null && periodUnits != null) {
+            result = period + " " + getPeriodUnitFullName(repeat.getPeriodUnits());
+        }
+        if (frequency != null) {
+            result = frequency + " time(s) in " + result;
+        } else if (when != null) {
+            result += " " + getEventTimingFullName(when);
+        }
 
+        String bound = convertToText(repeat.getBounds());
+        if (bound != null) {
+            result += ". Duration:- " + bound;
+        }
+        return result;
+    }
+
+
+    private static String getPeriodUnitFullName(String unitKey) {
+        List<String> unitValues = asList("Second", "Minute", "Hour", "Day", "Week", "Month", "Year");
+        List<String> unitKeys = asList("s", "min", "h", "d", "wk", "mo", "a");
+        int index = unitKeys.indexOf(unitKey);
+        return unitValues.get(index);
+    }
+
+    private static String getEventTimingFullName(String timingKey) {
+        List<String> timingKeys = asList("HS", "WAKE", "C", "CM", "CD", "CV", "AC", "ACM", "ACD", "ACV", "PC", "PCM", "PCD", "PCV");
+        List<String> timingValues = asList("before sleep", "after Waking up", "with meal", "with breakfast",
+                "with lunch", "with dinner", "before meal", "before breakfast", "before lunch",
+                "before dinner", "after meal", "after breakfast", "after lunch", "after dinner");
+        int index = timingKeys.indexOf(timingKey);
+        return timingValues.get(index);
+    }
 }

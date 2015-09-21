@@ -5,6 +5,7 @@ import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.model.primitive.IdDt;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -147,8 +148,7 @@ public class EncounterBundleData {
             IResource resourceByReference = getResourceByReference(reference);
             if ((null == resourceByReference) || !(resourceByReference instanceof Specimen)) return;
             Specimen specimen = (Specimen) resourceByReference;
-            if (specimen != null)
-                testOrder.setSample(specimen);
+            testOrder.setSample(specimen);
         }
     }
 
@@ -172,10 +172,8 @@ public class EncounterBundleData {
             if ((null == resourceByReference) || !(resourceByReference instanceof Observation)) continue;
             Observation childObservation = (Observation) resourceByReference;
 
-            if (childObservation != null) {
-                SHRObservation childShrObservation = convertToSHRObservation(childObservation, depth);
-                shrObservation.addChild(childShrObservation);
-            }
+            SHRObservation childShrObservation = convertToSHRObservation(childObservation, depth);
+            shrObservation.addChild(childShrObservation);
         }
         return shrObservation;
     }
@@ -210,10 +208,21 @@ public class EncounterBundleData {
         return shrObservations;
     }
 
-    private IResource getResourceByReference(IdDt reference) {
-        for (IResource resource : encounterBundle.getResources()) {
-            if (resource.getId().equals(reference)) {
-                return resource;
+    public IResource getResourceByReference(IdDt resourceReference) {
+        for (Bundle.Entry entry : encounterBundle.getBundle().getEntry()) {
+            IResource entryResource = entry.getResource();
+            IdDt entryResourceId = entryResource.getId();
+            boolean hasFullUrlDefined = !StringUtils.isBlank(entry.getFullUrl());
+
+            if (resourceReference.hasResourceType() && entryResourceId.hasResourceType()
+                    && entryResourceId.getValue().equals(resourceReference.getValue())) {
+                return entryResource;
+            } else if (entryResourceId.getIdPart().equals(resourceReference.getIdPart())) {
+                return entryResource;
+            } else if (hasFullUrlDefined) {
+                if (entry.getFullUrl().endsWith(resourceReference.getIdPart())) {
+                    return entryResource;
+                }
             }
         }
         return null;
