@@ -35,7 +35,6 @@ mainClassName = "org.freeshr.journal.launch.Application"
 
 jar {
     baseName = 'patient-journal'
-    version =  '0.1'
 }
 
 def localEnv = new Properties();
