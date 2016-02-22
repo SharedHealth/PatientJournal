@@ -1,0 +1,62 @@
+<th:block th:fragment="procedureOrders (procedureOrders )">
+    <th:block th:each="procedureOrder,currentItem: ${procedureOrders}">
+        <th:block th:object="${proceduretOrder}">
+            <div class="div-resource-container">
+                <span class="span-exp-col">+</span>
+                <span class="div-resource-head">Procedure Order</span>
+
+                <div class="div-resource-content">
+                    <table cellpadding="0" cellspacing="0">
+                        <th:block th:if="${procedureOrder.getType()} != null">
+                            <tr>
+                                <td class="bolder-text">Name of Procedure</td>
+                                <td fhir:type="${procedureOrder.getType()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${procedureOrder.getDate()} != null">
+                            <tr>
+                                <td class="bolder-text">Date of order</td>
+                                <td fhir:type="${procedureOrder.getDate()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${procedureOrder.getStatus()} != null">
+                            <tr>
+                                <td class="bolder-text">Status</td>
+                                <td fhir:type="${procedureOrder.getStatus()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${procedureOrder.getNotes()} != null">
+                            <tr>
+                                <td class="bolder-text">Note to fulfiller</td>
+                                <td fhir:type="${procedureOrder.getNotes()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${procedureOrder.getOrderer()} != null">
+                            <tr>
+                                <td class="bolder-text">Name of orderer</td>
+                                <td>
+                                    <a data-class="external-ref" data-ref-element-class="provider"
+                                       th:href="${procedureOrder.getOrderer().getReference()}">Click here to
+                                        view orderer</a>
+
+                                    <div class="provider"></div>
+                                </td>
+                            </tr>
+                        </th:block><th:block th:if="${procedureOrder.getFacility()} != null">
+                            <tr>
+                                <td class="bolder-text">Facility</td>
+                                <td>
+                                    <a data-class="external-ref" data-ref-element-class="provider"
+                                       th:href="${procedureOrder.getFacility().getReference()}">Click here to
+                                        view orderer</a>
+
+                                    <div class="provider"></div>
+                                </td>
+                            </tr>
+                        </th:block>
+                    </table>
+                </div>
+            </div>
+        </th:block>
+    </th:block>
+</th:block>

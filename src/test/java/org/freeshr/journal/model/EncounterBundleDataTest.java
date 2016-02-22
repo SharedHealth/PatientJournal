@@ -94,6 +94,21 @@ public class EncounterBundleDataTest {
     }
 
     @Test
+    public void shouldGiveAllResourcesOfTypeProcedureOrder() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithProcedureRequest.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<ProcedureOrder> procedureOrder = encounterBundleData.getProcedureOrders();
+        assertEquals(2, procedureOrder.size());
+        assertEquals("requested", procedureOrder.get(0).getStatus());
+        assertEquals("note one", procedureOrder.get(0).getNotes());
+        assertEquals("Mon Feb 22 11:47:25 IST 2016", procedureOrder.get(0).getDate().toString());
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", procedureOrder.get(0).getOrderer().getReference().getValue());
+        assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", procedureOrder.get(0).getFacility().getReference().getValue());
+    }
+
+    @Test
     public void shouldGetAllSHRProcedures() throws Exception {
         List<SHRProcedure> shrProcedures = encounterBundleData.getSHRProcedures();
 

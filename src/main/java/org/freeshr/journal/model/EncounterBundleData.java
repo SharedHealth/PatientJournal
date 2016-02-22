@@ -1,6 +1,7 @@
 package org.freeshr.journal.model;
 
 import ca.uhn.fhir.model.api.IResource;
+import ca.uhn.fhir.model.dstu2.composite.AnnotationDt;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
@@ -227,4 +228,27 @@ public class EncounterBundleData {
         }
         return null;
     }
+
+    public List<ProcedureOrder> getProcedureOrders() {
+
+        List<ProcedureRequest> procedureRequests = getResourceByType(ProcedureRequest.class);
+        List<ProcedureOrder> procedureOrders = new ArrayList<>();
+        for (ProcedureRequest procedureRequest : procedureRequests) {
+            ProcedureOrder procedureOrder = new ProcedureOrder();
+            procedureOrder.setDate(procedureRequest.getOrderedOn());
+            procedureOrder.setOrderer(procedureRequest.getOrderer());
+            procedureOrder.setStatus(procedureRequest.getStatus());
+            List<AnnotationDt> notes = procedureRequest.getNotes();
+            if (!CollectionUtils.isEmpty(notes)) {
+                procedureOrder.setNotes(notes.get(0).getText());
+            }
+            procedureOrder.setFacility(encounterBundle.getEncounters().get(0).getServiceProvider());
+            procedureOrder.setType(procedureRequest.getCode());
+            procedureOrders.add(procedureOrder);
+        }
+        return procedureOrders;
+    }
 }
+
+
+
