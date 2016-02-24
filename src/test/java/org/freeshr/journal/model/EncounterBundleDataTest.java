@@ -3,6 +3,7 @@ package org.freeshr.journal.model;
 import ca.uhn.fhir.model.dstu2.resource.*;
 import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
+import org.freeshr.journal.utils.DateUtil;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -103,7 +104,7 @@ public class EncounterBundleDataTest {
         assertEquals(2, procedureOrder.size());
         assertEquals("requested", procedureOrder.get(0).getStatus());
         assertEquals("note one", procedureOrder.get(0).getNotes());
-        assertEquals("Mon Feb 22 11:47:25 IST 2016", procedureOrder.get(0).getDate().toString());
+        assertEquals(DateUtil.parseDate("2016-02-22T11:47:25.000+05:30"), procedureOrder.get(0).getDate());
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", procedureOrder.get(0).getOrderer().getReference().getValue());
         assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", procedureOrder.get(0).getFacility().getReference().getValue());
     }
