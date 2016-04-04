@@ -5,14 +5,17 @@ import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
 import org.freeshr.journal.utils.DateUtil;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
 
 import static org.freeshr.journal.model.EncounterBundlesData.fromFeedEntries;
+import static org.freeshr.journal.tags.TypeConverter.convertToText;
 import static org.freeshr.journal.utils.FileUtil.asString;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 public class EncounterBundleDataTest {
 
@@ -107,6 +110,43 @@ public class EncounterBundleDataTest {
         assertEquals(DateUtil.parseDate("2016-02-22T11:47:25.000+05:30"), procedureOrder.get(0).getDate());
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", procedureOrder.get(0).getOrderer().getReference().getValue());
         assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", procedureOrder.get(0).getFacility().getReference().getValue());
+    }
+    @Test
+    public void shouldGiveAllResourcesOfTypeDiagnosticOrderAndExtensionRAD() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithRadiologyOrder.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<TestOrder> testOrder = encounterBundleData.getTestOrders();
+        assertEquals(1, testOrder.size());
+        TestOrder radiologyOrder = testOrder.get(0);
+        assertEquals("Plain Radiography of Skull", convertToText(radiologyOrder.getItem()));
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(radiologyOrder.getOrderer()));
+        assertEquals("RAD", convertToText(radiologyOrder.getType()));
+    }
+
+    @Test
+    public void shouldGiveAllResourcesOfTypeDiagnosticOrderWithoutExtensionAsLABOrders() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithOrderWithoutExtention.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<TestOrder> testOrder = encounterBundleData.getTestOrders();
+        assertEquals(1, testOrder.size());
+        TestOrder radiologyOrder = testOrder.get(0);
+        assertEquals("Plain Radiography of Skull", convertToText(radiologyOrder.getItem()));
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(radiologyOrder.getOrderer()));
+        assertEquals("LAB", convertToText(radiologyOrder.getType()));
+    }
+
+    @Test
+    public void shouldNotGiveResourcesOfTypeDiagnosticOrderIfStatusIsCanclled() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithCancelledOrder.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<TestOrder> testOrder = encounterBundleData.getTestOrders();
+        assertTrue(testOrder.isEmpty());
     }
 
     @Test

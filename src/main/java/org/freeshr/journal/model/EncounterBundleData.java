@@ -1,12 +1,15 @@
 package org.freeshr.journal.model;
 
+import ca.uhn.fhir.model.api.ExtensionDt;
 import ca.uhn.fhir.model.api.IResource;
 import ca.uhn.fhir.model.dstu2.composite.AnnotationDt;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.model.primitive.IdDt;
+import ca.uhn.fhir.model.primitive.StringDt;
 import org.apache.commons.lang3.StringUtils;
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
 import org.springframework.util.CollectionUtils;
 
 import java.util.ArrayList;
@@ -17,6 +20,7 @@ import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelReso
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
     private List<IResource> topLevelResources;
+    private String ordersExtensionUrl = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DiagnositicOrderCategory";
 
     public EncounterBundleData(EncounterBundle encounterBundle) {
         this.encounterBundle = encounterBundle;
@@ -128,19 +132,33 @@ public class EncounterBundleData {
         ArrayList<TestOrder> testOrders = new ArrayList<>();
         for (DiagnosticOrder diagnosticOrder : diagnosticOrders) {
             for (DiagnosticOrder.Item item : diagnosticOrder.getItem()) {
-                testOrders.add(getTestDetails(diagnosticOrder, item));
+                TestOrder testDetails = getTestDetails(diagnosticOrder, item);
+                if (null == testDetails) continue;
+                testOrders.add(testDetails);
             }
         }
         return testOrders;
     }
 
     private TestOrder getTestDetails(DiagnosticOrder diagnosticOrder, DiagnosticOrder.Item item) {
+        if (item.getStatus().equals("cancelled")) return null;
         TestOrder testOrder = new TestOrder();
         testOrder.setItem(item.getCode());
         testOrder.setOrderer(diagnosticOrder.getOrderer());
+
         List<ResourceReferenceDt> specimens = item.getSpecimen();
         setSpecimen(testOrder, specimens);
+
+        IBaseDatatype extension = getExtensionDt(diagnosticOrder);
+
+        testOrder.setType(extension);
         return testOrder;
+    }
+
+    private IBaseDatatype getExtensionDt(DiagnosticOrder diagnosticOrder) {
+        if (!diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).isEmpty())
+            return diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).get(0).getValue();
+        return new StringDt("LAB");
     }
 
     private void setSpecimen(TestOrder testOrder, List<ResourceReferenceDt> specimens) {

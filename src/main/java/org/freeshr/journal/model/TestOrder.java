@@ -4,11 +4,21 @@ package org.freeshr.journal.model;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.Specimen;
+import org.hl7.fhir.instance.model.api.IBaseDatatype;
 
 public class TestOrder {
     private CodeableConceptDt item;
     private ResourceReferenceDt orderer;
     private Specimen sample;
+    private IBaseDatatype type;
+
+    public IBaseDatatype getType() {
+        return type;
+    }
+
+    public void setType(IBaseDatatype type) {
+        this.type = type;
+    }
 
     public void setItem(CodeableConceptDt item) {
         this.item = item;
