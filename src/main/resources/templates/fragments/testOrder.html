@@ -10,10 +10,18 @@
                             <td class="bolder-text">Type</td>
                             <td fhir:type="${testOrder.getType()}"></td>
                         </tr>
-                        <tr>
-                            <td class="bolder-text">Test</td>
-                            <td fhir:type="${testOrder.getItem()}"></td>
-                        </tr>
+                        <th:block th:if="${testOrder.getItem()} != null">
+                            <tr>
+                                <td class="bolder-text">Test</td>
+                                <td fhir:type="${testOrder.getItem()}"></td>
+                            </tr>
+                        </th:block>
+                        <th:block th:if="${testOrder.getStatus()} != null">
+                            <tr>
+                                <td class="bolder-text">Status</td>
+                                <td fhir:type="${testOrder.getStatus()}"></td>
+                            </tr>
+                        </th:block>
                         <th:block th:if="${testOrder.getSample()} != null">
                             <tr>
                                 <td class="bolder-text">Sample</td>

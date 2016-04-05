@@ -157,6 +157,8 @@ public class EncounterBundleDataTest {
         assertEquals("Plain Radiography of Skull", convertToText(radiologyOrder.getItem()));
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(radiologyOrder.getOrderer()));
         assertEquals("RAD", convertToText(radiologyOrder.getType()));
+        assertEquals("requested", radiologyOrder.getStatus());
+
     }
 
     @Test
@@ -179,8 +181,14 @@ public class EncounterBundleDataTest {
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 
-        List<TestOrder> testOrder = encounterBundleData.getTestOrders();
-        assertTrue(testOrder.isEmpty());
+        List<TestOrder> testOrders = encounterBundleData.getTestOrders();
+        assertEquals(1, testOrders.size());
+        TestOrder testOrder = testOrders.get(0);
+        assertEquals("Plain Radiography of Skull", convertToText(testOrder.getItem()));
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(testOrder.getOrderer()));
+        assertEquals("RAD", convertToText(testOrder.getType()));
+        assertEquals("cancelled", testOrder.getStatus());
+
     }
 
     @Test

@@ -12,6 +12,16 @@ public class TestOrder {
     private Specimen sample;
     private IBaseDatatype type;
 
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    private String status;
+
     public IBaseDatatype getType() {
         return type;
     }

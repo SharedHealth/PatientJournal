@@ -22,6 +22,8 @@ public class EncounterBundleData {
     private EncounterBundle encounterBundle;
     private List<IResource> topLevelResources;
     private String ordersExtensionUrl = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DiagnositicOrderCategory";
+    private String LAB_CATEGORY_DISPLAY = "Laboratory";
+    private String LAB_EXTENSION_CODE = "LAB";
 
     public EncounterBundleData(EncounterBundle encounterBundle) {
         this.encounterBundle = encounterBundle;
@@ -101,15 +103,6 @@ public class EncounterBundleData {
         return testResults;
     }
 
-    private CodeableConceptDt getCategoryFromReport(DiagnosticReport diagnosticReport) {
-        CodeableConceptDt category = diagnosticReport.getCategory();
-        if(category.isEmpty()) {
-            CodingDt coding = new CodingDt().setDisplay("Laboratory");
-            category.setCoding(asList(coding));
-        }
-        return category;
-    }
-
     public List<SHRProcedure> getSHRProcedures() {
         List<Procedure> procedures = getResourceByType(Procedure.class);
         List<SHRProcedure> shrProcedures = new ArrayList<>();
@@ -127,6 +120,35 @@ public class EncounterBundleData {
             shrProcedures.add(shrProcedure);
         }
         return shrProcedures;
+    }
+
+    public List<ProcedureOrder> getProcedureOrders() {
+
+        List<ProcedureRequest> procedureRequests = getResourceByType(ProcedureRequest.class);
+        List<ProcedureOrder> procedureOrders = new ArrayList<>();
+        for (ProcedureRequest procedureRequest : procedureRequests) {
+            ProcedureOrder procedureOrder = new ProcedureOrder();
+            procedureOrder.setDate(procedureRequest.getOrderedOn());
+            procedureOrder.setOrderer(procedureRequest.getOrderer());
+            procedureOrder.setStatus(procedureRequest.getStatus());
+            List<AnnotationDt> notes = procedureRequest.getNotes();
+            if (!CollectionUtils.isEmpty(notes)) {
+                procedureOrder.setNotes(notes.get(0).getText());
+            }
+            procedureOrder.setFacility(encounterBundle.getEncounters().get(0).getServiceProvider());
+            procedureOrder.setType(procedureRequest.getCode());
+            procedureOrders.add(procedureOrder);
+        }
+        return procedureOrders;
+    }
+
+    private CodeableConceptDt getCategoryFromReport(DiagnosticReport diagnosticReport) {
+        CodeableConceptDt category = diagnosticReport.getCategory();
+        if (category.isEmpty()) {
+            CodingDt coding = new CodingDt().setDisplay(LAB_CATEGORY_DISPLAY);
+            category.setCoding(asList(coding));
+        }
+        return category;
     }
 
     private List<Condition> getConditionsOfCategory(String category) {
@@ -152,11 +174,10 @@ public class EncounterBundleData {
     }
 
     private TestOrder getTestDetails(DiagnosticOrder diagnosticOrder, DiagnosticOrder.Item item) {
-        if (item.getStatus().equals("cancelled")) return null;
         TestOrder testOrder = new TestOrder();
         testOrder.setItem(item.getCode());
         testOrder.setOrderer(diagnosticOrder.getOrderer());
-
+        testOrder.setStatus(item.getStatus());
         List<ResourceReferenceDt> specimens = item.getSpecimen();
         setSpecimen(testOrder, specimens);
 
@@ -169,7 +190,7 @@ public class EncounterBundleData {
     private IBaseDatatype getExtensionDt(DiagnosticOrder diagnosticOrder) {
         if (!diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).isEmpty())
             return diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).get(0).getValue();
-        return new StringDt("LAB");
+        return new StringDt(LAB_EXTENSION_CODE);
     }
 
     private void setSpecimen(TestOrder testOrder, List<ResourceReferenceDt> specimens) {
@@ -258,25 +279,6 @@ public class EncounterBundleData {
         return null;
     }
 
-    public List<ProcedureOrder> getProcedureOrders() {
-
-        List<ProcedureRequest> procedureRequests = getResourceByType(ProcedureRequest.class);
-        List<ProcedureOrder> procedureOrders = new ArrayList<>();
-        for (ProcedureRequest procedureRequest : procedureRequests) {
-            ProcedureOrder procedureOrder = new ProcedureOrder();
-            procedureOrder.setDate(procedureRequest.getOrderedOn());
-            procedureOrder.setOrderer(procedureRequest.getOrderer());
-            procedureOrder.setStatus(procedureRequest.getStatus());
-            List<AnnotationDt> notes = procedureRequest.getNotes();
-            if (!CollectionUtils.isEmpty(notes)) {
-                procedureOrder.setNotes(notes.get(0).getText());
-            }
-            procedureOrder.setFacility(encounterBundle.getEncounters().get(0).getServiceProvider());
-            procedureOrder.setType(procedureRequest.getCode());
-            procedureOrders.add(procedureOrder);
-        }
-        return procedureOrders;
-    }
 }
 
 
