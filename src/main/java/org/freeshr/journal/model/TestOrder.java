@@ -6,11 +6,22 @@ import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.Specimen;
 import org.hl7.fhir.instance.model.api.IBaseDatatype;
 
+import java.util.Date;
+
 public class TestOrder {
     private CodeableConceptDt item;
     private ResourceReferenceDt orderer;
     private Specimen sample;
     private IBaseDatatype type;
+    private Date date;
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
+    }
 
     public String getStatus() {
         return status;

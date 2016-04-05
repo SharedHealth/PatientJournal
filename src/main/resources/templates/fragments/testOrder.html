@@ -16,6 +16,12 @@
                                 <td fhir:type="${testOrder.getItem()}"></td>
                             </tr>
                         </th:block>
+                        <th:block th:if="${testOrder.getDate()} != null">
+                            <tr>
+                                <td class="bolder-text">Date</td>
+                                <td fhir:type="${testOrder.getDate()}"></td>
+                            </tr>
+                        </th:block>
                         <th:block th:if="${testOrder.getStatus()} != null">
                             <tr>
                                 <td class="bolder-text">Status</td>

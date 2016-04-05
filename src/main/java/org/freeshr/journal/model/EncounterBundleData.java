@@ -178,6 +178,7 @@ public class EncounterBundleData {
         testOrder.setItem(item.getCode());
         testOrder.setOrderer(diagnosticOrder.getOrderer());
         testOrder.setStatus(item.getStatus());
+        testOrder.setDate(item.getEventFirstRep().getDateTime());
         List<ResourceReferenceDt> specimens = item.getSpecimen();
         setSpecimen(testOrder, specimens);
 

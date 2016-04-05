@@ -12,7 +12,8 @@ import java.util.List;
 import static org.freeshr.journal.model.EncounterBundlesData.fromFeedEntries;
 import static org.freeshr.journal.tags.TypeConverter.convertToText;
 import static org.freeshr.journal.utils.FileUtil.asString;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 public class EncounterBundleDataTest {
 
@@ -159,6 +160,7 @@ public class EncounterBundleDataTest {
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(radiologyOrder.getOrderer()));
         assertEquals("RAD", convertToText(radiologyOrder.getType()));
         assertEquals("requested", radiologyOrder.getStatus());
+        assertEquals("04 Apr 2016 10:41", convertToText(radiologyOrder.getDate()));
     }
 
     @Test
