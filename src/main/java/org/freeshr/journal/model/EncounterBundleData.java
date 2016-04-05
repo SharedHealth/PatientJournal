@@ -1,9 +1,9 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.api.ExtensionDt;
 import ca.uhn.fhir.model.api.IResource;
 import ca.uhn.fhir.model.dstu2.composite.AnnotationDt;
 import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import ca.uhn.fhir.model.dstu2.composite.CodingDt;
 import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
 import ca.uhn.fhir.model.dstu2.resource.*;
 import ca.uhn.fhir.model.primitive.IdDt;
@@ -15,6 +15,7 @@ import org.springframework.util.CollectionUtils;
 import java.util.ArrayList;
 import java.util.List;
 
+import static java.util.Arrays.asList;
 import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelResourcesByExclusion;
 
 public class EncounterBundleData {
@@ -93,10 +94,20 @@ public class EncounterBundleData {
         List<TestResult> testResults = new ArrayList<>();
         for (DiagnosticReport diagnosticReport : diagnosticReports) {
             List<SHRObservation> shrObservations = extractSHRObservationsFromDiagnosisReport(diagnosticReport);
-            TestResult testResult = new TestResult(diagnosticReport.getCode(), shrObservations);
+            CodeableConceptDt category = getCategoryFromReport(diagnosticReport);
+            TestResult testResult = new TestResult(diagnosticReport.getCode(), shrObservations, category, diagnosticReport.getPerformer());
             testResults.add(testResult);
         }
         return testResults;
+    }
+
+    private CodeableConceptDt getCategoryFromReport(DiagnosticReport diagnosticReport) {
+        CodeableConceptDt category = diagnosticReport.getCategory();
+        if(category.isEmpty()) {
+            CodingDt coding = new CodingDt().setDisplay("Laboratory");
+            category.setCoding(asList(coding));
+        }
+        return category;
     }
 
     public List<SHRProcedure> getSHRProcedures() {

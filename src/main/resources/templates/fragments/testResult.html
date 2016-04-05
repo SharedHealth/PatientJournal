@@ -9,8 +9,22 @@
                     <p class="subhead">Test</p>
                     <table cellpadding="0" cellspacing="0">
                         <tr>
+                            <td class="bolder-text">Type</td>
+                            <td fhir:type="${testResult.getType()}"></td>
+                        </tr>
+                        <tr>
                             <td class="bolder-text">Name</td>
                             <td fhir:type="${testResult.getName()}"></td>
+                        </tr>
+                        <tr>
+                            <td class="bolder-text">Performer</td>
+                                <td>
+                                    <th:block th:if="${testResult.getPerformer()} != null">
+                                        <a data-class="external-ref" data-ref-element-class="Performer"
+                                           th:href="${testResult.getPerformer().getReference()}">Click here to view Performer</a>
+                                        <span class="Performer"></span>
+                                    </th:block>
+                                </td>
                         </tr>
                     </table>
                     <p class="subhead">Results</p>

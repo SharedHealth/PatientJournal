@@ -5,7 +5,6 @@ import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.AtomFeed;
 import org.freeshr.journal.utils.DateUtil;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.List;
@@ -13,9 +12,7 @@ import java.util.List;
 import static org.freeshr.journal.model.EncounterBundlesData.fromFeedEntries;
 import static org.freeshr.journal.tags.TypeConverter.convertToText;
 import static org.freeshr.journal.utils.FileUtil.asString;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class EncounterBundleDataTest {
 
@@ -98,6 +95,42 @@ public class EncounterBundleDataTest {
     }
 
     @Test
+    public void shouldGetAllOrderFulfillments() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithRadiologyFulfillment.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<TestResult> testResults = encounterBundleData.getTestResults();
+        assertEquals(1, testResults.size());
+
+        TestResult testResult = testResults.get(0);
+        assertNotNull(testResult.getName());
+        assertNotNull(testResult.getType());
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", testResult.getPerformer().getReference().getValue());
+        assertEquals("Radiology", convertToText(testResult.getType()));
+        List<SHRObservation> testObservations = testResult.getResults();
+        assertEquals(3, testObservations.size());
+    }
+
+    @Test
+    public void shouldGetAllOrderFulfillmentAndDefaultTypeAsLaboratory() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithFulfillmentWithoutCategory.xml"));
+        EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
+        encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
+
+        List<TestResult> testResults = encounterBundleData.getTestResults();
+        assertEquals(1, testResults.size());
+
+        TestResult testResult = testResults.get(0);
+        assertNotNull(testResult.getName());
+        assertNotNull(testResult.getType());
+
+        assertEquals("Laboratory", convertToText(testResult.getType()));
+        List<SHRObservation> testObservations = testResult.getResults();
+        assertEquals(3, testObservations.size());
+    }
+
+    @Test
     public void shouldGiveAllResourcesOfTypeProcedureOrder() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithProcedureRequest.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
@@ -111,6 +144,7 @@ public class EncounterBundleDataTest {
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", procedureOrder.get(0).getOrderer().getReference().getValue());
         assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", procedureOrder.get(0).getFacility().getReference().getValue());
     }
+
     @Test
     public void shouldGiveAllResourcesOfTypeDiagnosticOrderAndExtensionRAD() throws Exception {
         List<Entry> entries = new AtomFeed().parse(asString("encounters/encounterWithRadiologyOrder.xml"));
