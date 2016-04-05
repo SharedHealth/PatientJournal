@@ -97,7 +97,7 @@ public class EncounterBundleData {
         for (DiagnosticReport diagnosticReport : diagnosticReports) {
             List<SHRObservation> shrObservations = extractSHRObservationsFromDiagnosisReport(diagnosticReport);
             CodeableConceptDt category = getCategoryFromReport(diagnosticReport);
-            TestResult testResult = new TestResult(diagnosticReport.getCode(), shrObservations, category, diagnosticReport.getPerformer());
+            TestResult testResult = new TestResult(diagnosticReport.getCode(), shrObservations, category, diagnosticReport.getPerformer(), diagnosticReport.getIssued());
             testResults.add(testResult);
         }
         return testResults;

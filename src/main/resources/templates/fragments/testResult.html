@@ -16,6 +16,12 @@
                             <td class="bolder-text">Name</td>
                             <td fhir:type="${testResult.getName()}"></td>
                         </tr>
+                        <th:block th:if="${testResult.getDate()} != null">
+                            <tr>
+                                <td class="bolder-text">Date</td>
+                                <td fhir:type="${testResult.getDate()}"></td>
+                            </tr>
+                        </th:block>
                         <tr>
                             <td class="bolder-text">Performer</td>
                                 <td>
