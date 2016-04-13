@@ -21,7 +21,7 @@ import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelReso
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
     private List<IResource> topLevelResources;
-    private String ordersExtensionUrl = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DiagnositicOrderCategory";
+    private String ordersExtensionUrl = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DiagnosticOrderCategory";
     private String LAB_CATEGORY_DISPLAY = "Laboratory";
     private String LAB_EXTENSION_CODE = "LAB";
 
