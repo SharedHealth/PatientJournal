@@ -109,7 +109,7 @@ public class EncounterBundleDataTest {
         assertNotNull(testResult.getType());
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", testResult.getPerformer().getReference().getValue());
         assertEquals("Radiology", convertToText(testResult.getType()));
-        assertEquals("04 Apr 2016 17:32", convertToText(testResult.getDate()));
+        assertEquals(DateUtil.parseDate("2016-04-04T17:32:34.000+05:30"), testResult.getDate());
         List<SHRObservation> testObservations = testResult.getResults();
         assertEquals(3, testObservations.size());
     }
@@ -160,7 +160,7 @@ public class EncounterBundleDataTest {
         assertEquals("http://172.18.46.199:8084/api/1.0/providers/20.json", convertToText(radiologyOrder.getOrderer()));
         assertEquals("RAD", convertToText(radiologyOrder.getType()));
         assertEquals("requested", radiologyOrder.getStatus());
-        assertEquals("04 Apr 2016 10:41", convertToText(radiologyOrder.getDate()));
+        assertEquals(DateUtil.parseDate("2016-04-04T10:41:15.000+05:30"),radiologyOrder.getDate());
     }
 
     @Test
