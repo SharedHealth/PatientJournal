@@ -34,18 +34,17 @@ public class PatientServiceTest {
     }
 
     @Test
-    public void shouldGetPatientDetails() throws Exception {
+    public void shouldGetPatientDetailsInFHIRFormat() throws Exception {
         PatientService patientService = new PatientService(properties);
 
-        when(properties.getMciServerPatientsUrl()).thenReturn("http://localhost:9997/patients/");
+        when(properties.getMciServerPatientsUrl()).thenReturn("http://localhost:9997/api/v2/patients/");
 
-        givenThat(get(urlEqualTo("/patients/123123123123"))
-                .withHeader("accept", equalTo("application/json"))
+        givenThat(get(urlEqualTo("/api/v2/patients/123123123123"))
                 .withHeader(FROM_KEY, equalTo("utsab@gmail.com"))
                 .withHeader(CLIENT_ID_KEY, equalTo("12345"))
                 .withHeader(AUTH_TOKEN_KEY, equalTo("00f452a2-2925-4e03-b772-971fd14982b2"))
                 .willReturn(aResponse().withStatus(HttpStatus.SC_OK)
-                        .withBody(asString("patient.json"))));
+                        .withBody(asString("patient.xml"))));
 
         Patient patient = patientService.getPatient(getUserInfo());
 

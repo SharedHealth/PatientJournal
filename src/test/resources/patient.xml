@@ -1,0 +1,36 @@
+<Patient
+        xmlns="http://hl7.org/fhir">
+    <identifier>
+        <type>
+            <coding>
+                <system value="http://localhost:9997/api/v2/vs/patient-identifiers"/>
+                <code value="HID"/>
+            </coding>
+        </type>
+        <system value="http://localhost:9997/api/v2/patients/98001142093"/>
+        <value value="123123123123"/>
+    </identifier>
+    <name>
+        <family value="Patient"/>
+        <given value="Test"/>
+    </name>
+    <gender value="male"/>
+    <birthDate value="1976-01-12">
+        <extension url="http://hl7.org/fhir/StructureDefinition/patient-birthTime">
+            <valueDateTime value="1976-01-12T16:50:00+05:30"/>
+        </extension>
+    </birthDate>
+    <address>
+        <extension url="https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#AddressCode">
+            <valueString value="201918991101"/>
+        </extension>
+        <line value="3rd lane"/>
+        <country value="050"/>
+    </address>
+    <link>
+        <other>
+            <reference value="http://localhost:9997/api/v1/patients/98001142093"/>
+        </other>
+        <type value="seealso"/>
+    </link>
+</Patient>

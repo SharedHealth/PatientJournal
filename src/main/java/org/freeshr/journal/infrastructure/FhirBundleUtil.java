@@ -1,7 +1,9 @@
 package org.freeshr.journal.infrastructure;
 
 import ca.uhn.fhir.context.FhirContext;
+import ca.uhn.fhir.model.api.IResource;
 import ca.uhn.fhir.model.dstu2.resource.Bundle;
+import org.hl7.fhir.instance.model.api.IBaseResource;
 
 
 public class FhirBundleUtil {
@@ -12,5 +14,9 @@ public class FhirBundleUtil {
         } else {
             return (Bundle) fhirContext.newJsonParser().parseResource(content);
         }
+    }
+
+    public static IBaseResource parseResource(String content){
+        return fhirContext.newXmlParser().parseResource(content);
     }
 }

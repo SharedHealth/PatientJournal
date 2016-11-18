@@ -1,60 +1,42 @@
 package org.freeshr.journal.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
-@JsonIgnoreProperties(ignoreUnknown = true)
 public class Patient {
-
-    @JsonProperty("hid")
     private String healthId;
-
-    @JsonProperty("present_address")
-    private Address address;
-
-    @JsonProperty("gender")
     private String gender;
-
-    @JsonProperty("given_name")
     private String givenName;
-
-    @JsonProperty("sur_name")
     private String surName;
 
+    public Patient() {
+    }
 
     public String getName() {
         return givenName + " " + surName;
     }
 
-
     public String getHealthId() {
         return healthId;
+    }
+
+    public String getGender() {
+        return gender;
     }
 
     public void setHealthId(String healthId) {
         this.healthId = healthId;
     }
 
-    public Address getAddress() {
-        return address;
+    public void setGivenName(String givenName) {
+        this.givenName = givenName;
     }
 
-    public void setAddress(Address address) {
-        this.address = address;
-    }
-
-    public String getGender() {
-        if ("M".equalsIgnoreCase(gender))
-            return "Male";
-        if ("F".equalsIgnoreCase(gender))
-            return "Female";
-        if ("O".equalsIgnoreCase(gender))
-            return "Other";
-        return gender;
+    public void setSurName(String surName) {
+        this.surName = surName;
     }
 
     public void setGender(String gender) {
-        this.gender = gender;
+        this.gender = StringUtils.capitalize(gender);
     }
 
 
@@ -77,10 +59,10 @@ public class Patient {
     public String toString() {
         return "Patient{" +
                 "healthId='" + healthId + '\'' +
-                ", address=" + address +
                 ", gender='" + gender + '\'' +
+                ", givenName='" + givenName + '\'' +
+                ", surName='" + surName + '\'' +
                 '}';
     }
-
 }
 

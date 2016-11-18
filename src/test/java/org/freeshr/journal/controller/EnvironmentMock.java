@@ -17,7 +17,7 @@ public class EnvironmentMock implements ApplicationContextInitializer<Configurab
         MockPropertySource mockEnvVars = new MockPropertySource();
         Map<String, String> env = new HashMap<String, String>();
         try {
-            InputStream inputStream = this.getClass().getResourceAsStream("/local.properties");
+            InputStream inputStream = this.getClass().getResourceAsStream("/test.properties");
             Properties properties = new Properties();
             properties.load(inputStream);
             for (Object property : properties.keySet()) {
