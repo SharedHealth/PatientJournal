@@ -36,7 +36,7 @@ public class PatientService {
         logger.debug(String.format("Fetching Details for patient [%s] from MCI", healthId));
         String response = new WebClient().get(url, headers);
         if (StringUtils.isEmpty(response)) return null;
-        ca.uhn.fhir.model.dstu2.resource.Patient fhirPatient = (ca.uhn.fhir.model.dstu2.resource.Patient) FhirBundleUtil.parseResource(response);
+        ca.uhn.fhir.model.dstu2.resource.Patient fhirPatient = FhirBundleUtil.findPatientResource(response);
 
         Patient patient = new Patient();
         patient.setHealthId(healthId);
