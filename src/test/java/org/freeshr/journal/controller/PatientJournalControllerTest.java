@@ -187,7 +187,7 @@ public class PatientJournalControllerTest {
                 .withHeader(CLIENT_ID_KEY, equalTo(clientId))
                 .withHeader(AUTH_TOKEN_KEY, equalTo(token))
                 .willReturn(aResponse().withStatus(HttpStatus.SC_OK)
-                        .withBody(asString("patient.xml"))));
+                        .withBody(asString("patient.json"))));
 
 
         givenThat(WireMock.get(urlEqualTo("/patients/123123123123/encounters"))

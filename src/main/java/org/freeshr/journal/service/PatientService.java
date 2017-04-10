@@ -1,10 +1,9 @@
 package org.freeshr.journal.service;
 
 
-import ca.uhn.fhir.model.dstu2.composite.HumanNameDt;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.freeshr.journal.infrastructure.FhirBundleUtil;
 import org.freeshr.journal.infrastructure.WebClient;
 import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.Patient;
@@ -31,19 +30,14 @@ public class PatientService {
 
     public Patient getPatient(UserInfo userInfo) throws IOException {
         Map<String, String> headers = createSecurityHeaders(userInfo);
+        headers.put("accept", "application/json");
         String healthId = userInfo.getPatientProfile().getId();
         String url = properties.getMciServerPatientsUrl() + healthId;
         logger.debug(String.format("Fetching Details for patient [%s] from MCI", healthId));
         String response = new WebClient().get(url, headers);
-        if (StringUtils.isEmpty(response)) return null;
-        ca.uhn.fhir.model.dstu2.resource.Patient fhirPatient = FhirBundleUtil.findPatientResource(response);
-
-        Patient patient = new Patient();
-        patient.setHealthId(healthId);
-        patient.setGender(fhirPatient.getGender());
-        HumanNameDt name = fhirPatient.getNameFirstRep();
-        patient.setGivenName(name.getGivenFirstRep().getValue());
-        patient.setSurName(name.getFamilyFirstRep().getValue());
-        return patient;
+        if (StringUtils.isNotEmpty(response)) {
+            return new ObjectMapper().readValue(response, Patient.class);
+        }
+        return null;
     }
 }
