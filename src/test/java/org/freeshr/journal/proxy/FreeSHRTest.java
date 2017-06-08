@@ -1,8 +1,5 @@
 package org.freeshr.journal.proxy;
 
-import ca.uhn.fhir.model.api.IResource;
-import ca.uhn.fhir.model.dstu2.resource.Composition;
-import ca.uhn.fhir.model.dstu2.resource.Encounter;
 import com.github.tomakehurst.wiremock.junit.WireMockRule;
 import com.sun.syndication.io.FeedException;
 import org.apache.http.HttpStatus;
@@ -12,6 +9,9 @@ import org.freeshr.journal.launch.ApplicationProperties;
 import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundlesData;
 import org.freeshr.journal.utils.FileUtil;
+import org.hl7.fhir.dstu3.model.Composition;
+import org.hl7.fhir.dstu3.model.Encounter;
+import org.hl7.fhir.dstu3.model.Resource;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -47,7 +47,7 @@ public class FreeSHRTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
-                        .withBody(FileUtil.asString("encounters/shrEncounterResponse.xml"))));
+                        .withBody(FileUtil.asString("encounters/stu3/shrEncounterResponse.xml"))));
         initMocks(this);
     }
 
@@ -64,7 +64,7 @@ public class FreeSHRTest {
         assertTrue(isEncounterOrComposition(encounterBundle.getResources().get(1)));
     }
 
-    private boolean isEncounterOrComposition(IResource resource) {
+    private boolean isEncounterOrComposition(Resource resource) {
         return resource instanceof Encounter || resource instanceof Composition;
     }
 

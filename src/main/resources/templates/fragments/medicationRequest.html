@@ -1,29 +1,29 @@
-<th:block th:fragment="medicationOrders (medicationOrders)">
-    <th:block th:unless="${#lists.isEmpty(medicationOrders)}">
+<th:block th:fragment="medicationRequests (medicationRequests)">
+    <th:block th:unless="${#lists.isEmpty(medicationRequests)}">
         <div class="div-resource-container">
             <span class="span-exp-col">+</span>
             <span class="div-resource-head">Medication Order</span>
 
             <div class="div-resource-content">
-                <th:block th:each="medicationOrder: ${medicationOrders}">
-                    <th:block th:object="${medicationOrder}">
+                <th:block th:each="medicationRequest: ${medicationRequests}">
+                    <th:block th:object="${medicationRequest}">
                         <table cellpadding="0" cellspacing="0">
-                            <th:block th:if="*{getPrescriber()} != null">
+                            <th:block th:if="*{getRequester()} != null">
                                 <tr>
                                     <td class="bolder-text">Prescriber</td>
                                     <td>
                                         <a data-class="external-ref" data-ref-element-class="provider"
-                                           th:href="*{getPrescriber().getReference()}">Click here to view
+                                           th:href="*{getRequester().getAgent()}">Click here to view
                                             Prescriber</a>
 
                                         <div class="provider"></div>
                                     </td>
                                 </tr>
                             </th:block>
-                            <th:block th:if="*{getReason()} != null">
+                            <th:block th:if="*{getReasonCodeFirstRep().getCodingFirstRep().getDisplay()} != null">
                                 <tr>
                                     <td class="bolder-text">Reason</td>
-                                    <td fhir:type="*{getReason()}"></td>
+                                    <td fhir:type="*{getReasonCodeFirstRep().getCodingFirstRep().getDisplay()}"></td>
                                 </tr>
                             </th:block>
                             <th:block th:if="*{getMedication()} != null">

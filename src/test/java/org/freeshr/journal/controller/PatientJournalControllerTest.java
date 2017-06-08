@@ -60,7 +60,7 @@ public class PatientJournalControllerTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
-                        .withBody(FileUtil.asString("encounters/shrEncounterResponse.xml"))));
+                        .withBody(FileUtil.asString("encounters/dstu2/shrEncounterResponse.xml"))));
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
         initMocks(this);
@@ -99,7 +99,7 @@ public class PatientJournalControllerTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
-                        .withBody(FileUtil.asString("encounters/shrEncounterResponse.xml"))));
+                        .withBody(FileUtil.asString("encounters/dstu2/shrEncounterResponse.xml"))));
 
 
         givenThat(WireMock.post(urlEqualTo("/signin"))
@@ -198,7 +198,7 @@ public class PatientJournalControllerTest {
                 .willReturn(aResponse()
                         .withStatus(HttpStatus.SC_OK)
                         .withHeader("Content-Type", "application/atom+xml")
-                        .withBody(FileUtil.asString("encounters/shrEncounterResponse.xml"))));
+                        .withBody(FileUtil.asString("encounters/stu3/shrEncounterResponse.xml"))));
 
 
         givenThat(WireMock.post(urlEqualTo("/signin"))

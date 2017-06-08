@@ -1,33 +1,33 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
-import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Reference;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SHRProcedureReport {
-    private CodeableConceptDt test;
-    private ResourceReferenceDt providerReference;
-    private List<CodeableConceptDt> results;
+    private CodeableConcept test;
+    private Reference providerReference;
+    private List<CodeableConcept> results;
     private List<SHRObservation> resultNotes;
 
-    public SHRProcedureReport(CodeableConceptDt test, ResourceReferenceDt providerReference, List<CodeableConceptDt> results, List<SHRObservation> resultNotes) {
+    public SHRProcedureReport(CodeableConcept test, Reference providerReference, List<CodeableConcept> results, List<SHRObservation> resultNotes) {
         this.test = test;
         this.providerReference = providerReference;
         this.results = new ArrayList<>(results);
         this.resultNotes = new ArrayList<>(resultNotes);
     }
 
-    public CodeableConceptDt getTest() {
+    public CodeableConcept getTest() {
         return test;
     }
 
-    public ResourceReferenceDt getProviderReference() {
+    public Reference getProviderReference() {
         return providerReference;
     }
 
-    public List<CodeableConceptDt> getResults() {
+    public List<CodeableConcept> getResults() {
         return new ArrayList<>(results);
     }
 

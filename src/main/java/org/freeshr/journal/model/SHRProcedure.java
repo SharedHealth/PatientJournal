@@ -1,19 +1,19 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.api.IDatatype;
-import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SHRProcedure {
-    private IDatatype date;
-    private CodeableConceptDt type;
-    private CodeableConceptDt outcome;
-    private List<CodeableConceptDt> followUp;
+    private Type date;
+    private CodeableConcept type;
+    private CodeableConcept outcome;
+    private List<CodeableConcept> followUp;
     private List<SHRProcedureReport> procedureReports;
 
-    public SHRProcedure(IDatatype date, CodeableConceptDt type, CodeableConceptDt outcome, List<CodeableConceptDt> followUp) {
+    public SHRProcedure(Type date, CodeableConcept type, CodeableConcept outcome, List<CodeableConcept> followUp) {
         this.date = date;
         this.type = type;
         this.outcome = outcome;
@@ -25,19 +25,19 @@ public class SHRProcedure {
         this.procedureReports.add(report);
     }
 
-    public IDatatype getDate() {
+    public Type getDate() {
         return date;
     }
 
-    public CodeableConceptDt getType() {
+    public CodeableConcept getType() {
         return type;
     }
 
-    public CodeableConceptDt getOutcome() {
+    public CodeableConcept getOutcome() {
         return outcome;
     }
 
-    public List<CodeableConceptDt> getFollowUp() {
+    public List<CodeableConcept> getFollowUp() {
         return new ArrayList<>(followUp);
     }
 

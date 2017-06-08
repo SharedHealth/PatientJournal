@@ -1,9 +1,9 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.dstu2.resource.Bundle;
 import com.sun.syndication.feed.atom.Content;
 import com.sun.syndication.feed.atom.Entry;
 import org.freeshr.journal.infrastructure.FhirBundleUtil;
+import org.hl7.fhir.dstu3.model.Bundle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,7 +26,7 @@ public class EncounterBundlesData {
             String entryContent = getEntryContent(entry);
             Bundle bundle = FhirBundleUtil.parseBundle(entryContent, "xml");
             encounterBundle.setBundle(bundle);
-            for (Bundle.Entry bundleEntry : bundle.getEntry()) {
+            for (Bundle.BundleEntryComponent bundleEntry : bundle.getEntry()) {
                 encounterBundle.addResource(bundleEntry.getResource());
             }
             encounterBundlesData.addEncounterBundleModel(new EncounterBundleData(encounterBundle));

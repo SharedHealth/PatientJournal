@@ -1,6 +1,6 @@
 <th:block th:fragment="testOrders (testOrders)">
-    <th:block th:each="testOrder: ${testOrders}">
-        <th:block th:object="${testOrder}">
+    <th:block th:each="order: ${testOrders}">
+        <th:block th:object="${order}">
             <div class="div-resource-container">
                 <span class="span-exp-col">+</span>
                 <span class="div-resource-head">Test Order</span>
@@ -8,38 +8,38 @@
                     <table cellpadding="0" cellspacing="0">
                         <tr>
                             <td class="bolder-text">Type</td>
-                            <td fhir:type="${testOrder.getType()}"></td>
+                            <td fhir:type="${order.getType()}"></td>
                         </tr>
-                        <th:block th:if="${testOrder.getItem()} != null">
+                        <th:block th:if="${order.getItem()} != null">
                             <tr>
                                 <td class="bolder-text">Test</td>
-                                <td fhir:type="${testOrder.getItem()}"></td>
+                                <td fhir:type="${order.getItem()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="${testOrder.getDate()} != null">
+                        <th:block th:if="${order.getDate()} != null">
                             <tr>
                                 <td class="bolder-text">Date</td>
-                                <td fhir:type="${testOrder.getDate()}"></td>
+                                <td fhir:type="${order.getDate()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="${testOrder.getStatus()} != null">
+                        <th:block th:if="${order.getStatus()} != null">
                             <tr>
                                 <td class="bolder-text">Status</td>
-                                <td fhir:type="${testOrder.getStatus()}"></td>
+                                <td fhir:type="${order.getStatus()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="${testOrder.getSample()} != null">
+                        <th:block th:if="${order.getSample()} != null">
                             <tr>
                                 <td class="bolder-text">Sample</td>
-                                <td fhir:type="${testOrder.getSample().getType()}"></td>
+                                <td fhir:type="${order.getSample().getType()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="${testOrder.getOrderer()} != null">
+                        <th:block th:if="${order.getOrderer()} != null">
                             <tr>
                                 <td class="bolder-text">Orderer</td>
                                 <td>
                                     <a data-class="external-ref" data-ref-element-class="provider"
-                                       th:href="${testOrder.getOrderer().getReference()}">Click here to
+                                       th:href="${order.getOrderer().getReference()}">Click here to
                                         view orderer</a>
 
                                     <div class="provider"></div>

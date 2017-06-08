@@ -1,10 +1,10 @@
 package org.freeshr.journal.service;
 
-import ca.uhn.fhir.model.dstu2.resource.Encounter;
 import org.freeshr.journal.model.EncounterBundle;
 import org.freeshr.journal.model.EncounterBundleData;
 import org.freeshr.journal.model.EncounterBundlesData;
 import org.freeshr.journal.proxy.FreeSHR;
+import org.hl7.fhir.dstu3.model.Encounter;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;

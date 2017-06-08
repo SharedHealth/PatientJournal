@@ -2,30 +2,30 @@
 <!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
 
 <log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/">
-    <appender name="VAR_LOG" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/var/log/patient-journal/patient-journal.log"/>
-        <param name="DatePattern" value="'.'dd-MM-yyyy"/>
+    <appender code="VAR_LOG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param code="file" value="/var/log/patient-journal/patient-journal.log"/>
+        <param code="DatePattern" value="'.'dd-MM-yyyy"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+            <param code="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
         </layout>
         <filter class="org.freeshr.journal.utils.log4j.NormalLogFilter"/>
     </appender>
 
-    <appender name="ACCESS_LOG" class="org.apache.log4j.DailyRollingFileAppender">
-        <param name="file" value="/var/log/patient-journal/access.log"/>
-        <param name="DatePattern" value="'.'dd-MM-yyyy"/>
+    <appender code="ACCESS_LOG" class="org.apache.log4j.DailyRollingFileAppender">
+        <param code="file" value="/var/log/patient-journal/access.log"/>
+        <param code="DatePattern" value="'.'dd-MM-yyyy"/>
         <layout class="org.apache.log4j.PatternLayout">
-            <param name="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
+            <param code="ConversionPattern" value="%d{dd-MM-yyyy HH:mm:ss} [%-5p] %c{1} - %m%n"/>
         </layout>
         <filter class="org.freeshr.journal.utils.log4j.AccessLogFilter"/>
     </appender>
 
-    <logger name="org.freeshr.journal" additivity="false">
+    <logger code="org.freeshr.journal" additivity="false">
         <level value="${PATIENT_JOURNAL_LOG_LEVEL}"/>
         <appender-ref ref="VAR_LOG"/>
     </logger>
     
-    <logger name="org.freeshr.journal.controller">
+    <logger code="org.freeshr.journal.controller">
         <level value="${PATIENT_JOURNAL_LOG_LEVEL}"/>
         <appender-ref ref="ACCESS_LOG"/>
     </logger>

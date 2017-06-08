@@ -1,15 +1,15 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.api.IDatatype;
-import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Type;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class SHRObservation {
-    private CodeableConceptDt name;
-    private IDatatype value;
-    private CodeableConceptDt interpretation;
+    private CodeableConcept name;
+    private Type value;
+    private CodeableConcept interpretation;
     private String comments;
     private int depth;
 
@@ -19,15 +19,15 @@ public class SHRObservation {
         this.depth = depth;
     }
 
-    public void setName(CodeableConceptDt name) {
+    public void setName(CodeableConcept name) {
         this.name = name;
     }
 
-    public void setValue(IDatatype value) {
+    public void setValue(Type value) {
         this.value = value;
     }
 
-    public void setInterpretation(CodeableConceptDt interpretation) {
+    public void setInterpretation(CodeableConcept interpretation) {
         this.interpretation = interpretation;
     }
 
@@ -48,15 +48,15 @@ public class SHRObservation {
         return new ArrayList<>(children);
     }
 
-    public CodeableConceptDt getName() {
+    public CodeableConcept getName() {
         return name;
     }
 
-    public IDatatype getValue() {
+    public Type getValue() {
         return value;
     }
 
-    public CodeableConceptDt getInterpretation() {
+    public CodeableConcept getInterpretation() {
         return interpretation;
     }
 

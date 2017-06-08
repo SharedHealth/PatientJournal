@@ -14,11 +14,11 @@ public class EncounterBundlesDataTest {
 
     @Test
     public void shouldDeserializeEncounters() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/shrEncounterResponse.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/stu3/shrEncounterResponse.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         assertEquals(3, encounterBundlesData.getEncounterBundleDataList().size());
         assertEquals(2, encounterBundlesData.getEncounterBundleDataList().get(0).getEncounterBundle().getResources().size());
-        assertEquals(4, encounterBundlesData.getEncounterBundleDataList().get(1).getEncounterBundle().getResources().size());
+        assertEquals(6, encounterBundlesData.getEncounterBundleDataList().get(1).getEncounterBundle().getResources().size());
         assertEquals(10, encounterBundlesData.getEncounterBundleDataList().get(2).getEncounterBundle().getResources().size());
     }
 }

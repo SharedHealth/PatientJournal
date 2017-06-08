@@ -5,7 +5,7 @@
     <link rel="self" type="application/atom+xml" href="http://172.18.46.156:8081/patients/98001008823/encounters"/>
     <link rel="via" tyvaluepe="application/atom+xml" href="http://172.18.46.156:8081/patients/98001008823/encounters"/>
     <author>
-        <name>FreeSHR</name>
+        <code>FreeSHR</code>
     </author>
     <id>c7675901-ee9d-4b07-b2a2-a39dd09be273</id>
     <generator uri="https://github.com/ICT4H/atomfeed">Atomfeed</generator>

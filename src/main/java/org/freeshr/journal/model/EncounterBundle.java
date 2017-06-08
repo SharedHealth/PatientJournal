@@ -1,22 +1,28 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.api.IResource;
-import ca.uhn.fhir.model.dstu2.resource.Bundle;
-import ca.uhn.fhir.model.dstu2.resource.Composition;
-import ca.uhn.fhir.model.dstu2.resource.Encounter;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Composition;
+import org.hl7.fhir.dstu3.model.Encounter;
+import org.hl7.fhir.dstu3.model.Resource;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class EncounterBundle {
-    private List<IResource> resources = new ArrayList<>();
-    private Bundle bundle;
+import static java.util.Arrays.asList;
 
-    public void addResource(IResource resource) {
+public class EncounterBundle {
+    private List<Resource> resources = new ArrayList<>();
+    private Bundle bundle;
+    private Composition composition;
+    private Encounter encounter;
+
+    public void addResource(Resource resource) {
+        if (resource instanceof Composition) this.composition = (Composition) resource;
+        if (resource instanceof Encounter) this.encounter = (Encounter) resource;
         resources.add(resource);
     }
 
-    public List<IResource> getResources() {
+    public List<Resource> getResources() {
         return new ArrayList<>(resources);
     }
 
@@ -29,10 +35,10 @@ public class EncounterBundle {
     }
 
     public List<Composition> getCompositions() {
-        return bundle.getAllPopulatedChildElementsOfType(Composition.class);
+        return asList(composition);
     }
 
     public List<Encounter> getEncounters() {
-        return bundle.getAllPopulatedChildElementsOfType(Encounter.class);
+        return asList(encounter);
     }
 }

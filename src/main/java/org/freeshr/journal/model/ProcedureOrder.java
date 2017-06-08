@@ -1,18 +1,18 @@
 package org.freeshr.journal.model;
 
-import ca.uhn.fhir.model.dstu2.composite.CodeableConceptDt;
-import ca.uhn.fhir.model.dstu2.composite.ResourceReferenceDt;
+
+import org.hl7.fhir.dstu3.model.CodeableConcept;
+import org.hl7.fhir.dstu3.model.Reference;
 
 import java.util.Date;
 
 public class ProcedureOrder {
-
     private Date date;
-    private ResourceReferenceDt orderer;
+    private Reference orderer;
     private String notes;
-    private CodeableConceptDt type;
+    private CodeableConcept type;
     private String status;
-    private ResourceReferenceDt facility;
+    private Reference facility;
 
     public Date getDate() {
         return date;
@@ -22,11 +22,11 @@ public class ProcedureOrder {
         this.date = date;
     }
 
-    public ResourceReferenceDt getOrderer() {
+    public Reference getOrderer() {
         return orderer;
     }
 
-    public void setOrderer(ResourceReferenceDt orderer) {
+    public void setOrderer(Reference orderer) {
         this.orderer = orderer;
     }
 
@@ -38,11 +38,11 @@ public class ProcedureOrder {
         this.notes = notes;
     }
 
-    public CodeableConceptDt getType() {
+    public CodeableConcept getType() {
         return type;
     }
 
-    public void setType(CodeableConceptDt type) {
+    public void setType(CodeableConcept type) {
         this.type = type;
     }
 
@@ -54,11 +54,11 @@ public class ProcedureOrder {
         this.status = status;
     }
 
-    public ResourceReferenceDt getFacility() {
+    public Reference getFacility() {
         return facility;
     }
 
-    public void setFacility(ResourceReferenceDt facility) {
+    public void setFacility(Reference facility) {
         this.facility = facility;
     }
 }

@@ -1,11 +1,11 @@
 package org.freeshr.journal.utils;
 
 
-import ca.uhn.fhir.model.api.IResource;
-import ca.uhn.fhir.model.dstu2.resource.Bundle;
-import ca.uhn.fhir.model.dstu2.resource.Composition;
-import ca.uhn.fhir.model.dstu2.resource.Encounter;
 import org.freeshr.journal.model.EncounterBundle;
+import org.hl7.fhir.dstu3.model.Bundle;
+import org.hl7.fhir.dstu3.model.Composition;
+import org.hl7.fhir.dstu3.model.Encounter;
+import org.hl7.fhir.dstu3.model.Resource;
 import org.junit.Before;
 import org.junit.Test;
 
@@ -23,30 +23,30 @@ public class EncounterBundleUtilTest {
 
     @Before
     public void setUp() throws Exception {
-        String content = asString("encounters/bundleWithDiagnosticReport.xml");
+        String content = asString("encounters/stu3/bundleWithDiagnosticReport.xml");
         Bundle bundle = parseBundle(content, "xml");
         encounterBundle = new EncounterBundle();
         encounterBundle.setBundle(bundle);
-        for (Bundle.Entry bundleEntry : bundle.getEntry()) {
+        for (Bundle.BundleEntryComponent bundleEntry : bundle.getEntry()) {
             encounterBundle.addResource(bundleEntry.getResource());
         }
     }
 
     @Test
     public void shouldIdentifyTopLevelDiagnosticReports() throws Exception {
-        List<IResource> diagnosticReports = identifyTopLevelResourcesByExclusion(encounterBundle);
+        List<Resource> diagnosticReports = identifyTopLevelResourcesByExclusion(encounterBundle);
         assertEquals(4, diagnosticReports.size());
     }
 
     @Test
     public void shouldIdentifyTopLevelResourcesOtherThanEncounterAndComposition() throws Exception {
-        List<IResource> resources = identifyTopLevelResourcesByExclusion(encounterBundle);
-        for (IResource resource : resources) {
+        List<Resource> resources = identifyTopLevelResourcesByExclusion(encounterBundle);
+        for (Resource resource : resources) {
             assertFalse(isEncounterOrComposition(resource));
         }
     }
 
-    private boolean isEncounterOrComposition(IResource resource) {
+    private boolean isEncounterOrComposition(Resource resource) {
         return resource instanceof Encounter || resource instanceof Composition;
     }
 }
