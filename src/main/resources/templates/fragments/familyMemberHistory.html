@@ -31,10 +31,10 @@
                                 <td fhir:type="*{getDeceased()}"></td>
                             </tr>
                         </th:block>
-                        <th:block th:if="*{getNote()} != null and *{getNote().getText()} != null">
+                        <th:block th:if="*{getNoteFirstRep().getText()} != null">
                             <tr>
                                 <td class="bolder-text">Note</td>
-                                <td fhir:type="*{getNote()}"></td>
+                                <td fhir:type="*{getNoteFirstRep().getText()}"></td>
                             </tr>
                         </th:block>
                     </table>
@@ -63,10 +63,10 @@
                                             <td fhir:type="${condition.getOnset()}"></td>
                                         </tr>
                                     </th:block>
-                                    <th:block th:if="${condition.getNote()} != null and ${condition.getNote().getText()} != null">
+                                    <th:block th:if="${condition.getNoteFirstRep().getText()} != null">
                                         <tr>
                                             <td class="bolder-text">Note</td>
-                                            <td fhir:type="${condition.getNote()}"></td>
+                                            <td fhir:type="${condition.getNoteFirstRep().getText()}"></td>
                                         </tr>
                                     </th:block>
                                 </table>

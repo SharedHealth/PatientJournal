@@ -10,7 +10,6 @@
     <th:block th:include="fragments/familyMemberHistory :: familyMemberHistories (${bundleData.getFamilyMemberHistories()})"></th:block>
     <th:block th:include="fragments/immunization :: immunizations (${bundleData.getImmunizations()})"></th:block>
     <th:block th:include="fragments/testResult :: testResults (${bundleData.getTestResults()})"></th:block>
-    <!--<th:block th:include="fragments/testOrder :: testOrders (${bundleDgetOrdersders()})"></th:block>-->
+    <th:block th:include="fragments/order :: orders (${bundleData.getOrders()})"></th:block>
     <th:block th:include="fragments/procedure :: procedures (${bundleData.getSHRProcedures()})"></th:block>
-    <th:block th:include="fragments/procedureOrder :: procedureOrders (${bundleData.getProcedureOrders()})"></th:block>
 </th:block>

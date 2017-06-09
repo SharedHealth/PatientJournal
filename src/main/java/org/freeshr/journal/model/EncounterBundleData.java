@@ -13,7 +13,6 @@ import static org.freeshr.journal.utils.EncounterBundleUtil.identifyTopLevelReso
 public class EncounterBundleData {
     private EncounterBundle encounterBundle;
     private List<Resource> topLevelResources;
-    private String ordersExtensionUrl = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DiagnosticOrderCategory";
     private String LAB_CATEGORY_DISPLAY = "Laboratory";
     private String LAB_EXTENSION_CODE = "LAB";
 
@@ -171,49 +170,6 @@ public class EncounterBundleData {
         }
         return diagnosis;
     }
-
-//    private ArrayList<Order> getAllTestOrdersInDiagnosticOrders(List<DiagnosticOrder> diagnosticOrders) {
-//        ArrayList<Order> testOrders = new ArrayList<>();
-//        for (DiagnosticOrder diagnosticOrder : diagnosticOrders) {
-//            for (DiagnosticOrder.Item item : diagnosticOrder.getItem()) {
-//                Order testDetails = getTestDetails(diagnosticOrder, item);
-//                if (null == testDetails) continue;
-//                testOrders.add(testDetails);
-//            }
-//        }
-//        return testOrders;
-//    }
-
-//    private Order getTestDetails(DiagnosticOrder diagnosticOrder, DiagnosticOrder.Item item) {
-//        Order testOrder = new Order();
-//        testOrder.setItem(item.getCode());
-//        testOrder.setOrderer(diagnosticOrder.getOrderer());
-//        testOrder.setStatus(item.getStatus());
-//        testOrder.setDate(item.getEventFirstRep().getDateTime());
-//        List<Reference> specimens = item.getSpecimen();
-//        setSpecimen(testOrder, specimens);
-//
-//        IBaseDatatype extension = getExtensionDt(diagnosticOrder);
-//
-//        testOrder.setType(extension);
-//        return testOrder;
-//    }
-
-//    private IBaseDatatype getExtensionDt(DiagnosticOrder diagnosticOrder) {
-//        if (!diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).isEmpty())
-//            return diagnosticOrder.getUndeclaredExtensionsByUrl(ordersExtensionUrl).get(0).getValue();
-//        return new StringDt(LAB_EXTENSION_CODE);
-//    }
-
-//    private void setSpecimen(Order testOrder, List<Reference> specimens) {
-//        if (!specimens.isEmpty()) {
-//            Reference reference = specimens.get(0);
-//            Resource resourceByReference = getResourceByReference(encounterBundle.getBundle(), reference);
-//            if ((null == resourceByReference) || !(resourceByReference instanceof Specimen)) return;
-//            Specimen specimen = (Specimen) resourceByReference;
-//            testOrder.setSample(specimen);
-//        }
-//    }
 
     private <T extends Resource> List<T> getResourceByType(Class<T> type) {
         List<T> resources = new ArrayList<>();

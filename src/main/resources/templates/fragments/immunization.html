@@ -20,8 +20,8 @@
                             <td fhir:type="*{getStatus()}"></td>
                         </tr>
                         <tr>
-                            <td class="bolder-text">Vaccination Reported</td>
-                            <td fhir:type="*{getReported()}"></td>
+                                <td class="bolder-text">Vaccination Reported</td>
+                            <td fhir:type="*{!getPrimarySource()}"></td>
                         </tr>
                         <th:block th:with="explanation=*{getExplanation()}">
                             <th:block th:if="${explanation != null and explanation.getReason() != null}">
@@ -32,7 +32,7 @@
                             </th:block>
                             <tr>
                                 <td class="bolder-text">Vaccination Refused</td>
-                                <td fhir:type="*{getWasNotGiven()}"></td>
+                                <td fhir:type="*{getNotGiven()}"></td>
                             </tr>
                             <th:block th:if="${explanation != null and explanation.getReasonNotGiven() != null}">
                                 <tr th:each="refusalReason : ${explanation.getReasonNotGiven()}">

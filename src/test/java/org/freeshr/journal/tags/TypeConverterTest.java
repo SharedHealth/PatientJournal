@@ -117,7 +117,7 @@ public class TypeConverterTest {
     }
 
     @Test
-    public void shouldConvertATimingDtRepeatHavingFrequency() throws Exception {
+    public void shouldConvertADosageWithTimingRepeatHavingFrequency() throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
         Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");
@@ -136,11 +136,13 @@ public class TypeConverterTest {
         Timing timing = new Timing();
         timing.setRepeat(repeat);
 
-        assertEquals("2 time(s) in 1 Day. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(timing));
+        Dosage dosage = new Dosage().setTiming(timing);
+
+        assertEquals("2 time(s) in 1 Day. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(dosage));
     }
 
     @Test
-    public void shouldConvertATimingRepeatHavingWhen() throws Exception {
+    public void shouldConvertADosageWithTimingRepeatHavingWhen() throws Exception {
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy");
         Date startDate = simpleDateFormat.parse("17-06-2015T00:00:00+05:30");
         Date endDate = simpleDateFormat.parse("17-06-2016T00:00:00+05:30");
@@ -159,6 +161,7 @@ public class TypeConverterTest {
         Timing timing = new Timing();
         timing.setRepeat(repeat);
 
-        assertEquals("1 Hour before breakfast. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(timing));
+        Dosage dosage = new Dosage().setTiming(timing);
+        assertEquals("1 Hour before breakfast. Duration:- 17 Jun 2015 - 17 Jun 2016", convertToText(dosage));
     }
 }

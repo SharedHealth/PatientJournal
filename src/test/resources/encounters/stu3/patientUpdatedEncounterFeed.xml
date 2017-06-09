@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed
+        xmlns="http://www.w3.org/2005/Atom">
+    <title>Patient Encounters</title>
+    <link rel="self" type="application/atom+xml" href="http://172.18.46.156:8081/patients/98001194706/encounters" />
+    <link rel="via" type="application/atom+xml" href="http://172.18.46.156:8081/patients/98001194706/encounters" />
+    <author>
+        <code>FreeSHR</code>
+    </author>
+    <id>3b57af1c-3576-45e1-83e5-6de9d5056c26</id>
+    <generator uri="https://github.com/ICT4H/atomfeed">Atomfeed</generator>
+    <updated>2015-09-03T13:18:45Z</updated>
+    <entry>
+        <title>Encounter:b414447f-742c-4627-9ccd-584013a4d7e4</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/b414447f-742c-4627-9ccd-584013a4d7e4" />
+        <category term="encounter" />
+        <id>4e32a4e0-523e-11e5-c000-000000000000</id>
+        <updated>2015-09-03T13:18:45Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+    <entry>
+        <title>Encounter:cee439fd-d45b-4eb3-9ae0-51227f6fcc80</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/cee439fd-d45b-4eb3-9ae0-51227f6fcc80" />
+        <category term="encounter" />
+        <id>4ea8bf40-523e-11e5-c000-000000000000</id>
+        <updated>2015-09-03T13:18:46Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+    <entry>
+        <title>Encounter:c975fadd-5836-4fba-8787-35dab46c6e5c</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/c975fadd-5836-4fba-8787-35dab46c6e5c" />
+        <category term="encounter" />
+        <id>45cbe120-52d1-11e5-c000-000000000000</id>
+        <updated>2015-09-04T06:50:47Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+    <entry>
+        <title>Encounter:f7e4a774-130e-4640-a26d-dc1ccc0efd43</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/f7e4a774-130e-4640-a26d-dc1ccc0efd43" />
+        <category term="encounter" />
+        <category term="latest_update_event_id:1074e480-52e6-11e5-c000-000000000000" />
+        <id>00034c40-52e6-11e5-c000-000000000000</id>
+        <updated>2015-09-04T09:19:10Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+    <entry>
+        <title>Encounter:f7e4a774-130e-4640-a26d-dc1ccc0efd43</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/f7e4a774-130e-4640-a26d-dc1ccc0efd43" />
+        <category term="encounter" />
+        <category term="latest_update_event_id:1074e480-52e6-11e5-c000-000000000000" />
+        <id>0c9d9dc0-52e6-11e5-c000-000000000000</id>
+        <updated>2015-09-04T09:19:31Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+    <entry>
+        <title>Encounter:f7e4a774-130e-4640-a26d-dc1ccc0efd43</title>
+        <link rel="via" type="application/xml" href="/patients/98001194706/encounters/f7e4a774-130e-4640-a26d-dc1ccc0efd43" />
+        <category term="encounter" />
+        <id>1074e480-52e6-11e5-c000-000000000000</id>
+        <updated>2015-09-04T09:19:37Z</updated>
+        <content type="application/vnd.atomfeed+xml">
+<![CDATA[<Bundle
+            xmlns="http://hl7.org/fhir"><id value="e4ebf6ef-6e9e-47d8-b19e-ce735255b10a"/><meta><lastUpdated value="2015-09-03T18:47:56.000+05:30"/></meta><type value="document"/><entry><base value="urn:uuid:"/><resource><Composition
+            xmlns="http://hl7.org/fhir"><id value="87370ba1-6a86-4590-9942-de029c42e4b3"/><identifier><value value="urn:uuid:87370ba1-6a86-4590-9942-de029c42e4b3"/></identifier><date value="2015-09-03T18:47:56.000+05:30"/><type><coding><system value="http://hl7.org/fhir/vs/doc-typecodes"/><code value="51899-3"/><display value="Details Document"/></coding></type><status value="final"/><confidentiality value="N"/><subject><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></subject><author><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></author><encounter><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></encounter><section><content><reference value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><display value="Encounter"/></content></section></Composition></resource></entry><entry><base value="urn:uuid:"/><resource><Encounter
+            xmlns="http://hl7.org/fhir"><id value="606b5ffc-dae6-403f-903d-28d3f47d3ac1"/><identifier><value value="urn:uuid:606b5ffc-dae6-403f-903d-28d3f47d3ac1"/></identifier><status value="finished"/><class value="outpatient"/><type><text value="REG"/></type><patient><reference value="http://172.18.46.199:8081/api/default/patients/98001194706"/><display value="98001194706"/></patient><participant><individual><reference value="http://172.18.46.199:8080/api/1.0/providers/18.json"/></individual></participant><serviceProvider><reference value="http://172.18.46.199:8080/api/1.0/facilities/10019842.json"/></serviceProvider></Encounter></resource></entry></Bundle>]]>        </content>
+    </entry>
+</feed>
+

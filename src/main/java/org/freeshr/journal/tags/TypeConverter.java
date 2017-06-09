@@ -1,19 +1,26 @@
 package org.freeshr.journal.tags;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.freeshr.journal.utils.DateUtil;
 import org.hl7.fhir.dstu3.model.*;
 import org.springframework.util.CollectionUtils;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import static java.util.Arrays.asList;
 
 public class TypeConverter {
+    private static final String CUSTOM_DOSAGE_EXTENSION_URL = "https://sharedhealth.atlassian.net/wiki/display/docs/fhir-extensions#DosageInstructionCustomDosage";
+    public static String AFTERNOON_DOSE = "afternoonDose";
+    public static String MORNING_DOSE = "morningDose";
+    public static String EVENING_DOSE = "eveningDose";
 
     private static final String DATE_FORMAT = "dd MMM yyyy HH:mm";
 
@@ -43,9 +50,6 @@ public class TypeConverter {
 
             if (typeValue.getClass().equals(CodeableConcept.class))
                 return fromCodeableConcept((CodeableConcept) typeValue);
-
-//            if (typeValue.getClass().equals(BoundCodeableConcept.class))
-//                return fromCodeableConcept((CodeableConcept) typeValue);
 
             if (typeValue.getClass().equals(Ratio.class))
                 return fromRatio((Ratio) typeValue);
@@ -89,14 +93,21 @@ public class TypeConverter {
             if (typeValue.getClass().equals(Annotation.class))
                 return fromAnnotation((Annotation) typeValue);
 
-            if (typeValue.getClass().equals(Timing.class))
-                return fromTiming((Timing) typeValue);
+            if (typeValue.getClass().equals(Duration.class))
+                return fromDuration((Duration) typeValue);
+
+            if (typeValue.getClass().equals(Dosage.class))
+                return fromDosage((Dosage) typeValue);
 
 
         } catch (Exception ex) {
             logger.error(String.format("Unable to parse type-value %s of type %s.", typeValue, typeValue.getClass().getCanonicalName()), ex);
         }
         return typeValue.toString();
+    }
+
+    private static String fromDuration(Duration typeValue) {
+        return typeValue.getValue() + " " + getPeriodUnitFullName(typeValue.getCode());
     }
 
     private static String fromBoolean(Boolean typeValue) {
@@ -171,8 +182,8 @@ public class TypeConverter {
         String code = typeValue.getCode();
 
         if (value == null) return "";
-        if (code != null) return value + " " + code;
         if (units != null) return value + " " + units;
+        if (code != null) return value + " " + code;
         return String.valueOf(value);
     }
 
@@ -206,21 +217,23 @@ public class TypeConverter {
         return typeValue.getText();
     }
 
-    private static String fromTiming(Timing typeValue) {
+    private static String fromDosage(Dosage dosage) {
+        Timing timing = dosage.getTiming();
         String result = "";
-        Timing.TimingRepeatComponent repeat = typeValue.getRepeat();
+        Timing.TimingRepeatComponent repeat = timing.getRepeat();
         if (repeat == null) return "timing not specified";
         Integer frequency = repeat.getFrequency();
         List<Enumeration<Timing.EventTiming>> when = repeat.getWhen();
         BigDecimal period = repeat.getPeriod();
-        String periodUnit = repeat.getPeriodUnit().toCode();
-        if (period != null && StringUtils.isNotBlank(periodUnit)) {
-            result = period + " " + getPeriodUnitFullName(periodUnit);
+        if (period != null && repeat.getPeriodUnit() != null) {
+            result = period + " " + getPeriodUnitFullName(repeat.getPeriodUnit().toCode());
         }
         if (frequency != 0) {
             result = frequency + " time(s) in " + result;
         } else if (!CollectionUtils.isEmpty(when)) {
             result += " " + getEventTimingFullName(when.get(0).getValue().toCode());
+        } else {
+            result += " " + getCustomDosage(dosage);
         }
 
         String bound = convertToText(repeat.getBounds());
@@ -228,6 +241,23 @@ public class TypeConverter {
             result += ". Duration:- " + bound;
         }
         return result;
+    }
+
+    private static String getCustomDosage(Dosage dosage) {
+        List<Extension> extensions = dosage.getExtensionsByUrl(CUSTOM_DOSAGE_EXTENSION_URL);
+        if (CollectionUtils.isEmpty(extensions)) return "";
+        Extension extension = extensions.get(0);
+        String value = ((StringType) extension.getValue()).getValue();
+        try {
+            Map<String, Double> map = new ObjectMapper().readValue(value, Map.class);
+            Double morningDose = map.containsKey(MORNING_DOSE) ? map.get(MORNING_DOSE) : 0;
+            Double afternoonDose = map.containsKey(AFTERNOON_DOSE) ? map.get(AFTERNOON_DOSE) : 0;
+            Double eveningDose = map.containsKey(EVENING_DOSE) ? map.get(EVENING_DOSE) : 0;
+            return String.format("Morning:-%s, Afternoon:-%s, Evening:-%s", morningDose, afternoonDose, eveningDose);
+        } catch (IOException e) {
+            logger.error(String.format("Can not read decide dosage for %s", value), e);
+        }
+        return "";
     }
 
 

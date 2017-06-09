@@ -57,8 +57,8 @@ public class EncounterBundleUtil {
         return childRef;
     }
 
-    private static boolean isChildReference(HashSet<Reference> childReferenceDts, String resourceRef) {
-        for (Reference childRef : childReferenceDts) {
+    private static boolean isChildReference(HashSet<Reference> childRefs, String resourceRef) {
+        for (Reference childRef : childRefs) {
             if (!childRef.getReference().isEmpty() && childRef.getReference().equals(resourceRef)) {
                 return true;
             }

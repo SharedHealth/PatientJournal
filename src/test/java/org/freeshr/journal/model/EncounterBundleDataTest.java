@@ -115,7 +115,7 @@ public class EncounterBundleDataTest {
 
     @Test
     public void shouldGetAllOrderFulfillmentAndDefaultTypeAsLaboratory() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/dstu2/encounterWithFulfillmentWithoutCategory.xml"));
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/stu3/encounterWithFulfillmentWithoutCategory.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 
@@ -137,18 +137,18 @@ public class EncounterBundleDataTest {
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 
-        List<ProcedureOrder> procedureOrder = encounterBundleData.getProcedureOrders();
-        assertEquals(2, procedureOrder.size());
-        assertEquals("active", procedureOrder.get(0).getStatus());
-        assertEquals("note one", procedureOrder.get(0).getNotes());
-        assertEquals(DateUtil.parseDate("2016-02-22T11:47:25.000+05:30"), procedureOrder.get(0).getDate());
-        assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", procedureOrder.get(0).getOrderer().getReference());
-        assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", procedureOrder.get(0).getFacility().getReference());
+        List<Order> orders = encounterBundleData.getOrders();
+        assertEquals(2, orders.size());
+        assertEquals("active", orders.get(0).getStatus());
+        assertEquals("note one", orders.get(0).getNotes());
+        assertEquals(DateUtil.parseDate("2016-02-22T11:47:25.000+05:30"), orders.get(0).getDate());
+        assertEquals("http://172.18.46.199:8084/api/1.0/providers/24.json", orders.get(0).getOrderer().getReference());
+        assertEquals("http://172.18.46.199:8084/api/1.0/facilities/10019842.json", orders.get(0).getFacility().getReference());
     }
 
     @Test
-    public void shouldGiveAllResourcesOfTypeDiagnosticOrderAndCategoryRAD() throws Exception {
-        List<Entry> entries = new AtomFeed().parse(asString("encounters/dstu2/encounterWithRadiologyOrder.xml"));
+    public void shouldGiveAllResourcesOfTypeProcedureRequestAndCategoryRAD() throws Exception {
+        List<Entry> entries = new AtomFeed().parse(asString("encounters/stu3/encounterWithRadiologyOrder.xml"));
         EncounterBundlesData encounterBundlesData = fromFeedEntries(entries);
         encounterBundleData = encounterBundlesData.getEncounterBundleDataList().get(0);
 

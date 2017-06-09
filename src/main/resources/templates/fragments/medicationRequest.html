@@ -2,19 +2,19 @@
     <th:block th:unless="${#lists.isEmpty(medicationRequests)}">
         <div class="div-resource-container">
             <span class="span-exp-col">+</span>
-            <span class="div-resource-head">Medication Order</span>
+            <span class="div-resource-head">Medication Request</span>
 
             <div class="div-resource-content">
                 <th:block th:each="medicationRequest: ${medicationRequests}">
                     <th:block th:object="${medicationRequest}">
                         <table cellpadding="0" cellspacing="0">
-                            <th:block th:if="*{getRequester()} != null">
+                            <th:block th:if="*{getRequester().getAgent().getReference()} != null">
                                 <tr>
-                                    <td class="bolder-text">Prescriber</td>
+                                    <td class="bolder-text">Requester</td>
                                     <td>
                                         <a data-class="external-ref" data-ref-element-class="provider"
-                                           th:href="*{getRequester().getAgent()}">Click here to view
-                                            Prescriber</a>
+                                           th:href="*{getRequester().getAgent().getReference()}">Click here to view
+                                            Requester</a>
 
                                         <div class="provider"></div>
                                     </td>
@@ -32,14 +32,18 @@
                                     <td fhir:type="*{getMedication()}"></td>
                                 </tr>
                             </th:block>
+                            <tr>
+                                <td class="bolder-text">Status</td>
+                                <td fhir:type="*{getStatus().toCode()}"></td>
+                            </tr>
                             <th:block th:with="dosageInstructions=*{getDosageInstruction()}">
                                 <th:block th:unless="${#lists.isEmpty(dosageInstructions)}">
                                     <tr>
                                         <td class="bolder-text">Dosage</td>
                                         <td th:each="dosageInstruction: ${dosageInstructions}">
-                                            <th:block th:if="${dosageInstruction.getTiming()} != null">
+                                            <th:block th:if="${!dosageInstruction.getTiming().isEmpty()}">
                                                 <span><strong>Timing:-</strong></span>
-                                                <span fhir:type="${dosageInstruction.getTiming()}"></span>
+                                                <span fhir:type="${dosageInstruction}"></span>
                                             </th:block>
                                             <th:block th:if="${dosageInstruction.getRoute()} != null">
                                                 <span>&nbsp;|&nbsp;</span>
