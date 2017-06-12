@@ -2,6 +2,7 @@ package org.freeshr.journal.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.apache.commons.lang3.StringUtils;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class Patient {
@@ -23,7 +24,7 @@ public class Patient {
 
 
     public String getName() {
-        return givenName + " " + surName;
+        return StringUtils.isBlank(surName) ? givenName : givenName + " " + surName;
     }
 
 
