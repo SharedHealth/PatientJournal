@@ -250,9 +250,9 @@ public class TypeConverter {
         String value = ((StringType) extension.getValue()).getValue();
         try {
             Map<String, Double> map = new ObjectMapper().readValue(value, Map.class);
-            Double morningDose = map.containsKey(MORNING_DOSE) ? map.get(MORNING_DOSE) : 0;
-            Double afternoonDose = map.containsKey(AFTERNOON_DOSE) ? map.get(AFTERNOON_DOSE) : 0;
-            Double eveningDose = map.containsKey(EVENING_DOSE) ? map.get(EVENING_DOSE) : 0;
+            Double morningDose = map.containsKey(MORNING_DOSE) ? map.get(MORNING_DOSE) : Double.valueOf(0);
+            Double afternoonDose = map.containsKey(AFTERNOON_DOSE) ? map.get(AFTERNOON_DOSE) : Double.valueOf(0);
+            Double eveningDose = map.containsKey(EVENING_DOSE) ? map.get(EVENING_DOSE) : Double.valueOf(0);
             return String.format("Morning:-%s, Afternoon:-%s, Evening:-%s", morningDose, afternoonDose, eveningDose);
         } catch (IOException e) {
             logger.error(String.format("Can not read decide dosage for %s", value), e);

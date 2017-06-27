@@ -30,7 +30,7 @@ apply plugin: 'cobertura'
 apply plugin: 'rpm'
 apply plugin: 'war'
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
 mainClassName = "org.freeshr.journal.launch.Application"
 
 jar {
@@ -93,7 +93,7 @@ task debugPJ(type: JavaExec) {
     Properties properties = new Properties();
     properties.load(new FileInputStream(file('env/local.properties')))
     main = mainClassName
-    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG',"-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=5005"]
+    jvmArgs = ['-DPATIENT_JOURNAL_LOG_LEVEL=DEBUG',"-Xdebug", "-Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005"]
     classpath = sourceSets.main.runtimeClasspath
     environment properties
 }
@@ -203,8 +203,8 @@ idea {
         }
     }
     project {
-        jdkName = '1.7'
-        languageLevel = '1.7'
+        jdkName = '1.8'
+        languageLevel = '1.8'
     }
 }
 
